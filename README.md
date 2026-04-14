@@ -1,0 +1,39 @@
+# Ask What Matters — HB Presents
+
+Wharton Hack-AI-thon 2026 submission for the **"Adaptive AI for Smarter Travel Reviews"** challenge.
+
+## What this is
+
+A deterministic agent that decides up to **3 targeted follow-up questions** to ask a guest after they submit a hotel review. The questions are ranked by an empirical "gap priority" score derived from analyzing 5,999 reviews across 7 languages (English, Spanish, German, French, Italian, Portuguese, Japanese + Chinese).
+
+Design philosophy:
+- **Rules pick the questions. LLMs only polish the wording.** This keeps behavior testable and removes a class of hallucination / prompt-injection bugs.
+- Priorities come from real data, not intuition. Bathroom issues score 8.84; billing scores 5.08; location scores 1.80. The agent asks what matters most first.
+
+## Repo layout
+
+```
+backend/
+  schema.py         # shared dataclasses + enums (ReviewContext, Question, AgentDecision)
+  rules.py          # regex aspect detection + light sentiment
+  question_bank.py  # 16 candidate questions, each with a trigger condition
+  agent.py          # decide_questions(ctx) — the main entry point
+  demo.py           # 3 runnable review scenarios
+```
+
+## Run the demo
+
+```bash
+cd backend
+python demo.py
+```
+
+Expected output: three review scenarios (angry short review, happy long review, mixed family review) and the 3 follow-up questions the agent picks for each, plus the rationale.
+
+## Design doc
+
+Full architecture, decision tree, pseudocode, JSON API contracts, and question catalog are in `Backend_Design.docx` (delivered separately to the team).
+
+## Team
+
+HB Presents  ·  Wharton Hack-AI-thon 2026
