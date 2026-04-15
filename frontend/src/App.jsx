@@ -10,14 +10,12 @@ export default function App() {
   const [step, setStep] = useState('form')
   const [decision, setDecision] = useState(null)
   const [error, setError] = useState(null)
-  const [reviewCtx, setReviewCtx] = useState(null)
 
-  async function handleReviewSubmit(formData) {
+  async function handleReviewSubmit(reviewText) {
     setStep('loading')
     setError(null)
-    setReviewCtx(formData)
     try {
-      const result = await submitReview(formData)
+      const result = await submitReview(reviewText)
       setDecision(result)
       setStep(result.questions.length > 0 ? 'followup' : 'done')
     } catch (err) {
@@ -34,7 +32,6 @@ export default function App() {
     setStep('form')
     setDecision(null)
     setError(null)
-    setReviewCtx(null)
   }
 
   return (
@@ -52,7 +49,7 @@ export default function App() {
               onClick={handleReset}
               className="ml-auto text-xs text-brand-600 hover:text-brand-800 font-medium"
             >
-              ← New review
+              New review
             </button>
           )}
         </div>
@@ -74,7 +71,7 @@ export default function App() {
       <main className="max-w-lg mx-auto px-4 py-8">
         {error && (
           <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -85,7 +82,7 @@ export default function App() {
         {step === 'loading' && (
           <div className="flex flex-col items-center justify-center py-24 gap-4">
             <div className="w-10 h-10 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-            <p className="text-sm text-gray-500 font-medium">Analyzing your review…</p>
+            <p className="text-sm text-gray-500 font-medium">AI is analyzing your review...</p>
           </div>
         )}
 

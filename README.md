@@ -21,6 +21,17 @@ backend/
   demo.py           # 3 runnable review scenarios
 ```
 
+## OpenAI setup
+
+Create `backend/.env` with your API key:
+
+```bash
+OPENAI_API_KEY=your_api_key_here
+OPENAI_MODEL=gpt-4.1-mini
+```
+
+For Vercel deployment, set the same env vars in the project settings instead of committing them to the repo.
+
 ## Run the demo
 
 ```bash

@@ -26,28 +26,66 @@ export default function QuestionCard({ question, index, onChange }) {
   )
   const [text, setText] = useState('')
 
+  function emitAnswer(nextSelected, nextText) {
+    const usesChoiceInput =
+      question.response_type === 'multi_select' ||
+      question.response_type === 'quick_tap' ||
+      question.response_type === 'yes_no'
+    const hasOther =
+      question.response_type === 'multi_select'
+        ? nextSelected.includes('Other')
+        : nextSelected === 'Other'
+
+    if (usesChoiceInput && hasOther) {
+      onChange({
+        qid: question.qid,
+        value: {
+          selected: nextSelected,
+          other_text: nextText,
+        },
+      })
+      return
+    }
+
+    if (usesChoiceInput) {
+      onChange({ qid: question.qid, value: nextSelected })
+      return
+    }
+
+    onChange({ qid: question.qid, value: nextText })
+  }
+
   function handlePillClick(option) {
     if (question.response_type === 'multi_select') {
       const next = selected.includes(option)
         ? selected.filter((o) => o !== option)
         : [...selected, option]
       setSelected(next)
-      onChange({ qid: question.qid, value: next })
+      emitAnswer(next, text)
     } else {
       setSelected(option)
-      onChange({ qid: question.qid, value: option })
+      emitAnswer(option, text)
     }
   }
 
   function handleTextChange(e) {
-    setText(e.target.value)
-    onChange({ qid: question.qid, value: e.target.value })
+    const nextText = e.target.value
+    setText(nextText)
+    emitAnswer(selected, nextText)
   }
 
   const isSelected = (option) =>
     question.response_type === 'multi_select'
       ? selected.includes(option)
       : selected === option
+
+  const showOtherText =
+    question.options.includes('Other') &&
+    (
+      question.response_type === 'multi_select'
+        ? selected.includes('Other')
+        : selected === 'Other'
+    )
 
   return (
     <div className={`card space-y-4 ${question.private ? 'border-amber-200 bg-amber-50/30' : ''}`}>
@@ -121,6 +159,18 @@ export default function QuestionCard({ question, index, onChange }) {
                        ${question.private
                          ? 'border-amber-200 bg-amber-50'
                          : 'border-gray-200 bg-white'}`}
+        />
+      )}
+
+      {showOtherText && (
+        <textarea
+          rows={2}
+          value={text}
+          onChange={handleTextChange}
+          placeholder="Tell us a bit more about the 'Other' issue…"
+          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm resize-none
+                     focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent
+                     placeholder:text-gray-400"
         />
       )}
 

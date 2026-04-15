@@ -28,6 +28,7 @@ frontend/dist/
 # Local env overrides
 frontend/.env.local
 frontend/.env
+backend/.env
 
 # Vercel
 .vercel/

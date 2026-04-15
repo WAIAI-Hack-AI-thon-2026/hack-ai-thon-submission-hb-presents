@@ -5,6 +5,21 @@ export default function FollowUpSection({ decision, onSubmit }) {
   const [answers, setAnswers] = useState({})
   const [showRationale, setShowRationale] = useState(false)
 
+  function hasAnswer(value) {
+    if (Array.isArray(value)) {
+      return value.length > 0
+    }
+    if (value && typeof value === 'object') {
+      const selected = value.selected
+      const otherText = value.other_text?.trim() || ''
+      if (Array.isArray(selected)) {
+        return selected.length > 0 || otherText.length > 0
+      }
+      return Boolean(selected) || otherText.length > 0
+    }
+    return Boolean(value && value.toString().trim().length > 0)
+  }
+
   function handleChange({ qid, value }) {
     setAnswers((prev) => ({ ...prev, [qid]: value }))
   }
@@ -15,8 +30,7 @@ export default function FollowUpSection({ decision, onSubmit }) {
   }
 
   const answered = Object.keys(answers).filter((qid) => {
-    const v = answers[qid]
-    return Array.isArray(v) ? v.length > 0 : v && v.toString().trim().length > 0
+    return hasAnswer(answers[qid])
   }).length
 
   return (
