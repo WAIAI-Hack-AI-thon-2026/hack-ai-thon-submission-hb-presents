@@ -1,3 +1,4 @@
+ chmod +x start.sh && ./start.sh  
 # Ask What Matters — HB Presents
 
 Wharton Hack-AI-thon 2026 submission for the **"Adaptive AI for Smarter Travel Reviews"** challenge.
@@ -9,6 +10,32 @@ A deterministic agent that decides up to **3 targeted follow-up questions** to a
 Design philosophy:
 - **Rules pick the questions. LLMs only polish the wording.** This keeps behavior testable and removes a class of hallucination / prompt-injection bugs.
 - Priorities come from real data, not intuition. Bathroom issues score 8.84; billing scores 5.08; location scores 1.80. The agent asks what matters most first.
+
+## 🚀 Quick Start (Local Docker)
+
+The easiest way to run the full stack (Frontend + Backend) is by using the provided automation script.
+
+### 1. Configure API Key
+
+Edit `backend/.env` and add your OpenAI API key:
+
+```bash
+OPENAI_API_KEY=your_api_key_here
+```
+
+### 2. Set Permissions(chmod) & Run
+
+Make the script executable and start the application:
+
+```bash
+chmod +x start.sh && ./start.sh
+```
+
+### 3. Access the Application
+
+* **Frontend:** http://localhost:5173
+* **Backend API:** http://localhost:8000
+
 
 ## Repo layout
 
