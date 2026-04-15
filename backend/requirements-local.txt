@@ -1,0 +1,5 @@
+# Local development only — NOT used by Vercel.
+# Install with:  pip install -r requirements-local.txt
+# Then run:      uvicorn main:app --reload --port 8000
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0

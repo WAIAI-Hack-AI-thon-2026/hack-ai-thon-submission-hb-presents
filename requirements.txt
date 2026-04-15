@@ -1,2 +1,0 @@
-# Root-level requirements for Vercel Python serverless functions.
-# The backend logic (backend/) uses stdlib only — no external packages needed.
