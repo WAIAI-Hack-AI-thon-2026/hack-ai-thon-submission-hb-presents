@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 from schema import ReviewContext   # noqa: E402
 from agent import decide_questions         # noqa: E402
+from ratings import parse_rating_payload   # noqa: E402
 
 _CORS = {
     'Access-Control-Allow-Origin':  '*',
@@ -51,32 +52,7 @@ class handler(BaseHTTPRequestHandler):
             return
 
         try:
-            rating_payload = body.get("rating")
-            overall_rating = None
-            sub_ratings = {}
-            if isinstance(rating_payload, (int, float)):
-                overall_rating = float(rating_payload)
-            elif isinstance(rating_payload, str):
-                try:
-                    parsed = json.loads(rating_payload)
-                    if isinstance(parsed, dict):
-                        for key, value in parsed.items():
-                            try:
-                                sub_ratings[str(key)] = float(value)
-                            except (TypeError, ValueError):
-                                continue
-                        if sub_ratings.get("overall", 0) > 0:
-                            overall_rating = sub_ratings["overall"]
-                except json.JSONDecodeError:
-                    overall_rating = None
-            elif isinstance(rating_payload, dict):
-                for key, value in rating_payload.items():
-                    try:
-                        sub_ratings[str(key)] = float(value)
-                    except (TypeError, ValueError):
-                        continue
-                if sub_ratings.get("overall", 0) > 0:
-                    overall_rating = sub_ratings["overall"]
+            overall_rating, sub_ratings = parse_rating_payload(body.get("rating"))
 
             property_id = str(body.get('propertyId', '') or '')
             ctx = ReviewContext(
