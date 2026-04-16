@@ -406,8 +406,8 @@
   "823fb2499b4e37d99acb65e7198e75965d6496fd1c579f976205c0e6179206df": {
     "location": "Rome, Italy",
     "star_rating": "",
-    "total_reviews": 773,
-    "reviews_with_text": 619,
+    "total_reviews": 772,
+    "reviews_with_text": 618,
     "frequently_mentioned": [
       {
         "label": "cleanliness",
@@ -416,13 +416,13 @@
       },
       {
         "label": "staff_service",
-        "count": 184,
-        "percentage": 29.7
+        "count": 183,
+        "percentage": 29.6
       },
       {
         "label": "transit_convenient",
         "count": 132,
-        "percentage": 21.3
+        "percentage": 21.4
       },
       {
         "label": "breakfast",
@@ -442,7 +442,7 @@
       {
         "label": "walkability",
         "count": 43,
-        "percentage": 6.9
+        "percentage": 7.0
       },
       {
         "label": "bathroom_quality",
@@ -457,7 +457,7 @@
       {
         "label": "value_price",
         "count": 30,
-        "percentage": 4.8
+        "percentage": 4.9
       },
       {
         "label": "check_in_out",
@@ -466,13 +466,13 @@
       },
       {
         "label": "noise",
-        "count": 24,
-        "percentage": 3.9
+        "count": 23,
+        "percentage": 3.7
       },
       {
         "label": "safety_perception",
         "count": 17,
-        "percentage": 2.7
+        "percentage": 2.8
       },
       {
         "label": "accessibility",
@@ -490,12 +490,12 @@
         "percentage": 1.1
       },
       {
-        "label": "leisure_location",
+        "label": "parking",
         "count": 1,
         "percentage": 0.2
       },
       {
-        "label": "parking",
+        "label": "leisure_location",
         "count": 1,
         "percentage": 0.2
       }

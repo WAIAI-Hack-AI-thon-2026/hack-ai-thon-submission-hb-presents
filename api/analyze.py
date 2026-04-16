@@ -14,7 +14,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 from schema import ReviewContext   # noqa: E402
-from agent import decide_questions         # noqa: E402
+from agent import decide_questions, invalidate_evidence_profile_cache  # noqa: E402
 from evidence_profiles import update_hotel_rating_profile  # noqa: E402
 from ratings import parse_rating_payload   # noqa: E402
 
@@ -62,6 +62,7 @@ class handler(BaseHTTPRequestHandler):
                     property_id=property_id,
                     rating_payload=sub_ratings,
                 )
+                invalidate_evidence_profile_cache()
             ctx = ReviewContext(
                 review_id=f"r_{property_id or 'unknown'}",
                 property_id=property_id or "unknown",

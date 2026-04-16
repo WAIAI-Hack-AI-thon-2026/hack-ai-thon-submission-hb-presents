@@ -106,6 +106,7 @@ def update_hotel_rating_profile(
 
     profile["overall_rating_count"] = next_count
     profile["overall_rating_avg"] = next_avg
+    profile["star_rating"] = f"{next_avg:.1f}"
 
     with path.open("w", encoding="utf-8") as handle:
         json.dump(profiles, handle, indent=2, ensure_ascii=False)
@@ -117,6 +118,7 @@ def update_hotel_rating_profile(
         "overallRating": overall,
         "overall_rating_avg": next_avg,
         "overall_rating_count": next_count,
+        "star_rating": profile["star_rating"],
         "profile": profile,
     }
 

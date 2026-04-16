@@ -100,6 +100,7 @@ def analyze(body: AnalyzeInput):
             property_id=body.propertyId,
             rating_payload=sub_ratings,
         )
+        invalidate_evidence_profile_cache()
 
     review_ctx = ReviewContext(
         review_id=f"r_{body.propertyId or 'unknown'}",
