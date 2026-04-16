@@ -20,34 +20,37 @@ class ResponseType(str, Enum):
 
 
 class Aspect(str, Enum):
-    BATHROOM = "bathroom"
-    BILLING = "billing"
-    SMELL = "smell"
-    AMENITIES = "amenities"
-    ELEVATOR = "elevator"
-    NOISE = "noise"
-    AC_HEAT = "ac_heat"
-    PESTS = "pests"
-    CHECKIN = "checkin"
-    BED = "bed"
-    VALUE = "value"
-    LOCATION = "location"
-    STAFF = "staff"
     CLEANLINESS = "cleanliness"
-    FAMILY = "family"
-    RENOVATION = "renovation"
+    STAFF_SERVICE = "staff_service"
+    BED_COMFORT = "bed_comfort"
+    BREAKFAST = "breakfast"
+    BATHROOM_QUALITY = "bathroom_quality"
+    FOOD_DINING = "food_dining"
+    NOISE = "noise"
+    FAMILY_AMENITIES = "family_amenities"
+    CHECK_IN_OUT = "check_in_out"
+    VALUE_PRICE = "value_price"
+    PARKING = "parking"
+    WALKABILITY = "walkability"
+    RENOVATION_AGE = "renovation_age"
+    ROOM_SIZE = "room_size"
+    TRANSIT_CONVENIENT = "transit_convenient"
+    ACCESSIBILITY = "accessibility"
+    SAFETY_PERCEPTION = "safety_perception"
+    LEISURE_LOCATION = "leisure_location"
     CATCH_ALL = "catch_all"
 
 
 @dataclass
 class Question:
     """A single follow-up question. Language-neutral; text is a key into i18n bundle."""
-    qid: str                         # stable id (e.g. "q_bathroom_01")
+    qid: str                         # stable id (e.g. "q_deepdive_01")
     aspect: Aspect
     text_en: str                     # default English text; UI looks up localized variant
     response_type: ResponseType
+    role: str = ""                   # "comment_deepdive" or "information_gap"
     options: list[str] = field(default_factory=list)   # closed-form options (English)
-    priority: float = 0.0            # gap_priority from aspect analysis
+    priority: float = 0.0            # slot order
     private: bool = False            # goes to hotel only, not public review
 
 

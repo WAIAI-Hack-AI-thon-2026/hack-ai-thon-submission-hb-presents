@@ -1,18 +1,39 @@
 import { useState } from 'react'
 
+const ROLE_LABELS = {
+  comment_deepdive:  { text: 'About your review',    color: '#00355F', bg: '#E8F0FE' },
+  information_gap:   { text: 'Help us learn more',    color: '#7C5C00', bg: '#FFF8E1' },
+}
+
 export default function FollowUpCards({ property, questions, onComplete }) {
   const [current,  setCurrent]  = useState(0)
-  const [selected, setSelected] = useState(null)
+  const [selected, setSelected] = useState([])   // multi-select array
+  const [otherText, setOtherText] = useState('')  // text for "Other"
   const [answers,  setAnswers]  = useState({})
 
   const q      = questions[current]
   const isLast = current === questions.length - 1
   const reasoning = q?.reasoning || q?.reason || ''
+  const roleInfo = ROLE_LABELS[q?.role] || null
+  const showOtherInput = selected.includes('Other')
+  const hasAnswer = selected.length > 0 && (!showOtherInput || otherText.trim())
+
+  function toggleOption(opt) {
+    setSelected((prev) =>
+      prev.includes(opt) ? prev.filter((o) => o !== opt) : [...prev, opt]
+    )
+    if (opt === 'Other' && selected.includes('Other')) setOtherText('')
+  }
 
   function handleNext() {
-    const updated = { ...answers, [q.id]: selected }
+    let value = selected
+    if (showOtherInput && otherText.trim()) {
+      value = selected.map((o) => o === 'Other' ? `Other: ${otherText.trim()}` : o)
+    }
+    const updated = { ...answers, [q.id]: value }
     setAnswers(updated)
-    setSelected(null)
+    setSelected([])
+    setOtherText('')
     if (isLast) onComplete(updated)
     else setCurrent((c) => c + 1)
   }
@@ -48,17 +69,29 @@ export default function FollowUpCards({ property, questions, onComplete }) {
 
         {/* Question card */}
         <div className="card" style={{ padding: '24px' }}>
-          {/* Badge */}
-          <div style={{ marginBottom: 16 }}>
-            <span style={{
-              display: 'inline-block',
-              background: '#FFC72C', color: '#00355F',
-              fontSize: 12, fontWeight: 700,
-              padding: '4px 12px', borderRadius: 999,
-              letterSpacing: '0.02em',
-            }}>
-              Help future travelers
-            </span>
+          {/* Role badge */}
+          <div style={{ marginBottom: 16, display: 'flex', gap: 8 }}>
+            {roleInfo ? (
+              <span style={{
+                display: 'inline-block',
+                background: roleInfo.bg, color: roleInfo.color,
+                fontSize: 12, fontWeight: 700,
+                padding: '4px 12px', borderRadius: 999,
+                letterSpacing: '0.02em',
+              }}>
+                {roleInfo.text}
+              </span>
+            ) : (
+              <span style={{
+                display: 'inline-block',
+                background: '#FFC72C', color: '#00355F',
+                fontSize: 12, fontWeight: 700,
+                padding: '4px 12px', borderRadius: 999,
+                letterSpacing: '0.02em',
+              }}>
+                Help future travelers
+              </span>
+            )}
           </div>
 
           {/* Question text */}
@@ -74,25 +107,49 @@ export default function FollowUpCards({ property, questions, onComplete }) {
             </p>
           )}
 
-          {/* Pill options */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 28 }}>
+          {/* Pill options — multi-select */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: showOtherInput ? 12 : 28 }}>
             {q.options.map((opt) => (
               <button
                 key={opt}
-                className={`pill-btn ${selected === opt ? 'selected' : ''}`}
-                onClick={() => setSelected(opt)}
+                className={`pill-btn ${selected.includes(opt) ? 'selected' : ''}`}
+                onClick={() => toggleOption(opt)}
               >
-                {selected === opt && '✓ '}
+                {selected.includes(opt) ? '✓ ' : '+ '}
                 {opt}
               </button>
             ))}
           </div>
+          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: -4, marginBottom: showOtherInput ? 12 : 20 }}>
+            Select all that apply
+          </p>
+
+          {/* Other text input */}
+          {showOtherInput && (
+            <div style={{ marginBottom: 28 }}>
+              <textarea
+                rows={2}
+                value={otherText}
+                onChange={(e) => setOtherText(e.target.value)}
+                placeholder="Please tell us more..."
+                style={{
+                  width: '100%', boxSizing: 'border-box',
+                  borderRadius: 12, border: '1.5px solid #e2e8f0',
+                  padding: '10px 14px', fontSize: 14,
+                  fontFamily: 'inherit', resize: 'none',
+                  outline: 'none',
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#00355F'}
+                onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
+              />
+            </div>
+          )}
 
           {/* Next / Submit */}
           <button
             className="btn-primary"
             onClick={handleNext}
-            disabled={!selected}
+            disabled={!hasAnswer}
             style={{ marginBottom: 12 }}
           >
             {isLast ? 'Submit & Finish' : 'Next →'}

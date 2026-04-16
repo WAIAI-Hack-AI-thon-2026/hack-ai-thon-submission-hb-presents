@@ -130,6 +130,7 @@ def analyze(body: AnalyzeInput):
                 "id":      q.qid,
                 "text":    q.text_en,
                 "options": q.options,
+                "role":    q.role,
                 "reasoning": decision.rationale.get(q.qid, ""),
             }
             for q in decision.questions
@@ -154,6 +155,7 @@ def decide(body: ReviewInput):
         "questions": [
             {
                 "qid": q.qid,
+                "role": q.role,
                 "aspect": q.aspect.value,
                 "text_en": q.text_en,
                 "response_type": q.response_type.value,

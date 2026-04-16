@@ -1,0 +1,233 @@
+{
+  "cleanliness": {
+    "label": "Room & Property Cleanliness",
+    "global_mention_count": 1552,
+    "question_points": [
+      "room cleanliness on arrival — spotless or issues noticed",
+      "bathroom hygiene — mold, stains, hair on surfaces",
+      "bedding and linen freshness — stains, odor, crumbs",
+      "dust on furniture, vents, or window sills",
+      "odor or smell in room — musty, smoke, sewage",
+      "common area cleanliness — lobby, hallways, elevator",
+      "pest issues — bugs, cockroaches, ants, bed bugs"
+    ]
+  },
+  "staff_service": {
+    "label": "Staff & Service Quality",
+    "global_mention_count": 1346,
+    "question_points": [
+      "friendly and welcoming staff at check-in",
+      "helpful front desk — responsive to requests",
+      "rude or dismissive service from any staff",
+      "housekeeping responsiveness — timely room cleaning",
+      "concierge helpfulness — local tips, reservations",
+      "problem resolution — how staff handled complaints",
+      "language barrier — communication difficulties",
+      "went above and beyond — memorable positive interaction"
+    ]
+  },
+  "bed_comfort": {
+    "label": "Bed & Sleep Comfort",
+    "global_mention_count": 583,
+    "question_points": [
+      "mattress firmness — too hard, too soft, just right",
+      "pillow quality — flat, lumpy, comfortable, enough pillows",
+      "bed size adequate for number of guests",
+      "bedding and sheets quality — scratchy, soft, clean",
+      "overall sleep quality — slept well or poorly",
+      "sofa bed or extra bed comfort if used",
+      "blanket or duvet — too thin, too warm, comfortable"
+    ]
+  },
+  "breakfast": {
+    "label": "Breakfast Experience",
+    "global_mention_count": 514,
+    "question_points": [
+      "breakfast included or paid extra",
+      "variety of options — continental, buffet, hot items",
+      "food quality and freshness",
+      "dietary accommodations — vegetarian, gluten-free, halal",
+      "breakfast timing and hours — convenient or too limited",
+      "seating availability — crowded, had to wait",
+      "coffee and beverage quality"
+    ]
+  },
+  "bathroom_quality": {
+    "label": "Bathroom Condition & Fixtures",
+    "global_mention_count": 429,
+    "question_points": [
+      "water pressure — strong, weak, inconsistent",
+      "hot water availability — always hot, ran cold, slow to warm",
+      "shower space — comfortable size or too cramped",
+      "drain working properly or clogged",
+      "towel quality and quantity — fresh, worn, enough provided",
+      "toilet cleanliness and function",
+      "bathroom fixtures — outdated, modern, broken",
+      "ventilation — steamy, no fan, mold risk"
+    ]
+  },
+  "food_dining": {
+    "label": "Food & Dining Options",
+    "global_mention_count": 390,
+    "question_points": [
+      "on-site restaurant quality — food, service, ambiance",
+      "room service availability and quality",
+      "menu variety — enough choices for multiple nights",
+      "dietary accommodations — allergies, vegetarian, kids menu",
+      "bar or lounge experience — drinks, atmosphere",
+      "minibar selection and pricing — reasonable or overpriced",
+      "nearby dining options recommended by hotel"
+    ]
+  },
+  "noise": {
+    "label": "Noise & Sound Levels",
+    "global_mention_count": 320,
+    "question_points": [
+      "street traffic noise audible from room",
+      "noise from neighboring rooms — voices, TV, footsteps",
+      "hallway noise — guests, housekeeping carts, doors slamming",
+      "elevator or mechanical noise in room",
+      "construction noise during stay",
+      "overall quietness — peaceful, could sleep undisturbed",
+      "soundproofing quality — thin walls, single-pane windows"
+    ]
+  },
+  "family_amenities": {
+    "label": "Family-Friendliness & Amenities",
+    "global_mention_count": 290,
+    "question_points": [
+      "pool available and suitable for kids",
+      "room spacious enough for family",
+      "baby crib or rollaway bed available on request",
+      "kids play area, game room, or activities",
+      "family-friendly dining options on-site",
+      "sofa bed quality if used for extra sleeping",
+      "child safety — balcony locks, outlet covers, pool fence"
+    ]
+  },
+  "check_in_out": {
+    "label": "Check-in & Check-out Process",
+    "global_mention_count": 289,
+    "question_points": [
+      "wait time at check-in — quick, moderate, long queue",
+      "early check-in availability and ease",
+      "late check-out availability and ease",
+      "key card or room access issues",
+      "checkout process — smooth, billing confusion, long wait",
+      "express or self-service check-in option",
+      "luggage storage before check-in or after checkout"
+    ]
+  },
+  "value_price": {
+    "label": "Value for Money",
+    "global_mention_count": 271,
+    "question_points": [
+      "overall value — price matched quality of stay",
+      "hidden or unexpected fees — resort fee, city tax, service charge",
+      "room rate reasonable for the area and season",
+      "overpriced for what was provided",
+      "good deal — would book again at same price",
+      "extras worth the cost — upgrades, packages, add-ons",
+      "deposit handling — amount, refund timing"
+    ]
+  },
+  "parking": {
+    "label": "Parking Availability & Cost",
+    "global_mention_count": 232,
+    "question_points": [
+      "parking available on-site or nearby",
+      "parking cost — free, paid, expensive",
+      "lot or garage size — ample space or always full",
+      "valet parking offered and experience",
+      "street parking availability and safety",
+      "electric vehicle charging station available",
+      "ease of finding a spot — especially during peak hours"
+    ]
+  },
+  "walkability": {
+    "label": "Walkability & Nearby Conveniences",
+    "global_mention_count": 228,
+    "question_points": [
+      "restaurants and cafes within walking distance",
+      "grocery stores or convenience shops nearby",
+      "attractions and sightseeing walkable from hotel",
+      "shopping options within short walk",
+      "sidewalk and pedestrian path quality",
+      "area pleasant for walking — scenery, shade, safety"
+    ]
+  },
+  "renovation_age": {
+    "label": "Renovation & Property Age",
+    "global_mention_count": 212,
+    "question_points": [
+      "recently renovated — modern feel, updated fixtures",
+      "outdated decor or furnishings — needs refreshing",
+      "worn carpet, peeling paint, or scuffed walls",
+      "furniture condition — sturdy or wobbly, stained or clean",
+      "fixtures working properly — door handles, light switches, faucets",
+      "overall property showing its age — tired looking",
+      "signs of recent updates — new bathroom, fresh paint, modern TV"
+    ]
+  },
+  "room_size": {
+    "label": "Room Size & Layout",
+    "global_mention_count": 193,
+    "question_points": [
+      "room felt spacious or cramped for number of guests",
+      "enough space to open and store luggage",
+      "closet or wardrobe storage adequate",
+      "bathroom size — roomy or too tight",
+      "desk or workspace area if needed",
+      "overall layout functional — furniture placement makes sense",
+      "room matched photos and description on booking site"
+    ]
+  },
+  "transit_convenient": {
+    "label": "Public Transit & Transport Access",
+    "global_mention_count": 171,
+    "question_points": [
+      "near train or metro station — walking distance",
+      "bus stop close to hotel",
+      "airport access — shuttle, taxi, public transit ease",
+      "ride-share or taxi pickup convenient",
+      "public transit frequency and reliability from hotel",
+      "clear directions or signage to nearest transit"
+    ]
+  },
+  "accessibility": {
+    "label": "Accessibility & Mobility",
+    "global_mention_count": 140,
+    "question_points": [
+      "elevator available — or stairs only",
+      "wheelchair accessible rooms and common areas",
+      "hard to manage with heavy luggage — steps, narrow halls",
+      "accessible bathroom — grab bars, roll-in shower",
+      "ramps or step-free entry to hotel",
+      "accessible parking close to entrance"
+    ]
+  },
+  "safety_perception": {
+    "label": "Safety & Security Perception",
+    "global_mention_count": 94,
+    "question_points": [
+      "felt safe in and around the hotel",
+      "neighborhood feels safe to walk at night",
+      "sketchy or uncomfortable area around property",
+      "hotel security measures — cameras, key card access, front desk",
+      "well-lit parking and entrance areas",
+      "in-room safe available and working"
+    ]
+  },
+  "leisure_location": {
+    "label": "Leisure & Scenic Location",
+    "global_mention_count": 31,
+    "question_points": [
+      "beachfront or beach access — distance, quality",
+      "waterfront, lake, or river views from hotel",
+      "pool access and pool condition",
+      "ocean or sea view from room",
+      "resort-like atmosphere or setting",
+      "scenic surroundings — gardens, mountain views, nature"
+    ]
+  }
+}
