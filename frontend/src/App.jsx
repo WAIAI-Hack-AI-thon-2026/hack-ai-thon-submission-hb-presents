@@ -55,11 +55,14 @@ async function loadProperties() {
 
 function applyProfileToProperties(properties, propertyId, profile) {
   if (!profile || !propertyId) return properties
+  const nextStarRating = profile.star_rating != null && profile.star_rating !== ''
+    ? Number(profile.star_rating)
+    : null
   return properties.map((property) => {
     if (property.id !== propertyId) return property
     return {
       ...property,
-      starRating: profile.overall_rating_avg ?? property.starRating,
+      starRating: nextStarRating ?? property.starRating,
       totalReviews: typeof profile.total_reviews === 'number' ? profile.total_reviews : property.totalReviews,
     }
   })
@@ -137,6 +140,7 @@ export default function App() {
   async function handleReviewSubmit({ rating, reviewText }) {
     // button already shows loading state; this resolves when done
     setReviewText(reviewText)
+    const submissionId = globalThis.crypto?.randomUUID?.() || `review-${Date.now()}-${Math.random().toString(36).slice(2)}`
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), 25000)
     const res = await fetch('/api/analyze', {
@@ -148,6 +152,7 @@ export default function App() {
         country:     property.country,
         rating,
         reviewText,
+        submissionId,
       }),
       signal: controller.signal,
     })
@@ -162,7 +167,9 @@ export default function App() {
       setProperties((current) => applyProfileToProperties(current, property.id, data.profileUpdate.profile))
       setProperty((current) => current ? {
         ...current,
-        starRating: data.profileUpdate.profile.overall_rating_avg ?? current.starRating,
+        starRating: data.profileUpdate.profile.star_rating != null && data.profileUpdate.profile.star_rating !== ''
+          ? Number(data.profileUpdate.profile.star_rating)
+          : current.starRating,
         totalReviews: typeof data.profileUpdate.profile.total_reviews === 'number'
           ? data.profileUpdate.profile.total_reviews
           : current.totalReviews,

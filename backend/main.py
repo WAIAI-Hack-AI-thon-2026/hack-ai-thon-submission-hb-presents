@@ -16,14 +16,14 @@ from pydantic import BaseModel
 
 try:
     from .agent import decide_questions, invalidate_evidence_profile_cache
-    from .evidence_profiles import load_property_intel, update_hotel_evidence_profile
+    from .evidence_profiles import load_properties_from_profiles, update_hotel_evidence_profile
     from .evidence_profiles import update_hotel_rating_profile
     from .ratings import parse_rating_payload
     from .schema import ReviewContext
     from .conflict_detection import resolve_conflict
 except ImportError:
     from agent import decide_questions, invalidate_evidence_profile_cache
-    from evidence_profiles import load_property_intel, update_hotel_evidence_profile
+    from evidence_profiles import load_properties_from_profiles, update_hotel_evidence_profile
     from evidence_profiles import update_hotel_rating_profile
     from ratings import parse_rating_payload
     from schema import ReviewContext
@@ -55,6 +55,7 @@ class AnalyzeInput(BaseModel):
     country: str = ""
     rating: float | str | dict | None = None
     reviewText: str = ""
+    submissionId: str = ""
 
 
 class QuestionOut(BaseModel):
@@ -86,7 +87,7 @@ def health():
 
 @app.get("/api/properties")
 def properties():
-    return {"properties": load_property_intel()}
+    return {"properties": load_properties_from_profiles()}
 
 
 @app.post("/api/analyze")
@@ -104,6 +105,7 @@ def analyze(body: AnalyzeInput):
         rating_profile_update = update_hotel_rating_profile(
             property_id=body.propertyId,
             rating_payload=sub_ratings,
+            submission_id=body.submissionId,
         )
         invalidate_evidence_profile_cache()
 

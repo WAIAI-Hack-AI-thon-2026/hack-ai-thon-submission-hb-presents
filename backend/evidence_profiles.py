@@ -32,10 +32,6 @@ def _profiles_path() -> Path:
     return _resolve_data_dir() / "hotel_evidence_profiles.json"
 
 
-def _property_intel_path() -> Path:
-    return _resolve_data_dir() / "property_intel.json"
-
-
 def _has_answer(value: object) -> bool:
     if isinstance(value, list):
         return len(value) > 0
@@ -61,6 +57,7 @@ def _default_profile() -> dict:
         "star_rating": "",
         "overall_rating_avg": None,
         "overall_rating_count": 0,
+        "processed_submission_ids": [],
         "total_reviews": 0,
         "reviews_with_text": 0,
         "frequently_mentioned": [],
@@ -68,44 +65,49 @@ def _default_profile() -> dict:
     }
 
 
-def load_property_intel() -> list[dict]:
-    path = _property_intel_path()
+def load_properties_from_profiles() -> list[dict]:
+    path = _profiles_path()
     try:
         with path.open("r", encoding="utf-8") as handle:
             parsed = json.load(handle)
-        return parsed if isinstance(parsed, list) else []
+        if not isinstance(parsed, dict):
+            return []
     except (OSError, json.JSONDecodeError):
         return []
 
+    rows: list[dict] = []
+    for property_id, profile in parsed.items():
+        location = str(profile.get("location") or "").strip()
+        city = location
+        country = ""
+        if "," in location:
+            parts = [part.strip() for part in location.split(",")]
+            city = parts[0]
+            country = parts[-1]
 
-def _save_property_intel(rows: list[dict]) -> None:
-    path = _property_intel_path()
-    with path.open("w", encoding="utf-8") as handle:
-        json.dump(rows, handle, indent=2, ensure_ascii=False)
-        handle.write("\n")
+        try:
+            raw_star = profile.get("star_rating")
+            star_rating = float(raw_star) if raw_star not in ("", None) else None
+        except (TypeError, ValueError):
+            star_rating = None
 
-
-def sync_property_intel_entry(property_id: str, profile: dict) -> None:
-    pid = (property_id or "").strip()
-    if not pid:
-        return
-
-    rows = load_property_intel()
-    for row in rows:
-        if str(row.get("id") or "").strip() != pid:
-            continue
-        overall_avg = profile.get("overall_rating_avg")
-        if overall_avg is not None:
-            row["starRating"] = float(overall_avg)
-        if profile.get("total_reviews") is not None:
-            row["totalReviews"] = int(profile["total_reviews"])
-        _save_property_intel(rows)
-        return
+        rows.append(
+            {
+                "id": str(property_id),
+                "city": city,
+                "country": country,
+                "starRating": star_rating,
+                "totalReviews": int(profile.get("total_reviews", 0) or 0),
+            }
+        )
+    rows.sort(key=lambda item: item["city"])
+    return rows
 
 
 def update_hotel_rating_profile(
     property_id: str,
     rating_payload: dict | None,
+    submission_id: str | None = None,
 ) -> dict:
     pid = (property_id or "").strip()
     if not pid:
@@ -132,6 +134,22 @@ def update_hotel_rating_profile(
         profiles = json.load(handle)
 
     profile = profiles.setdefault(pid, _default_profile())
+    processed_ids = profile.get("processed_submission_ids", [])
+    if not isinstance(processed_ids, list):
+        processed_ids = []
+
+    normalized_submission_id = (submission_id or "").strip()
+    if normalized_submission_id and normalized_submission_id in processed_ids:
+        return {
+            "updated": False,
+            "reason": "submission already processed",
+            "propertyId": pid,
+            "overall_rating_avg": profile.get("overall_rating_avg"),
+            "overall_rating_count": int(profile.get("overall_rating_count", 0) or 0),
+            "star_rating": profile.get("star_rating"),
+            "profile": profile,
+        }
+
     current_count = int(profile.get("overall_rating_count", 0) or 0)
 
     current_avg_raw = profile.get("overall_rating_avg")
@@ -145,14 +163,15 @@ def update_hotel_rating_profile(
 
     profile["overall_rating_count"] = next_count
     profile["overall_rating_avg"] = next_avg
-    profile["star_rating"] = f"{next_avg:.1f}"
     profile["total_reviews"] = int(profile.get("total_reviews", 0) or 0) + 1
+    if normalized_submission_id:
+        processed_ids = [item for item in processed_ids if str(item).strip() != normalized_submission_id]
+        processed_ids.append(normalized_submission_id)
+        profile["processed_submission_ids"] = processed_ids[-200:]
 
     with path.open("w", encoding="utf-8") as handle:
         json.dump(profiles, handle, indent=2, ensure_ascii=False)
         handle.write("\n")
-
-    sync_property_intel_entry(pid, profile)
 
     return {
         "updated": True,
@@ -160,7 +179,7 @@ def update_hotel_rating_profile(
         "overallRating": overall,
         "overall_rating_avg": next_avg,
         "overall_rating_count": next_count,
-        "star_rating": profile["star_rating"],
+        "star_rating": profile.get("star_rating"),
         "profile": profile,
     }
 
@@ -214,7 +233,6 @@ def update_hotel_evidence_profile(
             except (TypeError, ValueError):
                 counts[label] = 0
 
-    profile["total_reviews"] = int(profile.get("total_reviews", 0) or 0) + 1
     profile["reviews_with_text"] = int(profile.get("reviews_with_text", 0) or 0) + 1
 
     for label in answered_labels:
@@ -240,8 +258,6 @@ def update_hotel_evidence_profile(
     with path.open("w", encoding="utf-8") as handle:
         json.dump(profiles, handle, indent=2, ensure_ascii=False)
         handle.write("\n")
-
-    sync_property_intel_entry(pid, profile)
 
     return {
         "updated": True,

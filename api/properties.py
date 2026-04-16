@@ -8,7 +8,7 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
-from evidence_profiles import load_property_intel  # noqa: E402
+from evidence_profiles import load_properties_from_profiles  # noqa: E402
 
 _CORS = {
     'Access-Control-Allow-Origin':  '*',
@@ -37,7 +37,7 @@ class handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         try:
-            _send(self, 200, {'properties': load_property_intel()})
+            _send(self, 200, {'properties': load_properties_from_profiles()})
         except Exception as exc:
             _send(self, 500, {'error': str(exc)})
 

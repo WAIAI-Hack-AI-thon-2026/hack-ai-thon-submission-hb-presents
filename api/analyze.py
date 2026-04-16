@@ -61,6 +61,7 @@ class handler(BaseHTTPRequestHandler):
                 rating_profile_update = update_hotel_rating_profile(
                     property_id=property_id,
                     rating_payload=sub_ratings,
+                    submission_id=str(body.get("submissionId", "") or ""),
                 )
                 invalidate_evidence_profile_cache()
             ctx = ReviewContext(
