@@ -58,7 +58,6 @@ export default function ReviewForm({ property, onSubmit }) {
       <div className="hotel-strip">
         <div style={{ maxWidth: 640, margin: '0 auto', padding: '0 20px',
                       display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span>{property.flag}</span>
           <span>{property.city}, {property.country}</span>
         </div>
       </div>

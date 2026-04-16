@@ -3,16 +3,7 @@ import PropertySelect from './components/PropertySelect'
 import ReviewForm     from './components/ReviewForm'
 import FollowUpCards  from './components/FollowUpCards'
 import ThankYou       from './components/ThankYou'
-
-// ── Property data (from the real dataset — names masked) ────────────────────
-export const PROPERTIES = [
-  { id: 1, city: 'Pompeii',           country: 'Italy',        flag: '🇮🇹', stars: 4,   score: 8.4 },
-  { id: 2, city: 'New Smyrna Beach',  country: 'Florida, USA', flag: '🇺🇸', stars: 2,   score: null },
-  { id: 3, city: 'Ocala',             country: 'Florida, USA', flag: '🇺🇸', stars: 2.5, score: null },
-  { id: 4, city: 'Amsterdam',         country: 'Netherlands',  flag: '🇳🇱', stars: 4,   score: 8.7 },
-  { id: 5, city: 'Barcelona',         country: 'Spain',        flag: '🇪🇸', stars: 4,   score: 8.5 },
-  { id: 6, city: 'Rome',              country: 'Italy',        flag: '🇮🇹', stars: 3,   score: 7.9 },
-]
+import { PROPERTIES } from './propertyIntel'
 
 // ── Fallback questions (demo-safe) ──────────────────────────────────────────
 const FALLBACK_QUESTIONS = [

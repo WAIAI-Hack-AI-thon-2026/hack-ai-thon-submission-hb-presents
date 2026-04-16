@@ -20,8 +20,10 @@ from openai import OpenAI
 
 try:
     from .schema import AgentDecision, Aspect, Question, ResponseType, ReviewContext
+    from .property_intel import get_property_intel
 except ImportError:
     from schema import AgentDecision, Aspect, Question, ResponseType, ReviewContext
+    from property_intel import get_property_intel
 
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
@@ -176,7 +178,120 @@ def _build_response_schema() -> dict:
     }
 
 
-def _build_prompt(review_text: str, review_context: dict, routing_mode: str) -> str:
+def _build_guest_rating_context(review_text_or_ctx: Union[str, ReviewContext]) -> str:
+    if not isinstance(review_text_or_ctx, ReviewContext):
+        return "Guest rating metadata unavailable."
+
+    overall = (
+        f"{review_text_or_ctx.overall_rating}/5"
+        if review_text_or_ctx.overall_rating is not None
+        else "not provided"
+    )
+    sub_ratings = review_text_or_ctx.sub_ratings or {}
+    if not sub_ratings:
+        return (
+            f"Guest gave this property {overall} stars.\n"
+            "Sub-ratings provided: none.\n"
+            "Sub-ratings NOT provided (0 = missing): unknown."
+        )
+
+    provided = []
+    missing = []
+    for aspect, value in sub_ratings.items():
+        try:
+            numeric = float(value)
+        except (TypeError, ValueError):
+            continue
+        if numeric > 0:
+            provided.append(f"{aspect}={numeric:g}")
+        else:
+            missing.append(aspect)
+
+    provided_text = ", ".join(provided) if provided else "none"
+    missing_text = ", ".join(missing) if missing else "none"
+    return (
+        f"Guest gave this property {overall} stars.\n"
+        f"Sub-ratings provided: {provided_text}.\n"
+        f"Sub-ratings NOT provided (0 = missing): {missing_text}."
+    )
+
+
+def _build_property_intel_context(property_intel: dict) -> str:
+    if not property_intel:
+        return ""
+
+    metadata = property_intel.get("metadata", {})
+    city = metadata.get("city") or "Unknown city"
+    country = metadata.get("country") or "Unknown country"
+    star_rating = metadata.get("star_rating") or "n/a"
+    total_reviews = metadata.get("total_reviews", 0)
+    guest_rating_avg = metadata.get("guest_rating_avg")
+    guest_rating_label = (
+        f"{guest_rating_avg}/10" if isinstance(guest_rating_avg, (int, float)) else "n/a"
+    )
+
+    coverage_gaps = property_intel.get("coverage_gaps", [])
+    if coverage_gaps:
+        coverage_lines = [
+            f"- {row['dimension']}: {row['coverage_pct']:.1f}% coverage ({row['tier']} gap)"
+            for row in coverage_gaps
+        ]
+    else:
+        coverage_lines = ["- None available"]
+
+    stale_topics = (
+        property_intel.get("staleness", {}).get("stale_topics", [])
+    )
+    if stale_topics:
+        stale_lines = []
+        for topic in stale_topics:
+            if topic.get("last_mentioned_days_ago") is None:
+                stale_lines.append(f"- {topic['topic']}: NEVER mentioned in any review")
+            else:
+                stale_lines.append(
+                    f"- {topic['topic']}: last mentioned {topic['last_mentioned_days_ago']} days ago (STALE)"
+                )
+    else:
+        stale_lines = ["- None"]
+
+    unverified = property_intel.get("unverified_claims", {}).get("unverified", [])
+    if unverified:
+        claim_lines = [f"- {amenity}" for amenity in unverified]
+    else:
+        claim_lines = ["- None — all claims verified"]
+
+    saturated = [
+        row.get("dimension")
+        for row in property_intel.get("coverage_overview", [])
+        if isinstance(row.get("coverage_pct"), (int, float)) and row["coverage_pct"] >= 75
+    ]
+    saturated_line = ", ".join(saturated[:6]) if saturated else "none"
+
+    return (
+        "\n=== DATA-DRIVEN CONTEXT FOR THIS PROPERTY ===\n\n"
+        f"PROPERTY: {city}, {country} | {star_rating}-star | "
+        f"{total_reviews} total reviews | Guest rating: {guest_rating_label}\n\n"
+        "COVERAGE GAPS (these rating dimensions have the lowest review coverage — your follow-up questions MUST prioritize these):\n"
+        + "\n".join(coverage_lines)
+        + "\n\nSTALE TOPICS (these topics haven't been mentioned in reviews recently — consider asking about them):\n"
+        + "\n".join(stale_lines)
+        + "\n\nUNVERIFIED LISTING CLAIMS (the property listing claims these amenities exist, but no guest has confirmed in 12 months — consider asking the guest to verify):\n"
+        + "\n".join(claim_lines)
+        + "\n\nRULES:\n"
+        "1. Prioritize questions about critical coverage gaps listed above.\n"
+        "2. If stale topics exist, ask about at least one.\n"
+        f"3. Do NOT ask about these highly saturated dimensions (>75% covered): {saturated_line}.\n"
+        "4. For each question, include a short `reason` field explaining why you chose it based on the data above.\n"
+    )
+
+
+def _build_prompt(
+    review_text: str,
+    review_context: dict,
+    routing_mode: str,
+    guest_rating_context: str,
+    property_intel_context: str,
+) -> str:
     context_json = json.dumps(review_context, indent=2)
     routing_notes = {
         "specific_issue": (
@@ -245,10 +360,21 @@ Return JSON with this shape:
   ]
 }}
 
-Return only JSON."""
+Return only JSON.
+{property_intel_context}
+
+## Guest Input
+{guest_rating_context}
+
+Review text:
+"{review_text}"
+"""
 
 
-def decide_questions(review_text_or_ctx: Union[str, ReviewContext]) -> AgentDecision:
+def decide_questions(
+    review_text_or_ctx: Union[str, ReviewContext],
+    property_id: str | None = None,
+) -> AgentDecision:
     review_text = _extract_review_text(review_text_or_ctx)
     if not review_text:
         raise ValueError("review_text cannot be empty")
@@ -260,6 +386,18 @@ def decide_questions(review_text_or_ctx: Union[str, ReviewContext]) -> AgentDeci
 
     review_context = _build_review_context(review_text)
     routing_mode = _routing_mode(review_context)
+    guest_rating_context = _build_guest_rating_context(review_text_or_ctx)
+
+    property_intel_context = ""
+    resolved_property_id = (property_id or "").strip() or None
+    if not resolved_property_id and isinstance(review_text_or_ctx, ReviewContext):
+        resolved_property_id = (review_text_or_ctx.property_id or "").strip() or None
+    if resolved_property_id:
+        try:
+            property_intel = get_property_intel(resolved_property_id)
+            property_intel_context = _build_property_intel_context(property_intel)
+        except Exception:
+            property_intel_context = ""
 
     client = OpenAI()
     model = os.getenv("OPENAI_MODEL", DEFAULT_OPENAI_MODEL)
@@ -271,7 +409,13 @@ def decide_questions(review_text_or_ctx: Union[str, ReviewContext]) -> AgentDeci
                 "content": [
                     {
                         "type": "input_text",
-                        "text": _build_prompt(review_text, review_context, routing_mode),
+                        "text": _build_prompt(
+                            review_text,
+                            review_context,
+                            routing_mode,
+                            guest_rating_context,
+                            property_intel_context,
+                        ),
                     }
                 ],
             }
@@ -287,7 +431,7 @@ def decide_questions(review_text_or_ctx: Union[str, ReviewContext]) -> AgentDeci
     rationale = {}
     for index, item in enumerate(generated_questions, start=1):
         qid = item["qid"]
-        rationale[qid] = item["reason"]
+        rationale[qid] = item.get("reason") or item.get("reasoning", "")
         questions.append(
             Question(
                 qid=qid,

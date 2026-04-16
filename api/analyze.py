@@ -13,7 +13,7 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
-from schema import ReviewContext, Aspect   # noqa: E402
+from schema import ReviewContext   # noqa: E402
 from agent import decide_questions         # noqa: E402
 
 _CORS = {
@@ -51,18 +51,51 @@ class handler(BaseHTTPRequestHandler):
             return
 
         try:
+            rating_payload = body.get("rating")
+            overall_rating = None
+            sub_ratings = {}
+            if isinstance(rating_payload, (int, float)):
+                overall_rating = float(rating_payload)
+            elif isinstance(rating_payload, str):
+                try:
+                    parsed = json.loads(rating_payload)
+                    if isinstance(parsed, dict):
+                        for key, value in parsed.items():
+                            try:
+                                sub_ratings[str(key)] = float(value)
+                            except (TypeError, ValueError):
+                                continue
+                        if sub_ratings.get("overall", 0) > 0:
+                            overall_rating = sub_ratings["overall"]
+                except json.JSONDecodeError:
+                    overall_rating = None
+            elif isinstance(rating_payload, dict):
+                for key, value in rating_payload.items():
+                    try:
+                        sub_ratings[str(key)] = float(value)
+                    except (TypeError, ValueError):
+                        continue
+                if sub_ratings.get("overall", 0) > 0:
+                    overall_rating = sub_ratings["overall"]
+
+            property_id = str(body.get('propertyId', '') or '')
             ctx = ReviewContext(
-                review_id=f"r_{body.get('propertyId', 0)}",
-                property_id=str(body.get('propertyId', 'unknown')),
-                overall_rating=body.get('rating'),
+                review_id=f"r_{property_id or 'unknown'}",
+                property_id=property_id or "unknown",
+                overall_rating=overall_rating,
                 review_text=body.get('reviewText', ''),
                 review_text_en=body.get('reviewText', ''),
-                sub_ratings={},
+                sub_ratings=sub_ratings,
                 stay_nights=2,
             )
-            decision = decide_questions(ctx)
+            decision = decide_questions(ctx, property_id=property_id or None)
             questions = [
-                {'id': q.qid, 'text': q.text_en, 'options': q.options}
+                {
+                    'id': q.qid,
+                    'text': q.text_en,
+                    'options': q.options,
+                    'reasoning': decision.rationale.get(q.qid, ''),
+                }
                 for q in decision.questions
             ]
             _send(self, 200, {'questions': questions})

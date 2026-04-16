@@ -25,8 +25,6 @@ export default function PropertySelect({ properties, onSelect }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {properties.map((p) => (
           <button key={p.id} className="property-card" onClick={() => onSelect(p)}>
-            {/* Flag */}
-            <span style={{ fontSize: 30, lineHeight: 1, flexShrink: 0 }}>{p.flag}</span>
 
             {/* Info */}
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -42,8 +40,12 @@ export default function PropertySelect({ properties, onSelect }) {
                 display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap',
               }}>
                 <span>{p.country}</span>
-                <span style={{ color: '#e2e8f0' }}>·</span>
-                <Stars count={p.stars} />
+                {p.starRating != null && (
+                  <>
+                    <span style={{ color: '#e2e8f0' }}>·</span>
+                    <Stars count={p.starRating} />
+                  </>
+                )}
                 {p.score && (
                   <>
                     <span style={{ color: '#e2e8f0' }}>·</span>
@@ -55,6 +57,45 @@ export default function PropertySelect({ properties, onSelect }) {
                       {p.score}
                     </span>
                   </>
+                )}
+              </div>
+              <div style={{
+                marginTop: 8,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                flexWrap: 'wrap',
+              }}>
+                {typeof p.totalReviews === 'number' && (
+                  <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>
+                    {p.totalReviews} reviews
+                  </span>
+                )}
+                {Array.isArray(p.topGaps) && p.topGaps.length > 0 && (
+                  <span style={{
+                    display: 'inline-block',
+                    fontSize: '0.7rem',
+                    padding: '2px 8px',
+                    borderRadius: 999,
+                    background: '#fef3c7',
+                    color: '#92400e',
+                    fontWeight: 600,
+                  }}>
+                    {p.topGaps.length} data gaps
+                  </span>
+                )}
+                {typeof p.staleCount === 'number' && p.staleCount > 0 && (
+                  <span style={{
+                    display: 'inline-block',
+                    fontSize: '0.7rem',
+                    padding: '2px 8px',
+                    borderRadius: 999,
+                    background: '#fee2e2',
+                    color: '#991b1b',
+                    fontWeight: 600,
+                  }}>
+                    {p.staleCount} topics need refresh
+                  </span>
                 )}
               </div>
             </div>
