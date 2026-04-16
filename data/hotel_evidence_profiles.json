@@ -93,19 +93,19 @@
   },
   "3216b1b7885bffdb336265a8de7322ba0cd477cfb3d4f99d19acf488f76a1941": {
     "location": "Bell Gardens, United States",
-    "star_rating": "2.0",
-    "total_reviews": 1094,
-    "reviews_with_text": 690,
+    "star_rating": 2.0,
+    "total_reviews": 1096,
+    "reviews_with_text": 691,
     "frequently_mentioned": [
       {
         "label": "cleanliness",
         "count": 275,
-        "percentage": 39.9
+        "percentage": 39.8
       },
       {
         "label": "staff_service",
-        "count": 144,
-        "percentage": 20.9
+        "count": 145,
+        "percentage": 21.0
       },
       {
         "label": "bed_comfort",
@@ -143,12 +143,12 @@
         "percentage": 4.2
       },
       {
-        "label": "room_size",
+        "label": "renovation_age",
         "count": 24,
         "percentage": 3.5
       },
       {
-        "label": "renovation_age",
+        "label": "room_size",
         "count": 24,
         "percentage": 3.5
       },
@@ -163,12 +163,12 @@
         "percentage": 2.3
       },
       {
-        "label": "family_amenities",
-        "count": 12,
-        "percentage": 1.7
+        "label": "food_dining",
+        "count": 13,
+        "percentage": 1.9
       },
       {
-        "label": "food_dining",
+        "label": "family_amenities",
         "count": 12,
         "percentage": 1.7
       },
@@ -185,6 +185,12 @@
     ],
     "never_mentioned": [
       "leisure_location"
+    ],
+    "overall_rating_count": 1096,
+    "overall_rating_avg": 2.0,
+    "processed_submission_ids": [
+      "2e755b82-4e8b-432f-88a8-09bbeb56e815",
+      "260343aa-49e2-45d2-a495-6586f8ff18ba"
     ]
   },
   "3b984f3ba8df55b2609a1e33fd694cf8407842e1d833c9b4d993b07fc83a2820": {

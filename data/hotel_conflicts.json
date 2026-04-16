@@ -406,18 +406,6 @@
     "conflicts": [
       {
         "status": "conflicting",
-        "negative_snippet": "in blanket/not a comforter.\nfridge has a leak.\nno room service.\n\nin short, you get what you paid for.",
-        "negative_date": "2025-04-22",
-        "negative_age_days": 358,
-        "positive_snippet": "great location. near by wells fargo bank, seafood restaurant and other stores. parking lot look clean and safe",
-        "positive_date": "2025-01-07",
-        "positive_age_days": 463,
-        "total_negative_mentions": 4,
-        "total_positive_mentions": 5,
-        "topic": "food_dining"
-      },
-      {
-        "status": "conflicting",
         "negative_snippet": "i arrived there was no record of the request and no elevators.",
         "negative_date": "2025-11-18",
         "negative_age_days": 148,
@@ -609,6 +597,19 @@
         "total_negative_mentions": 1,
         "total_positive_mentions": 1,
         "topic": "transit_convenient"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "in blanket/not a comforter.\nfridge has a leak.\nno room service.\n\nin short, you get what you paid for.",
+        "negative_date": "2025-04-22",
+        "negative_age_days": 358,
+        "positive_snippet": "great location. near by wells fargo bank, seafood restaurant and other stores. parking lot look clean and safe",
+        "positive_date": "2025-01-07",
+        "positive_age_days": 463,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 5,
+        "topic": "food_dining",
+        "resolved_date": "2026-04-15"
       }
     ]
   },
