@@ -74,26 +74,29 @@ function Header({ showBack, onBack }) {
     <header style={{
       background: '#00355F',
       position: 'sticky', top: 0, zIndex: 50,
+      boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
     }}>
       <div style={{
         maxWidth: 640, margin: '0 auto',
-        padding: '0 20px',
+        padding: '0 24px',
         display: 'flex', alignItems: 'center',
-        height: 58, gap: 12,
+        height: 64, gap: 14,
       }}>
         {showBack ? (
           <button
             onClick={onBack}
             style={{
-              background: 'none', border: 'none',
-              color: 'rgba(255,255,255,0.85)',
-              fontSize: 15, fontWeight: 500,
+              background: 'rgba(255,255,255,0.1)', border: 'none',
+              color: '#fff',
+              fontSize: 14, fontWeight: 600,
               fontFamily: 'inherit', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', gap: 5,
-              padding: '6px 0',
+              display: 'flex', alignItems: 'center', gap: 6,
+              padding: '8px 14px', borderRadius: 8,
+              transition: 'background 0.15s ease',
             }}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.18)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
           >
-            {/* Left arrow SVG */}
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="2"
                     strokeLinecap="round" strokeLinejoin="round"/>
@@ -101,18 +104,16 @@ function Header({ showBack, onBack }) {
             Back
           </button>
         ) : (
-          /* Logo */
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            {/* Yellow circle with navy lines */}
-            <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
-              <circle cx="17" cy="17" r="17" fill="#FFC72C"/>
-              <rect x="9"  y="11.5" width="16" height="2.5" rx="1.25" fill="#00355F"/>
-              <rect x="9"  y="16"   width="11" height="2.5" rx="1.25" fill="#00355F"/>
-              <rect x="9"  y="20.5" width="13" height="2.5" rx="1.25" fill="#00355F"/>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="18" fill="#FFC72C"/>
+              <rect x="10" y="12" width="16" height="2.5" rx="1.25" fill="#00355F"/>
+              <rect x="10" y="17" width="11" height="2.5" rx="1.25" fill="#00355F"/>
+              <rect x="10" y="22" width="13" height="2.5" rx="1.25" fill="#00355F"/>
             </svg>
             <span style={{
-              color: '#fff', fontWeight: 700, fontSize: 17,
-              letterSpacing: '-0.3px',
+              color: '#fff', fontWeight: 700, fontSize: 18,
+              letterSpacing: '-0.4px',
             }}>
               Ask What Matters
             </span>
@@ -211,7 +212,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
+    <div style={{ minHeight: '100vh', background: '#ffffff' }}>
       <Header
         showBack={step === 'review'}
         onBack={() => setStep('select')}

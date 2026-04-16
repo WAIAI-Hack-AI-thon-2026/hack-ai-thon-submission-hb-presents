@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
 const ROLE_LABELS = {
-  comment_deepdive:      { text: 'About your review',        color: '#00355F', bg: '#E8F0FE' },
-  information_gap:       { text: 'Help us learn more',        color: '#7C5C00', bg: '#FFF8E1' },
-  conflict_resolution:   { text: 'Has this changed?',         color: '#7C2D12', bg: '#FFF1F2' },
+  comment_deepdive:      { text: 'About your review',  color: '#00355F', bg: '#E8F0FE' },
+  information_gap:       { text: 'Help us learn more',  color: '#7C5C00', bg: 'rgba(255, 199, 44, 0.15)' },
+  conflict_resolution:   { text: 'Has this changed?',   color: '#7C2D12', bg: '#FFF1F2' },
 }
 
 export default function FollowUpCards({ property, questions, onComplete }) {
   const [current,  setCurrent]  = useState(0)
-  const [selected, setSelected] = useState([])   // multi-select array
-  const [otherText, setOtherText] = useState('')  // text for "Other"
+  const [selected, setSelected] = useState([])
+  const [otherText, setOtherText] = useState('')
   const [answers,  setAnswers]  = useState({})
 
   const q      = questions[current]
@@ -33,7 +33,6 @@ export default function FollowUpCards({ property, questions, onComplete }) {
     const updated = { ...answers, [q.id]: value }
     setAnswers(updated)
 
-    // If this was a conflict_resolution question, resolve it in the backend
     if (q.role === 'conflict_resolution' && property?.id) {
       fetch('/api/resolve-conflict', {
         method: 'POST',
@@ -43,7 +42,7 @@ export default function FollowUpCards({ property, questions, onComplete }) {
           topic: q.aspect || '',
           answer: value.join(', '),
         }),
-      }).catch(() => {})  // best-effort
+      }).catch(() => {})
     }
 
     setSelected([])
@@ -54,54 +53,58 @@ export default function FollowUpCards({ property, questions, onComplete }) {
 
   return (
     <>
-      {/* Hotel context strip */}
       <div className="hotel-strip">
-        <div style={{ maxWidth: 640, margin: '0 auto', padding: '0 20px',
+        <div style={{ maxWidth: 640, margin: '0 auto', padding: '0 24px',
                       display: 'flex', alignItems: 'center', gap: 8 }}>
           <span>{property.city}, {property.country}</span>
         </div>
       </div>
 
-      <div className="fade-in" style={{ maxWidth: 640, margin: '0 auto', padding: '32px 20px 48px' }}>
-        {/* Page title */}
-        <h2 style={{ fontSize: 22, fontWeight: 700, color: '#1a2638', marginBottom: 6 }}>
+      <div className="fade-in" style={{ maxWidth: 640, margin: '0 auto', padding: '40px 24px 56px' }}>
+        <h2 style={{
+          fontSize: 24, fontWeight: 700, color: '#222222',
+          marginBottom: 8, letterSpacing: '-0.3px',
+        }}>
           One more thing
         </h2>
 
-        {/* Progress dots */}
+        {/* Progress bar */}
         {questions.length > 1 && (
-          <div style={{ display: 'flex', gap: 6, marginBottom: 20 }}>
-            {questions.map((_, i) => (
+          <div style={{ marginBottom: 28 }}>
+            <div style={{
+              display: 'flex', justifyContent: 'space-between',
+              alignItems: 'baseline', marginBottom: 8,
+            }}>
+              <span style={{ fontSize: 14, fontWeight: 600, color: '#222222' }}>
+                Question {current + 1}
+                <span style={{ fontWeight: 400, color: '#6a6a6a' }}> of {questions.length}</span>
+              </span>
+              <span style={{ fontSize: 13, fontWeight: 500, color: '#6a6a6a' }}>
+                {Math.round(((current + 1) / questions.length) * 100)}%
+              </span>
+            </div>
+            <div className="progress-track">
               <div
-                key={i}
-                className={`dot ${i === current ? 'active' : ''}`}
-                style={{ width: i === current ? 22 : 8 }}
+                className="progress-fill"
+                style={{ width: `${((current + 1) / questions.length) * 100}%` }}
               />
-            ))}
+            </div>
           </div>
         )}
 
         {/* Question card */}
-        <div className="card" style={{ padding: '24px' }}>
+        <div className="card" style={{ padding: '28px' }}>
           {/* Role badge */}
-          <div style={{ marginBottom: 16, display: 'flex', gap: 8 }}>
+          <div style={{ marginBottom: 18 }}>
             {roleInfo ? (
-              <span style={{
-                display: 'inline-block',
+              <span className="role-badge" style={{
                 background: roleInfo.bg, color: roleInfo.color,
-                fontSize: 12, fontWeight: 700,
-                padding: '4px 12px', borderRadius: 999,
-                letterSpacing: '0.02em',
               }}>
                 {roleInfo.text}
               </span>
             ) : (
-              <span style={{
-                display: 'inline-block',
-                background: '#FFC72C', color: '#00355F',
-                fontSize: 12, fontWeight: 700,
-                padding: '4px 12px', borderRadius: 999,
-                letterSpacing: '0.02em',
+              <span className="role-badge" style={{
+                background: 'rgba(255, 199, 44, 0.15)', color: '#00355F',
               }}>
                 Help future travelers
               </span>
@@ -110,14 +113,14 @@ export default function FollowUpCards({ property, questions, onComplete }) {
 
           {/* Question text */}
           <p style={{
-            fontSize: 19, fontWeight: 700, color: '#1a2638',
-            lineHeight: 1.4, marginBottom: 20,
+            fontSize: 20, fontWeight: 700, color: '#222222',
+            lineHeight: 1.4, marginBottom: 24, letterSpacing: '-0.2px',
           }}>
             {q.text}
           </p>
 
-          {/* Pill options — multi-select */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: showOtherInput ? 12 : 28 }}>
+          {/* Pill options */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: showOtherInput ? 14 : 24 }}>
             {q.options.map((opt) => (
               <button
                 key={opt}
@@ -129,7 +132,7 @@ export default function FollowUpCards({ property, questions, onComplete }) {
               </button>
             ))}
           </div>
-          <p style={{ fontSize: 12, color: '#94a3b8', marginTop: -4, marginBottom: showOtherInput ? 12 : 20 }}>
+          <p style={{ fontSize: 13, color: '#B0B0B0', marginTop: -4, marginBottom: showOtherInput ? 14 : 24 }}>
             Select all that apply
           </p>
 
@@ -141,15 +144,8 @@ export default function FollowUpCards({ property, questions, onComplete }) {
                 value={otherText}
                 onChange={(e) => setOtherText(e.target.value)}
                 placeholder="Please tell us more..."
-                style={{
-                  width: '100%', boxSizing: 'border-box',
-                  borderRadius: 12, border: '1.5px solid #e2e8f0',
-                  padding: '10px 14px', fontSize: 14,
-                  fontFamily: 'inherit', resize: 'none',
-                  outline: 'none',
-                }}
-                onFocus={(e) => e.target.style.borderColor = '#00355F'}
-                onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
+                className="review-textarea"
+                style={{ fontSize: 14 }}
               />
             </div>
           )}
@@ -159,21 +155,16 @@ export default function FollowUpCards({ property, questions, onComplete }) {
             className="btn-primary"
             onClick={handleNext}
             disabled={!hasAnswer}
-            style={{ marginBottom: 12 }}
+            style={{ marginBottom: 14 }}
           >
-            {isLast ? 'Submit & Finish' : 'Next →'}
+            {isLast ? 'Submit & Finish' : 'Next'}
           </button>
 
           {/* Skip */}
           <div style={{ textAlign: 'center' }}>
             <button
+              className="skip-btn"
               onClick={() => onComplete({ answers, questions })}
-              style={{
-                background: 'none', border: 'none',
-                color: '#94a3b8', fontSize: 13,
-                fontFamily: 'inherit', cursor: 'pointer',
-                padding: '4px 8px',
-              }}
             >
               Skip
             </button>
@@ -182,7 +173,7 @@ export default function FollowUpCards({ property, questions, onComplete }) {
 
         {/* Footer note */}
         <p style={{
-          marginTop: 16, fontSize: 12, color: '#94a3b8',
+          marginTop: 20, fontSize: 13, color: '#B0B0B0',
           textAlign: 'center', lineHeight: 1.5,
         }}>
           Your answer helps keep property info current for future guests

@@ -613,44 +613,7 @@
     ]
   },
   "823fb2499b4e37d99acb65e7198e75965d6496fd1c579f976205c0e6179206df": {
-    "conflicts": [
-      {
-        "status": "conflicting",
-        "negative_snippet": "aurants nearby. had a great dinner at the chinese restaurant “ old chengdu restaurante cinese sichuan” about 5",
-        "negative_date": "2025-11-12",
-        "negative_age_days": 154,
-        "positive_snippet": "pful. adam at the front desk was awesome. on site restaurant had good food and service. included breakfast buf",
-        "positive_date": "2025-10-13",
-        "positive_age_days": 184,
-        "total_negative_mentions": 6,
-        "total_positive_mentions": 33,
-        "topic": "food_dining"
-      },
-      {
-        "status": "conflicting",
-        "negative_snippet": "when arriving at the train station. our sink was clogged and the shampoo would not pump (and we could not",
-        "negative_date": "2025-10-14",
-        "negative_age_days": 183,
-        "positive_snippet": "blestone streets can be awfully rough). rooms and bathrooms are spacious, ac works well, elevators are fine and staff is f",
-        "positive_date": "2025-09-18",
-        "positive_age_days": 209,
-        "total_negative_mentions": 6,
-        "total_positive_mentions": 28,
-        "topic": "bathroom_quality"
-      },
-      {
-        "status": "conflicting",
-        "negative_snippet": "very pleased with this hotel.  my wife’s mobility scooter broke down and this hotel allowed us to s",
-        "negative_date": "2025-10-07",
-        "negative_age_days": 190,
-        "positive_snippet": "rooms and bathrooms are spacious, ac works well, elevators are fine and staff is friendly. breakfast is ava",
-        "positive_date": "2025-09-18",
-        "positive_age_days": 209,
-        "total_negative_mentions": 1,
-        "total_positive_mentions": 4,
-        "topic": "accessibility"
-      }
-    ],
+    "conflicts": [],
     "resolved": [
       {
         "status": "resolved",
@@ -807,23 +770,50 @@
         "total_negative_mentions": 3,
         "total_positive_mentions": 15,
         "topic": "noise"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "aurants nearby. had a great dinner at the chinese restaurant “ old chengdu restaurante cinese sichuan” about 5",
+        "negative_date": "2025-11-12",
+        "negative_age_days": 154,
+        "positive_snippet": "pful. adam at the front desk was awesome. on site restaurant had good food and service. included breakfast buf",
+        "positive_date": "2025-10-13",
+        "positive_age_days": 184,
+        "total_negative_mentions": 6,
+        "total_positive_mentions": 33,
+        "topic": "food_dining",
+        "resolved_date": "2026-04-15"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "when arriving at the train station. our sink was clogged and the shampoo would not pump (and we could not",
+        "negative_date": "2025-10-14",
+        "negative_age_days": 183,
+        "positive_snippet": "blestone streets can be awfully rough). rooms and bathrooms are spacious, ac works well, elevators are fine and staff is f",
+        "positive_date": "2025-09-18",
+        "positive_age_days": 209,
+        "total_negative_mentions": 6,
+        "total_positive_mentions": 28,
+        "topic": "bathroom_quality",
+        "resolved_date": "2026-04-15"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "very pleased with this hotel.  my wife’s mobility scooter broke down and this hotel allowed us to s",
+        "negative_date": "2025-10-07",
+        "negative_age_days": 190,
+        "positive_snippet": "rooms and bathrooms are spacious, ac works well, elevators are fine and staff is friendly. breakfast is ava",
+        "positive_date": "2025-09-18",
+        "positive_age_days": 209,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 4,
+        "topic": "accessibility",
+        "resolved_date": "2026-04-15"
       }
     ]
   },
   "fa014137b3ea9af6a90c0a86a1d099e46f7e56d6eb33db1ad1ec4bdac68c3caa": {
     "conflicts": [
-      {
-        "status": "conflicting",
-        "negative_snippet": "y row, and tons of restaurants and shops. we felt safe walking around at night—even our 21-year-old son walki",
-        "negative_date": "2025-07-22",
-        "negative_age_days": 267,
-        "positive_snippet": "loved the location and that we could walk and felt safe after dark. free parking and a good breakfast. ve",
-        "positive_date": "2025-01-14",
-        "positive_age_days": 456,
-        "total_negative_mentions": 3,
-        "total_positive_mentions": 3,
-        "topic": "safety_perception"
-      },
       {
         "status": "conflicting",
         "negative_snippet": "as a huge time suck for a family of 4 with mature children that need privacy.",
@@ -1005,6 +995,19 @@
         "total_negative_mentions": 19,
         "total_positive_mentions": 23,
         "topic": "noise"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "y row, and tons of restaurants and shops. we felt safe walking around at night—even our 21-year-old son walki",
+        "negative_date": "2025-07-22",
+        "negative_age_days": 267,
+        "positive_snippet": "loved the location and that we could walk and felt safe after dark. free parking and a good breakfast. ve",
+        "positive_date": "2025-01-14",
+        "positive_age_days": 456,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 3,
+        "topic": "safety_perception",
+        "resolved_date": "2026-04-15"
       }
     ]
   },
@@ -1210,18 +1213,6 @@
     "conflicts": [
       {
         "status": "stale_issue",
-        "negative_snippet": "smatched tiles...no smoke detectors...no fridge...breakfast was very basic...there must be more fruit choices",
-        "negative_date": "2023-03-02",
-        "negative_age_days": 1140,
-        "positive_snippet": "very nice. everyone was great. breakfast was great",
-        "positive_date": "2023-03-02",
-        "positive_age_days": 1140,
-        "total_negative_mentions": 1,
-        "total_positive_mentions": 1,
-        "topic": "breakfast"
-      },
-      {
-        "status": "stale_issue",
         "negative_snippet": "ore fruit choices then pineapple and watermelon?  food was cold...but coffee was hot. casino a friendly",
         "negative_date": "2023-03-02",
         "negative_age_days": 1140,
@@ -1329,6 +1320,19 @@
         "total_negative_mentions": 1,
         "total_positive_mentions": 1,
         "topic": "parking"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "smatched tiles...no smoke detectors...no fridge...breakfast was very basic...there must be more fruit choices",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "very nice. everyone was great. breakfast was great",
+        "positive_date": "2023-03-02",
+        "positive_age_days": 1140,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 1,
+        "topic": "breakfast",
+        "resolved_date": "2026-04-15"
       }
     ]
   },
@@ -1669,32 +1673,7 @@
     ]
   },
   "e52d67a758ce4ad0229aacc97e5dfe89984c384c51a70208f9e0cc65c9cd4676": {
-    "conflicts": [
-      {
-        "status": "stale_issue",
-        "negative_snippet": "i picked this hotel based on reviews and area. check in was fast and easy. our room was on |MASK| 2nd flo",
-        "negative_date": "2023-03-02",
-        "negative_age_days": 1140,
-        "positive_snippet": null,
-        "positive_date": null,
-        "positive_age_days": null,
-        "total_negative_mentions": 2,
-        "total_positive_mentions": 0,
-        "topic": "check_in_out"
-      },
-      {
-        "status": "stale_issue",
-        "negative_snippet": "fast and easy. our room was on |MASK| 2nd floor, no elevators so you do have to carry your luggage up flights.",
-        "negative_date": "2023-03-02",
-        "negative_age_days": 1140,
-        "positive_snippet": null,
-        "positive_date": null,
-        "positive_age_days": null,
-        "total_negative_mentions": 1,
-        "total_positive_mentions": 0,
-        "topic": "accessibility"
-      }
-    ],
+    "conflicts": [],
     "resolved": [
       {
         "status": "resolved",
@@ -1755,6 +1734,32 @@
         "total_negative_mentions": 1,
         "total_positive_mentions": 1,
         "topic": "bathroom_quality",
+        "resolved_date": "2026-04-15"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "i picked this hotel based on reviews and area. check in was fast and easy. our room was on |MASK| 2nd flo",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": null,
+        "positive_date": null,
+        "positive_age_days": null,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 0,
+        "topic": "check_in_out",
+        "resolved_date": "2026-04-15"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "fast and easy. our room was on |MASK| 2nd floor, no elevators so you do have to carry your luggage up flights.",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": null,
+        "positive_date": null,
+        "positive_age_days": null,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 0,
+        "topic": "accessibility",
         "resolved_date": "2026-04-15"
       }
     ]

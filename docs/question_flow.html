@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ask What Matters — Question Flow</title>
+<title>Ask What Matters — End-to-End Flow</title>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 40px 20px; }
   h1 { text-align: center; color: #00355F; font-size: 24px; margin-bottom: 8px; }
   h2 { text-align: center; color: #64748b; font-size: 14px; font-weight: 400; margin-bottom: 40px; }
   .mermaid { display: flex; justify-content: center; }
-  .legend { max-width: 700px; margin: 40px auto 0; padding: 24px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; }
+  .legend { max-width: 780px; margin: 40px auto 0; padding: 24px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; }
   .legend h3 { margin: 0 0 12px; font-size: 15px; color: #1a2638; }
   .legend-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; color: #475569; }
   .legend-dot { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
@@ -18,69 +18,120 @@
 </head>
 <body>
 
-<h1>Ask What Matters — Question Generation Flow</h1>
-<h2>2-slot pipeline: Slot 1 (deep-dive) + Slot 2 (conflict OR gap)</h2>
+<h1>Ask What Matters — End-to-End Flow</h1>
+<h2>From property selection to follow-up question generation and answer collection</h2>
 
 <div class="mermaid">
 flowchart TD
-    A["Guest submits review\n(ratings + optional text)"] --> B["POST /api/analyze"]
+    subgraph FRONTEND_INPUT ["Step 1 — Guest Input (Frontend)"]
+        A["Guest opens app"] --> B["Select property\n(PropertySelect)"]
+        B --> C["Review form\n(ReviewForm)"]
+        C --> C1["Rate overall\n(1-5 stars, required)"]
+        C --> C2["Rate 4 sub-categories\n(Cleanliness, Staff & Service,\nLocation, Value for Money)\nAll required"]
+        C --> C3["Write review text\n(optional)"]
+        C1 --> D["Click Submit"]
+        C2 --> D
+        C3 --> D
+        D --> D1{"All ratings\nfilled in?"}
+        D1 -- No --> D2["Show error message\ne.g. 'Please rate: Location'"]
+        D2 --> D
+        D1 -- Yes --> E["POST /api/analyze\n{propertyId, city, country,\nrating, reviewText}"]
+    end
 
-    B --> C["match_labels(review_text)\nDetect which aspects the\nreview already mentions"]
+    subgraph BACKEND ["Step 2 — Backend Processing (agent.py)"]
+        E --> F["parse_rating_payload()\nExtract overall + sub-ratings"]
+        F --> G["match_labels(review_text)\nDetect aspects already\nmentioned in review"]
 
-    B --> E{"Has property_id?"}
-    E -- Yes --> F["get_active_conflicts(property_id)\nLoad unresolved conflicts\nfrom hotel_conflicts.json"]
-    E -- No --> G["conflicts = empty"]
-    F --> H{"Conflicts found?"}
-    G --> H
+        F --> H{"Has property_id?"}
+        H -- Yes --> I["get_active_conflicts(pid)\nLoad unresolved conflicts\nfrom hotel_conflicts.json"]
+        H -- No --> J["conflicts = empty"]
+        I --> K{"Active conflicts?"}
+        J --> K
 
-    H -- Yes --> SKIP_GAP["Skip gap loading\nSlot 2 = Conflict Resolution"]
-    H -- No --> D["_get_gap_aspects(property_id)\nFind lowest-coverage aspects\nfor this hotel\nSlot 2 = Information Gap"]
+        K -- Yes --> L["Slot 2 = Conflict Resolution\nSkip gap loading"]
+        K -- No --> M["_get_gap_aspects(pid)\nFind lowest-coverage aspects\nSlot 2 = Information Gap"]
 
-    C --> I["Build LLM Prompt\n(2 questions)"]
-    SKIP_GAP --> I
-    D --> I
+        G --> N["_build_prompt()"]
+        L --> N
+        M --> N
 
-    I --> J["Call OpenAI GPT-4.1-mini\n(structured JSON output)"]
+        N --> N1{"Has review text?"}
+        N1 -- Yes --> N2["Q1 prompt: Comment Deep-dive\nDig into what guest wrote,\nuse ratings if review is vague"]
+        N1 -- No --> N3["Q1 prompt: Rating-Driven\nUse sub-ratings to decide\nwhat to ask (low rating,\ngap, all high, etc.)"]
 
-    J --> K{"Has review text?"}
-    K -- Yes --> K1["Q1: Comment Deep-dive\nDig deeper into what\nguest wrote about"]
-    K -- No --> K2["Q1: Rating-Driven\nUse sub-ratings to decide\nwhat to ask about"]
+        N2 --> O["Build full LLM prompt\n(Q1 instructions + Q2 instructions\n+ output schema + guest input)"]
+        N3 --> O
 
-    J --> L{"Conflicts exist?"}
-    L -- Yes --> M["Q2: Conflict Resolution\nAsk about SPECIFIC issue\nfrom contradictory reviews"]
-    L -- No --> N["Q2: Information Gap\nAsk about low-coverage\naspects for this hotel"]
+        O --> P["Call OpenAI GPT-4.1-mini\nStructured JSON output\n(2 questions enforced)"]
+    end
 
-    K1 --> O["Frontend: Show Q1"]
-    K2 --> O
-    O --> P["Guest selects options"]
-    P --> Q["Show Q2"]
+    subgraph LLM_OUTPUT ["Step 3 — LLM Generates 2 Questions"]
+        P --> Q1["Q1: comment_deepdive\nAspect from review/ratings\nquick_tap or multi_select\n4-6 scenario-based options"]
 
-    M --> Q
-    N --> Q
+        P --> Q2_CHECK{"Conflicts exist?"}
+        Q2_CHECK -- Yes --> Q2A["Q2: conflict_resolution\nScenario-specific question\nabout past issue\n(e.g. 'Was the pool open?')"]
+        Q2_CHECK -- No --> Q2B["Q2: information_gap\nQuestion about low-coverage\naspect for this hotel"]
+    end
 
-    Q --> R["Guest answers Q2"]
-    R --> S{"Was Q2 a\nconflict_resolution?"}
-    S -- Yes --> T["POST /api/resolve-conflict\n(fire-and-forget)\nMark conflict as resolved\nin hotel_conflicts.json"]
-    T --> U["Thank You screen"]
-    S -- No --> U
+    subgraph FOLLOWUP ["Step 4 — Guest Answers (Frontend)"]
+        Q1 --> SHOW1["Show Q1 card\n+ progress dots (1/2)"]
+        SHOW1 --> ANS1["Guest selects option(s)\n(multi-select, can pick multiple)"]
+        ANS1 --> NEXT1["Click 'Next →'"]
+
+        Q2A --> SHOW2
+        Q2B --> SHOW2
+        NEXT1 --> SHOW2["Show Q2 card\n+ progress dots (2/2)"]
+        SHOW2 --> ANS2["Guest selects option(s)"]
+        ANS2 --> NEXT2["Click 'Submit & Finish'"]
+
+        NEXT2 --> RESOLVE{"Was Q2\nconflict_resolution?"}
+        RESOLVE -- Yes --> API_RESOLVE["POST /api/resolve-conflict\n(fire-and-forget)\nUpdate hotel_conflicts.json"]
+        API_RESOLVE --> DONE
+        RESOLVE -- No --> DONE["Thank You screen\n+ stats display"]
+    end
+
+    DONE --> RESET["Guest clicks\n'Write another review'\n→ back to property select"]
+    RESET --> A
 
     style A fill:#E8F0FE,stroke:#00355F,color:#00355F
-    style K1 fill:#E8F0FE,stroke:#00355F,color:#00355F
-    style K2 fill:#E8F0FE,stroke:#00355F,color:#00355F
-    style N fill:#FFF8E1,stroke:#7C5C00,color:#7C5C00
-    style M fill:#FFF1F2,stroke:#7C2D12,color:#7C2D12
-    style U fill:#ECFDF5,stroke:#059669,color:#059669
-    style J fill:#F3E8FF,stroke:#7C3AED,color:#7C3AED
-    style T fill:#FEF3C7,stroke:#D97706,color:#92400E
+    style B fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style C fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style C1 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style C2 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style C3 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style D fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style D1 fill:#FFF8E1,stroke:#7C5C00,color:#7C5C00
+    style D2 fill:#FFF1F2,stroke:#7C2D12,color:#7C2D12
+    style E fill:#DBEAFE,stroke:#2563EB,color:#1E40AF
+    style F fill:#F0FDF4,stroke:#16A34A,color:#166534
+    style G fill:#F0FDF4,stroke:#16A34A,color:#166534
+    style I fill:#F0FDF4,stroke:#16A34A,color:#166534
+    style M fill:#F0FDF4,stroke:#16A34A,color:#166534
+    style N fill:#F0FDF4,stroke:#16A34A,color:#166534
+    style O fill:#F0FDF4,stroke:#16A34A,color:#166534
+    style P fill:#F3E8FF,stroke:#7C3AED,color:#7C3AED
+    style Q1 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style Q2A fill:#FFF1F2,stroke:#7C2D12,color:#7C2D12
+    style Q2B fill:#FFF8E1,stroke:#7C5C00,color:#7C5C00
+    style SHOW1 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style SHOW2 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style ANS1 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style ANS2 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style API_RESOLVE fill:#FEF3C7,stroke:#D97706,color:#92400E
+    style DONE fill:#ECFDF5,stroke:#059669,color:#059669
+    style RESET fill:#ECFDF5,stroke:#059669,color:#059669
 </div>
 
 <div class="legend">
   <h3>Color Legend</h3>
-  <div class="legend-item"><div class="legend-dot" style="background:#E8F0FE;border:1px solid #00355F"></div> Slot 1: Comment Deep-dive / Rating-Driven — based on what the guest wrote or rated</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#FFF1F2;border:1px solid #7C2D12"></div> Slot 2 (priority): Conflict Resolution — when contradictory/stale/persistent reviews exist</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#FFF8E1;border:1px solid #7C5C00"></div> Slot 2 (fallback): Information Gap — fills low-coverage data when no conflicts exist</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#F3E8FF;border:1px solid #7C3AED"></div> LLM Call (OpenAI GPT-4.1-mini)</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#FEF3C7;border:1px solid #D97706"></div> Side-effect: update conflict database</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E8F0FE;border:1px solid #00355F"></div> Frontend — User interaction (property select, review form, follow-up cards)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#DBEAFE;border:1px solid #2563EB"></div> API call — Frontend → Backend</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F0FDF4;border:1px solid #16A34A"></div> Backend processing — Data loading, prompt building, analysis</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F3E8FF;border:1px solid #7C3AED"></div> LLM call — OpenAI GPT-4.1-mini (structured JSON output)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FFF8E1;border:1px solid #7C5C00"></div> Information Gap path — Q2 when no conflicts exist</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FFF1F2;border:1px solid #7C2D12"></div> Conflict Resolution path — Q2 when active conflicts exist</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FEF3C7;border:1px solid #D97706"></div> Side-effect — Update conflict database (fire-and-forget)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ECFDF5;border:1px solid #059669"></div> Completion — Thank you screen, loop back</div>
 </div>
 
 </body>

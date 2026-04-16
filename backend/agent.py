@@ -302,18 +302,48 @@ QUESTION 1 — COMMENT DEEP-DIVE  (role: "comment_deepdive")
 ═══════════════════════════════════════════════════════
 Based on what the guest wrote AND their ratings, ask a follow-up that digs deeper.
 
-Rules:
-- If the guest mentions a specific problem, drill into the root cause or details.
-  Example: guest says "noisy" → ask where the noise came from (street, neighbors, elevator, AC).
-- If the guest mentions something positive, ask what specifically stood out.
-  Example: guest says "great staff" → ask which interaction was most memorable.
-- If the review is vague or very short (e.g. just "great" or "good"), USE THE RATINGS to guide your question:
-  - If a sub-rating is notably LOW (1-2 stars), ask about that specific aspect: "You rated [aspect] quite low — what went wrong?"
-  - If all ratings are HIGH, ask which aspect impressed them most, with concrete scenario-based options.
-- If sub-ratings show a gap between overall and a specific category, probe that gap.
-  Example: overall=4 but cleanliness=2 → ask what the cleanliness issue was.
+TONE RULES — this is critical:
+
+NEGATIVE FEEDBACK — two sub-cases:
+
+  ▸ Case A: VAGUE negative (e.g. "not a great hotel", "didn't enjoy my stay", "wouldn't recommend"):
+    The guest is unhappy but hasn't said WHY. Your job is to find out.
+    Ask: "We're sorry to hear that. Could you tell us what wasn't quite right?"
+    Options should cover BROAD hotel aspects so the guest can pinpoint the issue:
+      e.g. "Room quality", "Cleanliness", "Staff & service", "Noise", "Location", "Other"
+
+  ▸ Case B: SPECIFIC negative (e.g. "pool was dirty", "room was noisy", "staff was rude"):
+    The guest already told you exactly what was wrong. Do NOT repeat it or ask for more detail on the same topic.
+    Step 1 — Acknowledge with empathy: "We're sorry to hear about [the specific issue]. We've shared your feedback with the hotel and will work with them to improve."
+    Step 2 — Ask about OTHER areas: "Were there any other aspects of your stay that could be improved?"
+    Options should be BROAD, covering different hotel aspects EXCLUDING the one they already complained about:
+      - FIRST option MUST be a positive escape: "Apart from that, everything else was great" (or similar)
+      - Then list 3-5 other aspects the guest might also have issues with (e.g. if they complained about cleanliness, offer: "Staff & service", "Room comfort", "Noise levels", "Food & dining", "Other")
+    Good: "We're sorry to hear about the cleanliness issues. We've shared this with the hotel. Were there any other areas that could be improved?"
+         Options: ["Apart from that, everything else was fine", "Staff & service", "Room comfort", "Noise", "Food & dining", "Other"]
+    Bad:  "We're sorry about the dirty room. Can you tell us more about what was dirty?" ← do NOT drill into the same topic
+    Bad:  "Despite your high overall rating, the cleanliness seems to have been an issue." ← NEVER contrast ratings
+
+  NEVER say "despite your high/low rating", "your score suggests", "that explains the rating" — these sound robotic and awkward.
+
+POSITIVE FEEDBACK:
+- Do NOT drill deeper into the same thing they already praised. Instead, BROADEN to related or other aspects:
+  1. Broaden to the parent category: if they praise a specific item, ask about the broader category it belongs to.
+     Example: guest says "pool was amazing" → pool falls under amenities, so ask: "Glad you enjoyed the pool! How were the other amenities — like the gym, spa, or breakfast?"
+  2. Broaden to other aspects: if they praise one area, ask about a different area of the hotel.
+     Example: guest says "great staff" → ask: "Happy to hear that! How about other parts of your stay — like the room, cleanliness, or location?"
+  Do NOT ask follow-ups like "What specifically was great about the pool?" or "Which staff interaction was most memorable?" — the guest already told you it was good, move on to learn about other things.
+
+VAGUE / SHORT REVIEW (e.g. just "great" or "good"):
+- USE THE RATINGS internally to decide what to ask about, but do NOT mention ratings/scores in the question text.
+  - If a sub-rating is LOW, empathize and ask: "We're sorry to hear the [aspect] wasn't ideal. What would you suggest to improve it?"
+  - If all ratings are HIGH, ask which aspect impressed them most.
+
+Content rules:
 - The aspect MUST match a topic the guest discussed OR a sub-rating category.
-- Prefer `quick_tap` or `multi_select` with 4-6 concrete, scenario-based options."""
+- Prefer `multi_select` with 5-7 options so the guest can select multiple areas.
+- For Case B (specific negative), options should cover OTHER hotel aspects broadly — do NOT list improvement details for the same complaint.
+- The options list MUST always end with "Other" as the last option, so the guest can provide their own input if none of the options fit."""
     else:
         q1_section = """═══════════════════════════════════════════════════════
 QUESTION 1 — RATING-DRIVEN QUESTION  (role: "comment_deepdive")
@@ -321,18 +351,19 @@ QUESTION 1 — RATING-DRIVEN QUESTION  (role: "comment_deepdive")
 The guest only gave ratings without writing a review. Use the RATINGS to drive your question.
 
 Rules:
-- CHECK the sub-ratings carefully. Your question strategy depends on what the ratings reveal:
-  1. If ANY sub-rating is notably LOW (1-2 stars): ask specifically about that aspect.
-     Example: staff=2 → "What happened with the staff that didn't meet expectations?" with options like "Rude behavior", "Slow service", "Unhelpful with requests", "Language barrier", "Other"
-  2. If there's a GAP between overall and a sub-rating: probe the outlier.
-     Example: overall=4 but noise=2 → "You rated noise quite low — where was the noise coming from?"
+- CHECK the sub-ratings internally to decide what to ask about, but NEVER mention ratings, scores, or numbers in the question text.
+  1. If ANY sub-rating is notably LOW (1-2 stars): empathize about that aspect, then ask for advice.
+     Example: staff=2 → "We're sorry to hear the staff experience wasn't great. What do you think could be improved?" with options like "Better training", "Faster response time", "More friendly attitude", "Better language support", "Other"
+  2. If there's a GAP between overall and a sub-rating: empathize about the weaker area, then ask for advice.
+     Example: overall=4 but noise=2 → "We're sorry to hear about the noise. What would help improve it?" with options like "Soundproof windows", "Quieter room assignment", "Noise policy enforcement", "Other"
   3. If ALL ratings are HIGH (4-5 stars): ask which aspect stood out most.
      Example: "What made your stay so great?" with options covering the high-rated areas.
   4. If NO sub-ratings are provided (only overall): ask a broad "what stood out" question.
 - Use `multi_select` with 4-6 concrete, scenario-based options.
-- The question should feel natural and reference the rating insight without being robotic.
-  Good: "You rated cleanliness quite low — what was the issue?"
-  Bad:  "Your cleanliness sub-rating was 2/5, please elaborate." ← too robotic"""
+- The question should feel natural and human. NEVER say "despite your rating", "your score suggests", "you rated X low" — just name the aspect directly.
+  Good: "We're sorry to hear the cleanliness wasn't ideal. What would you suggest to make it better?"
+  Bad:  "Your cleanliness sub-rating was 2/5, please elaborate." ← robotic
+  Bad:  "Despite your high overall rating, cleanliness seems to be an issue." ← awkward"""
 
     # ── Slot 2: Conflict resolution OR Information gap (mutually exclusive) ──
     if has_conflicts:

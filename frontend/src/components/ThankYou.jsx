@@ -10,22 +10,26 @@ export default function ThankYou({ onReset }) {
       className="fade-in"
       style={{
         maxWidth: 640, margin: '0 auto',
-        padding: '56px 20px 48px',
+        padding: '64px 24px 56px',
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', textAlign: 'center',
       }}
     >
-      {/* Yellow circle + checkmark */}
-      <div style={{
-        width: 80, height: 80, borderRadius: '50%',
-        background: '#FFC72C',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        marginBottom: 24,
-        boxShadow: '0 4px 20px rgba(255,199,44,0.40)',
-      }}>
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      {/* Checkmark circle — animated */}
+      <div
+        className="check-circle"
+        style={{
+          position: 'relative',
+          width: 88, height: 88, borderRadius: '50%',
+          background: '#FFC72C',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          marginBottom: 28,
+        }}
+      >
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
           <path
-            d="M7 18l8 8L29 10"
+            className="check-mark"
+            d="M8 20l9 9L32 11"
             stroke="#00355F" strokeWidth="3.5"
             strokeLinecap="round" strokeLinejoin="round"
           />
@@ -34,14 +38,14 @@ export default function ThankYou({ onReset }) {
 
       {/* Title */}
       <h2 style={{
-        fontSize: 28, fontWeight: 700, color: '#1a2638',
-        marginBottom: 10, letterSpacing: '-0.4px',
+        fontSize: 32, fontWeight: 700, color: '#222222',
+        marginBottom: 12, letterSpacing: '-0.5px',
       }}>
         Review submitted!
       </h2>
       <p style={{
-        fontSize: 15, color: '#64748b',
-        marginBottom: 36, maxWidth: 300, lineHeight: 1.55,
+        fontSize: 16, color: '#6a6a6a',
+        marginBottom: 40, maxWidth: 340, lineHeight: 1.55,
       }}>
         Thank you — your feedback helps future travelers choose with confidence.
       </p>
@@ -50,7 +54,7 @@ export default function ThankYou({ onReset }) {
       <div style={{
         display: 'flex', flexWrap: 'wrap',
         gap: 10, justifyContent: 'center',
-        marginBottom: 40,
+        marginBottom: 44,
       }}>
         {STATS.map((s) => (
           <span key={s} className="stat-pill">{s}</span>
@@ -61,7 +65,7 @@ export default function ThankYou({ onReset }) {
       <button
         className="btn-primary"
         onClick={onReset}
-        style={{ maxWidth: 300 }}
+        style={{ maxWidth: 320 }}
       >
         Write Another Review
       </button>

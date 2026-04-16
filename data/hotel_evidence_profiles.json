@@ -1,7 +1,7 @@
 {
   "110f01b8ae518a0ee41047bce5c22572988a435e10ead72dc1af793bba8ce0b0": {
     "location": "Pompei, Italy",
-    "star_rating": "4.2",
+    "star_rating": "",
     "total_reviews": 146,
     "reviews_with_text": 131,
     "frequently_mentioned": [
@@ -93,7 +93,7 @@
   },
   "3216b1b7885bffdb336265a8de7322ba0cd477cfb3d4f99d19acf488f76a1941": {
     "location": "Bell Gardens, United States",
-    "star_rating": "4.0",
+    "star_rating": "2.0",
     "total_reviews": 1094,
     "reviews_with_text": 690,
     "frequently_mentioned": [
@@ -189,91 +189,93 @@
   },
   "3b984f3ba8df55b2609a1e33fd694cf8407842e1d833c9b4d993b07fc83a2820": {
     "location": "San Isidro de El General, Costa Rica",
-    "star_rating": "4.3",
-    "total_reviews": 51,
-    "reviews_with_text": 42,
+    "star_rating": "5.0",
+    "total_reviews": 52,
+    "reviews_with_text": 43,
     "frequently_mentioned": [
       {
         "label": "cleanliness",
         "count": 13,
-        "percentage": 31.0
+        "percentage": 30.2
       },
       {
         "label": "staff_service",
         "count": 7,
-        "percentage": 16.7
+        "percentage": 16.3
+      },
+      {
+        "label": "breakfast",
+        "count": 6,
+        "percentage": 14.0
       },
       {
         "label": "parking",
         "count": 6,
-        "percentage": 14.3
+        "percentage": 14.0
       },
       {
-        "label": "breakfast",
+        "label": "food_dining",
         "count": 5,
-        "percentage": 11.9
-      },
-      {
-        "label": "room_size",
-        "count": 5,
-        "percentage": 11.9
+        "percentage": 11.6
       },
       {
         "label": "renovation_age",
         "count": 5,
-        "percentage": 11.9
+        "percentage": 11.6
       },
       {
-        "label": "walkability",
-        "count": 4,
-        "percentage": 9.5
-      },
-      {
-        "label": "bed_comfort",
-        "count": 4,
-        "percentage": 9.5
+        "label": "room_size",
+        "count": 5,
+        "percentage": 11.6
       },
       {
         "label": "bathroom_quality",
         "count": 4,
-        "percentage": 9.5
+        "percentage": 9.3
       },
       {
-        "label": "food_dining",
+        "label": "bed_comfort",
         "count": 4,
-        "percentage": 9.5
+        "percentage": 9.3
+      },
+      {
+        "label": "walkability",
+        "count": 4,
+        "percentage": 9.3
       },
       {
         "label": "noise",
         "count": 3,
-        "percentage": 7.1
+        "percentage": 7.0
       },
       {
         "label": "value_price",
         "count": 3,
-        "percentage": 7.1
+        "percentage": 7.0
       },
       {
         "label": "safety_perception",
         "count": 2,
-        "percentage": 4.8
+        "percentage": 4.7
       },
       {
         "label": "accessibility",
         "count": 1,
-        "percentage": 2.4
+        "percentage": 2.3
       }
     ],
     "never_mentioned": [
-      "transit_convenient",
+      "check_in_out",
       "family_amenities",
       "leisure_location",
-      "check_in_out"
-    ]
+      "transit_convenient"
+    ],
+    "overall_rating_count": 2,
+    "overall_rating_avg": 5.0
   },
   "5f5a0cd8662f0ddf297f2d27358f680daab5d3ac22fd45a4e1c3c3ec2c101a12": {
     "location": "Freudenstadt, Germany",
-    "star_rating": "4.4",
+    "star_rating": "",
     "total_reviews": 8,
     "reviews_with_text": 6,
     "frequently_mentioned": [
@@ -313,7 +315,7 @@
   },
   "7d027ef72c02eaa17af3c993fd5dba50d17b41a6280389a46c13c7e2c32a5b06": {
     "location": "Ocala, United States",
-    "star_rating": "4.4",
+    "star_rating": "2.5",
     "total_reviews": 765,
     "reviews_with_text": 534,
     "frequently_mentioned": [
@@ -405,24 +407,24 @@
   },
   "823fb2499b4e37d99acb65e7198e75965d6496fd1c579f976205c0e6179206df": {
     "location": "Rome, Italy",
-    "star_rating": "4.4",
-    "total_reviews": 772,
-    "reviews_with_text": 618,
+    "star_rating": "3.3",
+    "total_reviews": 774,
+    "reviews_with_text": 620,
     "frequently_mentioned": [
       {
         "label": "cleanliness",
-        "count": 193,
-        "percentage": 31.2
+        "count": 194,
+        "percentage": 31.3
       },
       {
         "label": "staff_service",
         "count": 183,
-        "percentage": 29.6
+        "percentage": 29.5
       },
       {
         "label": "transit_convenient",
         "count": 132,
-        "percentage": 21.4
+        "percentage": 21.3
       },
       {
         "label": "breakfast",
@@ -442,12 +444,12 @@
       {
         "label": "walkability",
         "count": 43,
-        "percentage": 7.0
+        "percentage": 6.9
       },
       {
         "label": "bathroom_quality",
-        "count": 41,
-        "percentage": 6.6
+        "count": 42,
+        "percentage": 6.8
       },
       {
         "label": "room_size",
@@ -456,8 +458,8 @@
       },
       {
         "label": "value_price",
-        "count": 30,
-        "percentage": 4.9
+        "count": 31,
+        "percentage": 5.0
       },
       {
         "label": "check_in_out",
@@ -472,12 +474,12 @@
       {
         "label": "safety_perception",
         "count": 17,
-        "percentage": 2.8
+        "percentage": 2.7
       },
       {
         "label": "accessibility",
-        "count": 13,
-        "percentage": 2.1
+        "count": 14,
+        "percentage": 2.3
       },
       {
         "label": "family_amenities",
@@ -490,21 +492,23 @@
         "percentage": 1.1
       },
       {
-        "label": "parking",
+        "label": "leisure_location",
         "count": 1,
         "percentage": 0.2
       },
       {
-        "label": "leisure_location",
+        "label": "parking",
         "count": 1,
         "percentage": 0.2
       }
     ],
-    "never_mentioned": []
+    "never_mentioned": [],
+    "overall_rating_count": 3,
+    "overall_rating_avg": 3.3
   },
   "9a0043fd4258a1286db1e253ca591662b3aac849da12d0d4f67e08b8f59be65f": {
     "location": "Bochum, Germany",
-    "star_rating": "5.0",
+    "star_rating": "",
     "total_reviews": 152,
     "reviews_with_text": 112,
     "frequently_mentioned": [
@@ -584,77 +588,67 @@
   },
   "a036cbe1d9fbf9cba088075d1b4d966ee871df55aa4a58ba0da23c116c499052": {
     "location": "Mbombela, South Africa",
-    "star_rating": "4.0",
+    "star_rating": "3.5",
     "total_reviews": 10,
-    "reviews_with_text": 10,
+    "reviews_with_text": 8,
     "frequently_mentioned": [
       {
         "label": "breakfast",
         "count": 3,
-        "percentage": 30.0
-      },
-      {
-        "label": "staff_service",
-        "count": 3,
-        "percentage": 30.0
+        "percentage": 37.5
       },
       {
         "label": "cleanliness",
         "count": 2,
-        "percentage": 20.0
+        "percentage": 25.0
+      },
+      {
+        "label": "staff_service",
+        "count": 2,
+        "percentage": 25.0
       },
       {
         "label": "value_price",
         "count": 2,
-        "percentage": 20.0
-      },
-      {
-        "label": "family_amenities",
-        "count": 1,
-        "percentage": 10.0
-      },
-      {
-        "label": "food_dining",
-        "count": 1,
-        "percentage": 10.0
-      },
-      {
-        "label": "parking",
-        "count": 1,
-        "percentage": 10.0
-      },
-      {
-        "label": "renovation_age",
-        "count": 1,
-        "percentage": 10.0
-      },
-      {
-        "label": "safety_perception",
-        "count": 1,
-        "percentage": 10.0
+        "percentage": 25.0
       },
       {
         "label": "walkability",
         "count": 1,
-        "percentage": 10.0
+        "percentage": 12.5
+      },
+      {
+        "label": "safety_perception",
+        "count": 1,
+        "percentage": 12.5
+      },
+      {
+        "label": "food_dining",
+        "count": 1,
+        "percentage": 12.5
+      },
+      {
+        "label": "renovation_age",
+        "count": 1,
+        "percentage": 12.5
       }
     ],
     "never_mentioned": [
       "accessibility",
-      "bathroom_quality",
-      "bed_comfort",
-      "check_in_out",
-      "leisure_location",
+      "transit_convenient",
       "noise",
-      "room_size",
-      "transit_convenient"
-    ],
-    "overall_rating_count": 2,
-    "overall_rating_avg": 3.0
+      "parking",
+      "family_amenities",
+      "leisure_location",
+      "bed_comfort",
+      "bathroom_quality",
+      "check_in_out",
+      "room_size"
+    ]
   },
   "db38b19b897dbece3e34919c662b3fd66d23b615395d11fb69264dd3a9b17723": {
     "location": "Broomfield, United States",
-    "star_rating": "4.4",
+    "star_rating": "4.0",
     "total_reviews": 1006,
     "reviews_with_text": 671,
     "frequently_mentioned": [
@@ -753,91 +747,97 @@
   },
   "e52d67a758ce4ad0229aacc97e5dfe89984c384c51a70208f9e0cc65c9cd4676": {
     "location": "Bangkok, Thailand",
-    "star_rating": "4.2",
-    "total_reviews": 50,
-    "reviews_with_text": 43,
+    "star_rating": "4.7",
+    "total_reviews": 53,
+    "reviews_with_text": 46,
     "frequently_mentioned": [
       {
         "label": "cleanliness",
         "count": 20,
-        "percentage": 46.5
+        "percentage": 43.5
       },
       {
         "label": "staff_service",
         "count": 10,
-        "percentage": 23.3
+        "percentage": 21.7
       },
       {
         "label": "noise",
         "count": 8,
-        "percentage": 18.6
+        "percentage": 17.4
       },
       {
         "label": "bed_comfort",
         "count": 7,
-        "percentage": 16.3
+        "percentage": 15.2
+      },
+      {
+        "label": "check_in_out",
+        "count": 5,
+        "percentage": 10.9
       },
       {
         "label": "walkability",
         "count": 5,
-        "percentage": 11.6
+        "percentage": 10.9
+      },
+      {
+        "label": "value_price",
+        "count": 4,
+        "percentage": 8.7
       },
       {
         "label": "food_dining",
         "count": 3,
-        "percentage": 7.0
+        "percentage": 6.5
       },
       {
-        "label": "check_in_out",
+        "label": "room_size",
         "count": 3,
-        "percentage": 7.0
+        "percentage": 6.5
       },
       {
-        "label": "value_price",
-        "count": 3,
-        "percentage": 7.0
-      },
-      {
-        "label": "transit_convenient",
+        "label": "accessibility",
         "count": 2,
-        "percentage": 4.7
-      },
-      {
-        "label": "breakfast",
-        "count": 2,
-        "percentage": 4.7
-      },
-      {
-        "label": "safety_perception",
-        "count": 2,
-        "percentage": 4.7
+        "percentage": 4.3
       },
       {
         "label": "bathroom_quality",
         "count": 2,
-        "percentage": 4.7
+        "percentage": 4.3
       },
       {
-        "label": "room_size",
+        "label": "breakfast",
         "count": 2,
-        "percentage": 4.7
+        "percentage": 4.3
       },
       {
-        "label": "accessibility",
+        "label": "safety_perception",
+        "count": 2,
+        "percentage": 4.3
+      },
+      {
+        "label": "transit_convenient",
+        "count": 2,
+        "percentage": 4.3
+      },
+      {
+        "label": "family_amenities",
         "count": 1,
-        "percentage": 2.3
+        "percentage": 2.2
       }
     ],
     "never_mentioned": [
-      "parking",
-      "family_amenities",
       "leisure_location",
+      "parking",
       "renovation_age"
-    ]
+    ],
+    "overall_rating_count": 3,
+    "overall_rating_avg": 4.7
   },
   "f2d8d9557208d58577e9df7ff34e42bf86fb5b10fdfae0c3040d14c374a2a2b9": {
     "location": "New Smyrna Beach, United States",
-    "star_rating": "3.5",
+    "star_rating": "2.0",
     "total_reviews": 152,
     "reviews_with_text": 141,
     "frequently_mentioned": [
@@ -933,14 +933,14 @@
   },
   "fa014137b3ea9af6a90c0a86a1d099e46f7e56d6eb33db1ad1ec4bdac68c3caa": {
     "location": "Monterey, United States",
-    "star_rating": "4.1",
-    "total_reviews": 728,
-    "reviews_with_text": 546,
+    "star_rating": "4.0",
+    "total_reviews": 729,
+    "reviews_with_text": 547,
     "frequently_mentioned": [
       {
         "label": "cleanliness",
         "count": 203,
-        "percentage": 37.2
+        "percentage": 37.1
       },
       {
         "label": "staff_service",
@@ -960,7 +960,7 @@
       {
         "label": "parking",
         "count": 86,
-        "percentage": 15.8
+        "percentage": 15.7
       },
       {
         "label": "bed_comfort",
@@ -989,8 +989,8 @@
       },
       {
         "label": "value_price",
-        "count": 32,
-        "percentage": 5.9
+        "count": 33,
+        "percentage": 6.0
       },
       {
         "label": "renovation_age",
@@ -1014,8 +1014,8 @@
       },
       {
         "label": "safety_perception",
-        "count": 10,
-        "percentage": 1.8
+        "count": 11,
+        "percentage": 2.0
       },
       {
         "label": "leisure_location",
@@ -1028,28 +1028,30 @@
         "percentage": 0.4
       }
     ],
-    "never_mentioned": []
+    "never_mentioned": [],
+    "overall_rating_count": 1,
+    "overall_rating_avg": 4.0
   },
   "ff26cdda236b233f7c481f0e896814075ac6bed335e162e0ff01d5491343f838": {
     "location": "Frisco, United States",
-    "star_rating": "3.6",
-    "total_reviews": 1065,
-    "reviews_with_text": 717,
+    "star_rating": "4.4",
+    "total_reviews": 1067,
+    "reviews_with_text": 719,
     "frequently_mentioned": [
       {
         "label": "staff_service",
         "count": 280,
-        "percentage": 39.1
+        "percentage": 38.9
       },
       {
         "label": "cleanliness",
-        "count": 278,
+        "count": 279,
         "percentage": 38.8
       },
       {
         "label": "food_dining",
         "count": 108,
-        "percentage": 15.1
+        "percentage": 15.0
       },
       {
         "label": "bed_comfort",
@@ -1067,14 +1069,14 @@
         "percentage": 7.5
       },
       {
-        "label": "noise",
-        "count": 47,
-        "percentage": 6.6
-      },
-      {
         "label": "check_in_out",
         "count": 47,
-        "percentage": 6.6
+        "percentage": 6.5
+      },
+      {
+        "label": "noise",
+        "count": 47,
+        "percentage": 6.5
       },
       {
         "label": "family_amenities",
@@ -1088,8 +1090,8 @@
       },
       {
         "label": "room_size",
-        "count": 28,
-        "percentage": 3.9
+        "count": 29,
+        "percentage": 4.0
       },
       {
         "label": "walkability",
@@ -1098,8 +1100,8 @@
       },
       {
         "label": "accessibility",
-        "count": 13,
-        "percentage": 1.8
+        "count": 14,
+        "percentage": 1.9
       },
       {
         "label": "safety_perception",
@@ -1120,10 +1122,15 @@
         "label": "transit_convenient",
         "count": 4,
         "percentage": 0.6
+      },
+      {
+        "label": "leisure_location",
+        "count": 1,
+        "percentage": 0.1
       }
     ],
-    "never_mentioned": [
-      "leisure_location"
-    ]
+    "never_mentioned": [],
+    "overall_rating_count": 5,
+    "overall_rating_avg": 4.4
   }
 }
