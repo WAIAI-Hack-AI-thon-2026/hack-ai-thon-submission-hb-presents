@@ -15,14 +15,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 try:
-    from .agent import decide_questions, generate_deepdive_followup, invalidate_evidence_profile_cache
+    from .agent import decide_questions, invalidate_evidence_profile_cache
     from .evidence_profiles import update_hotel_evidence_profile
     from .evidence_profiles import update_hotel_rating_profile
     from .ratings import parse_rating_payload
     from .schema import ReviewContext
     from .conflict_detection import resolve_conflict
 except ImportError:
-    from agent import decide_questions, generate_deepdive_followup, invalidate_evidence_profile_cache
+    from agent import decide_questions, invalidate_evidence_profile_cache
     from evidence_profiles import update_hotel_evidence_profile
     from evidence_profiles import update_hotel_rating_profile
     from ratings import parse_rating_payload

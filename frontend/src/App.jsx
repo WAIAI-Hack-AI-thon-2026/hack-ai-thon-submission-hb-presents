@@ -107,9 +107,11 @@ export default function App() {
   const [step,     setStep]     = useState('select')   // select|review|followup|done
   const [property, setProperty] = useState(null)
   const [questions, setQuestions] = useState([])
+  const [reviewText, setReviewText] = useState('')
 
   async function handleReviewSubmit({ rating, reviewText }) {
     // button already shows loading state; this resolves when done
+    setReviewText(reviewText)
     const qs = await analyzeReview({
       propertyId:  property.id,
       city:        property.city,
