@@ -4,7 +4,9 @@ Vercel serverless function — POST /api/analyze
 Input:  { propertyId, city, country, rating, reviewText }
 Output: { questions: [{ id, text, options }] }
 
-Wraps the deterministic backend agent (decide_questions).
+Stateless mode for serverless deployment:
+- keep OpenAI question generation enabled
+- skip persistent profile writes (filesystem is read-only on Vercel)
 """
 from http.server import BaseHTTPRequestHandler
 import json
@@ -14,8 +16,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 from schema import ReviewContext   # noqa: E402
-from agent import decide_questions, invalidate_evidence_profile_cache  # noqa: E402
-from evidence_profiles import update_hotel_rating_profile  # noqa: E402
+from agent import decide_questions  # noqa: E402
 from ratings import parse_rating_payload   # noqa: E402
 
 _CORS = {
@@ -56,14 +57,6 @@ class handler(BaseHTTPRequestHandler):
             overall_rating, sub_ratings = parse_rating_payload(body.get("rating"))
 
             property_id = str(body.get('propertyId', '') or '')
-            rating_profile_update = None
-            if property_id:
-                rating_profile_update = update_hotel_rating_profile(
-                    property_id=property_id,
-                    rating_payload=sub_ratings,
-                    submission_id=str(body.get("submissionId", "") or ""),
-                )
-                invalidate_evidence_profile_cache()
             ctx = ReviewContext(
                 review_id=f"r_{property_id or 'unknown'}",
                 property_id=property_id or "unknown",
@@ -85,7 +78,17 @@ class handler(BaseHTTPRequestHandler):
                 }
                 for q in decision.questions
             ]
-            _send(self, 200, {'questions': questions, 'profileUpdate': rating_profile_update})
+            _send(
+                self,
+                200,
+                {
+                    'questions': questions,
+                    'profileUpdate': {
+                        'updated': False,
+                        'skipped': 'stateless_mode',
+                    },
+                },
+            )
         except Exception as exc:
             _send(self, 500, {'error': str(exc)})
 

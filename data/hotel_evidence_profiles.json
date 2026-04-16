@@ -753,8 +753,8 @@
   },
   "e52d67a758ce4ad0229aacc97e5dfe89984c384c51a70208f9e0cc65c9cd4676": {
     "location": "Bangkok, Thailand",
-    "star_rating": "4.7",
-    "total_reviews": 53,
+    "star_rating": 4.7,
+    "total_reviews": 55,
     "reviews_with_text": 46,
     "frequently_mentioned": [
       {
@@ -838,8 +838,12 @@
       "parking",
       "renovation_age"
     ],
-    "overall_rating_count": 3,
-    "overall_rating_avg": 4.7
+    "overall_rating_count": 55,
+    "overall_rating_avg": 4.7,
+    "processed_submission_ids": [
+      "cbc8d32b-58f2-4f34-9db5-1cebe3ca2afd",
+      "3ec6c8fb-6f43-4b4d-a998-54676e72bba5"
+    ]
   },
   "f2d8d9557208d58577e9df7ff34e42bf86fb5b10fdfae0c3040d14c374a2a2b9": {
     "location": "New Smyrna Beach, United States",

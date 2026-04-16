@@ -2,7 +2,7 @@
 Vercel serverless function — POST /api/submit-followups
 
 Input:  { propertyId, questions, answers }
-Output: { updated, answeredQuestionCount, updatedLabels, profile }
+Output: { updated, skipped, answeredQuestionCount, updatedLabels, profile }
 """
 from http.server import BaseHTTPRequestHandler
 import json
@@ -10,9 +10,6 @@ import sys
 import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
-
-from agent import invalidate_evidence_profile_cache  # noqa: E402
-from evidence_profiles import update_hotel_evidence_profile  # noqa: E402
 
 _CORS = {
     'Access-Control-Allow-Origin':  '*',
@@ -53,16 +50,28 @@ class handler(BaseHTTPRequestHandler):
             _send(self, 400, {'error': 'propertyId is required'})
             return
 
-        try:
-            result = update_hotel_evidence_profile(
-                property_id=property_id,
-                questions=body.get('questions') or [],
-                answers=body.get('answers') or {},
+        # Stateless mode for serverless deployment: accept the payload
+        # but skip persistence to avoid read-only filesystem errors.
+        answers = body.get('answers') or {}
+        if isinstance(answers, dict):
+            answered_count = len(
+                [value for value in answers.values() if str(value).strip()]
             )
-            invalidate_evidence_profile_cache()
-            _send(self, 200, result)
-        except Exception as exc:
-            _send(self, 500, {'error': str(exc)})
+        else:
+            answered_count = 0
+
+        _send(
+            self,
+            200,
+            {
+                'updated': False,
+                'skipped': 'stateless_mode',
+                'propertyId': property_id,
+                'answeredQuestionCount': answered_count,
+                'updatedLabels': [],
+                'profile': None,
+            },
+        )
 
     def log_message(self, fmt, *args):
         pass
