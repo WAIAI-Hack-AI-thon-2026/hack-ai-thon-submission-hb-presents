@@ -15,6 +15,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 from schema import ReviewContext   # noqa: E402
 from agent import decide_questions         # noqa: E402
+from evidence_profiles import update_hotel_rating_profile  # noqa: E402
 from ratings import parse_rating_payload   # noqa: E402
 
 _CORS = {
@@ -55,6 +56,12 @@ class handler(BaseHTTPRequestHandler):
             overall_rating, sub_ratings = parse_rating_payload(body.get("rating"))
 
             property_id = str(body.get('propertyId', '') or '')
+            rating_profile_update = None
+            if property_id:
+                rating_profile_update = update_hotel_rating_profile(
+                    property_id=property_id,
+                    rating_payload=sub_ratings,
+                )
             ctx = ReviewContext(
                 review_id=f"r_{property_id or 'unknown'}",
                 property_id=property_id or "unknown",
@@ -70,11 +77,13 @@ class handler(BaseHTTPRequestHandler):
                     'id': q.qid,
                     'text': q.text_en,
                     'options': q.options,
+                    'role': q.role,
+                    'aspect': q.aspect.value,
                     'reasoning': decision.rationale.get(q.qid, ''),
                 }
                 for q in decision.questions
             ]
-            _send(self, 200, {'questions': questions})
+            _send(self, 200, {'questions': questions, 'profileUpdate': rating_profile_update})
         except Exception as exc:
             _send(self, 500, {'error': str(exc)})
 

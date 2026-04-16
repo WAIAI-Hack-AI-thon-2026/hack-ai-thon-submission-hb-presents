@@ -16,11 +16,13 @@ from pydantic import BaseModel
 
 try:
     from .agent import decide_questions, generate_deepdive_followup
+    from .evidence_profiles import update_hotel_rating_profile
     from .ratings import parse_rating_payload
     from .schema import ReviewContext
     from .conflict_detection import resolve_conflict
 except ImportError:
     from agent import decide_questions, generate_deepdive_followup
+    from evidence_profiles import update_hotel_rating_profile
     from ratings import parse_rating_payload
     from schema import ReviewContext
     from conflict_detection import resolve_conflict
@@ -86,6 +88,12 @@ def analyze(body: AnalyzeInput):
         raise HTTPException(status_code=400, detail="reviewText cannot be empty")
 
     overall_rating, sub_ratings = parse_rating_payload(body.rating)
+    rating_profile_update = None
+    if body.propertyId:
+        rating_profile_update = update_hotel_rating_profile(
+            property_id=body.propertyId,
+            rating_payload=sub_ratings,
+        )
 
     review_ctx = ReviewContext(
         review_id=f"r_{body.propertyId or 'unknown'}",
@@ -113,7 +121,8 @@ def analyze(body: AnalyzeInput):
                 "reasoning": decision.rationale.get(q.qid, ""),
             }
             for q in decision.questions
-        ]
+        ],
+        "profileUpdate": rating_profile_update,
     }
 
 

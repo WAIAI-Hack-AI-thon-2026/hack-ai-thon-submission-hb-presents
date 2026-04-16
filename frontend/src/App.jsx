@@ -33,6 +33,7 @@ async function analyzeReview(payload) {
     clearTimeout(timer)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
+    console.log('[/api/analyze] profile update:', data.profileUpdate)
     if (!Array.isArray(data.questions) || data.questions.length === 0)
       throw new Error('Empty questions')
     return data.questions
