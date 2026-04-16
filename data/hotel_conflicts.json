@@ -1,0 +1,1760 @@
+{
+  "9a0043fd4258a1286db1e253ca591662b3aac849da12d0d4f67e08b8f59be65f": {
+    "conflicts": [
+      {
+        "status": "stale_issue",
+        "negative_snippet": "gative side, there are no fridges in rooms and tv reception was poor.   also there used to be a very good res",
+        "negative_date": "2023-07-17",
+        "negative_age_days": 1003,
+        "positive_snippet": "very helpful and friendly staff; great food and friendly service.",
+        "positive_date": "2023-03-17",
+        "positive_age_days": 1125,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 4,
+        "topic": "staff_service"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "nälla och trevliga på hotellet. tyvärr hade jag klantat mig och bokat fel men det löste personalen smid",
+        "negative_date": "2023-03-17",
+        "negative_age_days": 1125,
+        "positive_snippet": "nice hotel clean quiet and close to public transit we had everythi",
+        "positive_date": "2024-07-12",
+        "positive_age_days": 642,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 5,
+        "topic": "cleanliness"
+      }
+    ]
+  },
+  "db38b19b897dbece3e34919c662b3fd66d23b615395d11fb69264dd3a9b17723": {
+    "conflicts": [
+      {
+        "status": "conflicting",
+        "negative_snippet": "the hotel and services were top notch. definitely worth the stay",
+        "negative_date": "2025-12-20",
+        "negative_age_days": 116,
+        "positive_snippet": "it was worth the price. good restraunts, staff,location, clean,pool/hot",
+        "positive_date": "2025-10-13",
+        "positive_age_days": 184,
+        "total_negative_mentions": 11,
+        "total_positive_mentions": 23,
+        "topic": "value_price"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "taff was very friendly and eager to please. upper pool was closed due to a broken pump for more than 3 d",
+        "negative_date": "2025-10-21",
+        "negative_age_days": 176,
+        "positive_snippet": "the price. good restraunts, staff,location, clean,pool/hot tub area",
+        "positive_date": "2025-10-13",
+        "positive_age_days": 184,
+        "total_negative_mentions": 14,
+        "total_positive_mentions": 92,
+        "topic": "family_amenities"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "pgrades to return it to former glory. the limited staff was very friendly and eager to please. upper pool",
+        "negative_date": "2025-10-21",
+        "negative_age_days": 176,
+        "positive_snippet": "denver. high marks for the friendly, professional staff and beautiful seating areas inside and out. on si",
+        "positive_date": "2026-01-22",
+        "positive_age_days": 83,
+        "total_negative_mentions": 16,
+        "total_positive_mentions": 237,
+        "topic": "staff_service"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "letely ignores us on nearly every interaction for food.",
+        "negative_date": "2025-08-31",
+        "negative_age_days": 227,
+        "positive_snippet": "d beautiful seating areas inside and out. on site dining options were a plus. we won’t hesitate to book he",
+        "positive_date": "2026-01-22",
+        "positive_age_days": 83,
+        "total_negative_mentions": 17,
+        "total_positive_mentions": 73,
+        "topic": "food_dining"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "have my reservation. hot tub didn't work. restuarant we understaffed. i will try somewhere else next t",
+        "negative_date": "2025-10-27",
+        "negative_age_days": 170,
+        "positive_snippet": "nctioning for flush. bed comfortable and room was clean and quiet. spa we had great massages but unable t",
+        "positive_date": "2025-12-26",
+        "positive_age_days": 110,
+        "total_negative_mentions": 24,
+        "total_positive_mentions": 162,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "restaurant was very slow. the breakfast.",
+        "negative_date": "2025-05-11",
+        "negative_age_days": 339,
+        "positive_snippet": "clean place great space to relax and hot breakfast with healthy options.",
+        "positive_date": "2025-11-16",
+        "positive_age_days": 150,
+        "total_negative_mentions": 8,
+        "total_positive_mentions": 17,
+        "topic": "breakfast"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "resort fee. they didn't have my reservation. hot tub didn't work. restuarant we understaffed. i will t",
+        "negative_date": "2025-10-27",
+        "negative_age_days": 170,
+        "positive_snippet": "easons:\nroom had missing knob to hang clothes and toilet was slow functioning for flush. bed comfortable a",
+        "positive_date": "2025-12-26",
+        "positive_age_days": 110,
+        "total_negative_mentions": 27,
+        "total_positive_mentions": 29,
+        "topic": "bathroom_quality"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "ad to set up the bed ourselves which being such a small room involved having to rearranged furniture. that is",
+        "negative_date": "2024-02-06",
+        "negative_age_days": 799,
+        "positive_snippet": "f was very helpful and kind! the hotel was clean, spacious. both restaurants on site were great. the hot tub",
+        "positive_date": "2025-11-16",
+        "positive_age_days": 150,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 14,
+        "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "oom was dirty with food on the floor right by the bed, tray with ice bucket was really dirty, refrigera",
+        "negative_date": "2024-11-05",
+        "negative_age_days": 526,
+        "positive_snippet": "lothes and toilet was slow functioning for flush. bed comfortable and room was clean and quiet. spa we",
+        "positive_date": "2025-12-26",
+        "positive_age_days": 110,
+        "total_negative_mentions": 8,
+        "total_positive_mentions": 62,
+        "topic": "bed_comfort"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "upon check in, we were told there was a smoker friendly event h",
+        "negative_date": "2025-08-31",
+        "negative_age_days": 227,
+        "positive_snippet": "great checking in!",
+        "positive_date": "2026-01-10",
+        "positive_age_days": 95,
+        "total_negative_mentions": 8,
+        "total_positive_mentions": 16,
+        "topic": "check_in_out"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "ly above average hotel chain, this place is under renovation and should charge accordingly!",
+        "negative_date": "2024-12-28",
+        "negative_age_days": 473,
+        "positive_snippet": "clean with updated rooms and amenities",
+        "positive_date": "2025-11-01",
+        "positive_age_days": 165,
+        "total_negative_mentions": 11,
+        "total_positive_mentions": 31,
+        "topic": "renovation_age"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "nience. it is located near a shopping mall. ample parking. the hotel room was average - nothing extraordina",
+        "negative_date": "2023-12-19",
+        "negative_age_days": 848,
+        "positive_snippet": "y to room was frigid, which was crazy. large free parking lot was great. spa was nice, friendly staff and g",
+        "positive_date": "2025-11-10",
+        "positive_age_days": 156,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 14,
+        "topic": "parking"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "ere was a smoker friendly event happening. it was loud, took up most of the outdoor space and services,",
+        "negative_date": "2025-08-31",
+        "negative_age_days": 227,
+        "positive_snippet": "for flush. bed comfortable and room was clean and quiet. spa we had great massages but unable to use the",
+        "positive_date": "2025-12-26",
+        "positive_age_days": 110,
+        "total_negative_mentions": 11,
+        "total_positive_mentions": 23,
+        "topic": "noise"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "elevators were terrible (always long waits). pool bar closed at 7pm which is too early...should stay open unt",
+        "negative_date": "2023-08-03",
+        "negative_age_days": 986,
+        "positive_snippet": "oulder is withing 15 mins drive and a lot of nice restaurants withing a close driving distance, we really loved it.",
+        "positive_date": "2025-06-16",
+        "positive_age_days": 303,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 6,
+        "topic": "walkability"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "our calls and be extremely rude when you walk downstairs to speak to them. i also find it ridiculous that",
+        "negative_date": "2025-03-11",
+        "negative_age_days": 400,
+        "positive_snippet": "area was clean.  overall a very nice stay but the elevators and the common areas of our floor were not clean",
+        "positive_date": "2025-05-28",
+        "positive_age_days": 322,
+        "total_negative_mentions": 8,
+        "total_positive_mentions": 4,
+        "topic": "accessibility"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "prompt and courteous in fixing the issues, for a resort style hotel, it was not worth the value.",
+        "negative_date": "2023-03-17",
+        "negative_age_days": 1125,
+        "positive_snippet": "great place. scenic. clean. i would stay again.",
+        "positive_date": "2025-08-31",
+        "positive_age_days": 227,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 7,
+        "topic": "leisure_location"
+      }
+    ]
+  },
+  "ff26cdda236b233f7c481f0e896814075ac6bed335e162e0ff01d5491343f838": {
+    "conflicts": [
+      {
+        "status": "conflicting",
+        "negative_snippet": "ey charged my room and again on my credit card. \n\npool area has stained towels. seating stained and torn",
+        "negative_date": "2025-10-24",
+        "negative_age_days": 173,
+        "positive_snippet": "i liked this property. the outdoor pool is charming, and the bar and front desk staff wer",
+        "positive_date": "2025-07-21",
+        "positive_age_days": 268,
+        "total_negative_mentions": 9,
+        "total_positive_mentions": 19,
+        "topic": "family_amenities"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "d well. it couldve used a small sitting area with couch instead of a table . the lighting was terrible an",
+        "negative_date": "2026-01-04",
+        "negative_age_days": 101,
+        "positive_snippet": "clean and great beds.",
+        "positive_date": "2025-11-29",
+        "positive_age_days": 137,
+        "total_negative_mentions": 10,
+        "total_positive_mentions": 74,
+        "topic": "bed_comfort"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "was told by front desk across from the restaurant that dinner is served till 10 pm. i walk over to",
+        "negative_date": "2025-02-10",
+        "negative_age_days": 429,
+        "positive_snippet": ". but breakfast is a great price and it was great food and a perfect add-on",
+        "positive_date": "2026-01-12",
+        "positive_age_days": 93,
+        "total_negative_mentions": 15,
+        "total_positive_mentions": 64,
+        "topic": "food_dining"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "hower pan/floor was dingy, though not apparently \"dirty\". it could stand to have some zep applied to brig",
+        "negative_date": "2025-12-15",
+        "negative_age_days": 121,
+        "positive_snippet": "would stay again. very attentive staff, clean safe location.",
+        "positive_date": "2026-01-05",
+        "positive_age_days": 100,
+        "total_negative_mentions": 21,
+        "total_positive_mentions": 233,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "again on my credit card. \n\npool area has stained towels. seating stained and torn.  water ice cold could",
+        "negative_date": "2025-10-24",
+        "negative_age_days": 173,
+        "positive_snippet": ", the room was nicely decorated and laid out.\nthe shower water pressure?? severely lacking. also,  the sho",
+        "positive_date": "2025-12-15",
+        "positive_age_days": 121,
+        "total_negative_mentions": 14,
+        "total_positive_mentions": 29,
+        "topic": "bathroom_quality"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "roperty this is a 5 star hotel without the 5 star price  thanks!!!!!!!!!!!",
+        "negative_date": "2023-04-25",
+        "negative_age_days": 1086,
+        "positive_snippet": "kies and even breakfast. but breakfast is a great price and it was great food and a perfect add-on",
+        "positive_date": "2026-01-12",
+        "positive_age_days": 93,
+        "total_negative_mentions": 5,
+        "total_positive_mentions": 25,
+        "topic": "value_price"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "we were not able to get any rest due to this loud noise coming from the air conditioning unit. i had requ",
+        "negative_date": "2024-03-28",
+        "negative_age_days": 748,
+        "positive_snippet": "ven let me borrow a pair of scissors quality room quiet room beautiful property.",
+        "positive_date": "2025-12-12",
+        "positive_age_days": 124,
+        "total_negative_mentions": 8,
+        "total_positive_mentions": 36,
+        "topic": "noise"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "i thought everything was professional done and have no complaints.",
+        "negative_date": "2025-09-10",
+        "negative_age_days": 217,
+        "positive_snippet": "would stay again. very attentive staff, clean safe location.",
+        "positive_date": "2026-01-05",
+        "positive_age_days": 100,
+        "total_negative_mentions": 18,
+        "total_positive_mentions": 223,
+        "topic": "staff_service"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "t anything really bad about property except maybe parking and appearance of shower...\nparking- convenient a",
+        "negative_date": "2024-11-21",
+        "negative_age_days": 510,
+        "positive_snippet": "nice. friendly and quick check in process. great parking. amenities are awesome. the bar is spectacular. l",
+        "positive_date": "2025-04-08",
+        "positive_age_days": 372,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 8,
+        "topic": "parking"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "we were able to check in an hour early. the hotel was convenient to shoppi",
+        "negative_date": "2025-10-07",
+        "negative_age_days": 190,
+        "positive_snippet": "as only open from 4pm to 11pm. one nice thing was check out was at noon instead of 11am",
+        "positive_date": "2025-12-01",
+        "positive_age_days": 135,
+        "total_negative_mentions": 9,
+        "total_positive_mentions": 22,
+        "topic": "check_in_out"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "we were not told about breakfast",
+        "negative_date": "2025-12-20",
+        "negative_age_days": 116,
+        "positive_snippet": "oices of add-ons such as wine or cookies and even breakfast. but breakfast is a great price and it was great",
+        "positive_date": "2026-01-12",
+        "positive_age_days": 93,
+        "total_negative_mentions": 7,
+        "total_positive_mentions": 30,
+        "topic": "breakfast"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "he restaurant that dinner is served till 10 pm. i walk over to the restaurant and get told the restaurant closes early and stop",
+        "negative_date": "2025-02-10",
+        "negative_age_days": 429,
+        "positive_snippet": "py hour and a very good restaurant. the hotel was walking distance from shopping and restaurants.",
+        "positive_date": "2025-05-06",
+        "positive_age_days": 344,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 10,
+        "topic": "walkability"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "nd dining.\nmy stay was short but my room was very spacious. it was unusually cold, temps in the 20’s and i c",
+        "negative_date": "2025-02-10",
+        "negative_age_days": 429,
+        "positive_snippet": "the staff was great. the room was spacious  and clean but not designed well. it couldve used",
+        "positive_date": "2026-01-04",
+        "positive_age_days": 101,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 25,
+        "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "w issues that i just don't understand.  first the elevators.  they are slow.. but the main issue is it has a",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "eautiful facility with a lovely dining area. it’s accessible to the star and other areas around frisco. the st",
+        "positive_date": "2025-11-09",
+        "positive_age_days": 157,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 7,
+        "topic": "accessibility"
+      }
+    ]
+  },
+  "3216b1b7885bffdb336265a8de7322ba0cd477cfb3d4f99d19acf488f76a1941": {
+    "conflicts": [
+      {
+        "status": "conflicting",
+        "negative_snippet": "in blanket/not a comforter.\nfridge has a leak.\nno room service.\n\nin short, you get what you paid for.",
+        "negative_date": "2025-04-22",
+        "negative_age_days": 358,
+        "positive_snippet": "great location. near by wells fargo bank, seafood restaurant and other stores. parking lot look clean and safe",
+        "positive_date": "2025-01-07",
+        "positive_age_days": 463,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 5,
+        "topic": "food_dining"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "i arrived there was no record of the request and no elevators.",
+        "negative_date": "2025-11-18",
+        "negative_age_days": 148,
+        "positive_snippet": "e ground floor and could really hear the people upstairs.",
+        "positive_date": "2025-01-26",
+        "positive_age_days": 444,
+        "total_negative_mentions": 7,
+        "total_positive_mentions": 5,
+        "topic": "accessibility"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "the night, very noisy, also the room wasn’t that clean, the have a chair with fabric that was very dirty",
+        "negative_date": "2025-12-24",
+        "negative_age_days": 112,
+        "positive_snippet": "check in a friendly staff with no problem at all. clean room with with comfortable bed nice shower overra",
+        "positive_date": "2026-02-06",
+        "positive_age_days": 68,
+        "total_negative_mentions": 63,
+        "total_positive_mentions": 168,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "o the office and they said they were turned off. \nbreakfast was a joke, cold cereal and tiny muffins and the",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "rooms were nice and clean.. breakfast was good. they had security in night which made m",
+        "positive_date": "2025-05-06",
+        "positive_age_days": 344,
+        "total_negative_mentions": 9,
+        "total_positive_mentions": 16,
+        "topic": "breakfast"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "ne room, but after i explained my situation, they went above and beyond to accommodate us by allowing us to continue in t",
+        "negative_date": "2025-04-14",
+        "negative_age_days": 366,
+        "positive_snippet": "it was easy to check in a friendly staff with no problem at all. clean room with with comf",
+        "positive_date": "2026-02-06",
+        "positive_age_days": 68,
+        "total_negative_mentions": 9,
+        "total_positive_mentions": 117,
+        "topic": "staff_service"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "ok for the price.\nvery thin blanket/not a comforter.\nfridge has a",
+        "negative_date": "2025-04-22",
+        "negative_age_days": 358,
+        "positive_snippet": "the property is a good deal and worth the price.",
+        "positive_date": "2025-12-02",
+        "positive_age_days": 134,
+        "total_negative_mentions": 13,
+        "total_positive_mentions": 28,
+        "topic": "value_price"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "my sheets were dirty, there was ants coming out from behin",
+        "negative_date": "2025-05-20",
+        "negative_age_days": 330,
+        "positive_snippet": "problem at all. clean room with with comfortable bed nice shower overrall a wonderful say.",
+        "positive_date": "2026-02-06",
+        "positive_age_days": 68,
+        "total_negative_mentions": 37,
+        "total_positive_mentions": 68,
+        "topic": "bed_comfort"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "the wifi is very slow. the room is clean though. bathroom is bigger than the bedroom.",
+        "negative_date": "2025-10-18",
+        "negative_age_days": 179,
+        "positive_snippet": "at all. clean room with with comfortable bed nice shower overrall a wonderful say.",
+        "positive_date": "2026-02-06",
+        "positive_age_days": 68,
+        "total_negative_mentions": 29,
+        "total_positive_mentions": 35,
+        "topic": "bathroom_quality"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "it’s quite noisy here. the wifi is very slow. the room is clean th",
+        "negative_date": "2025-10-18",
+        "negative_age_days": 179,
+        "positive_snippet": "great stay, friendly staff, quiet area. would book here again 100%",
+        "positive_date": "2025-10-22",
+        "positive_age_days": 175,
+        "total_negative_mentions": 21,
+        "total_positive_mentions": 30,
+        "topic": "noise"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "eady gone.\nthe access to the hotel is convenient, parking is free.\nthe street on which the hotel is located",
+        "negative_date": "2024-04-23",
+        "negative_age_days": 722,
+        "positive_snippet": "check in. room was great and nice comfortable bed parking on site and in n out right down the block!",
+        "positive_date": "2026-02-02",
+        "positive_age_days": 72,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 38,
+        "topic": "parking"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "i felt safer there than at a bigger hotel",
+        "negative_date": "2024-05-20",
+        "negative_age_days": 695,
+        "positive_snippet": "as good. they had security in night which made me feel safe. staff is very friendly and helpful",
+        "positive_date": "2025-05-06",
+        "positive_age_days": 344,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 13,
+        "topic": "safety_perception"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "checked in, went upstairs and the room was filthy! the “whit",
+        "negative_date": "2025-03-11",
+        "negative_age_days": 400,
+        "positive_snippet": "it was easy to check in a friendly staff with no problem at all. clean ro",
+        "positive_date": "2026-02-06",
+        "positive_age_days": 68,
+        "total_negative_mentions": 7,
+        "total_positive_mentions": 39,
+        "topic": "check_in_out"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "wifi is very slow. the room is clean though. bathroom is bigger than the bedroom.",
+        "negative_date": "2025-10-18",
+        "negative_age_days": 179,
+        "positive_snippet": "an room with cable comfortable bed and a/c heater spacious room overall a great stay here always!",
+        "positive_date": "2025-12-05",
+        "positive_age_days": 131,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 18,
+        "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "e about the first room not being dirty. they also barged in the next morning after we had asked for an early check out",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "esh a/c nice staff always there to help nice area stores close by",
+        "positive_date": "2025-06-18",
+        "positive_age_days": 301,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 5,
+        "topic": "walkability"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "ably 10  years old, very uncomfortable for me and older hotel needs upgrading, my daughter‘s room had a few coc",
+        "negative_date": "2025-02-03",
+        "negative_age_days": 436,
+        "positive_snippet": "to soft not firm. area was ok looks like they are remodeling so the rooms are nice maybe when i return in c",
+        "positive_date": "2025-08-19",
+        "positive_age_days": 239,
+        "total_negative_mentions": 6,
+        "total_positive_mentions": 10,
+        "topic": "renovation_age"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "an air mattress with very minimal linens and the sofa bed was like a camping cot. the shower had terrible w",
+        "negative_date": "2025-04-14",
+        "negative_age_days": 366,
+        "positive_snippet": "an room with cable comfortable bed and a/c heater spacious room overall a great stay here always!",
+        "positive_date": "2025-12-05",
+        "positive_age_days": 131,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 6,
+        "topic": "family_amenities"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "i didn't like there was no free shuttle to the airport.",
+        "negative_date": "2024-07-21",
+        "negative_age_days": 633,
+        "positive_snippet": "s very helpful on directions to get to the public transit blue line.  church and good latino food nearby.",
+        "positive_date": "2024-11-05",
+        "positive_age_days": 526,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 1,
+        "topic": "transit_convenient"
+      }
+    ]
+  },
+  "823fb2499b4e37d99acb65e7198e75965d6496fd1c579f976205c0e6179206df": {
+    "conflicts": [
+      {
+        "status": "conflicting",
+        "negative_snippet": "aurants nearby. had a great dinner at the chinese restaurant “ old chengdu restaurante cinese sichuan” about 5",
+        "negative_date": "2025-11-12",
+        "negative_age_days": 154,
+        "positive_snippet": "pful. adam at the front desk was awesome. on site restaurant had good food and service. included breakfast buf",
+        "positive_date": "2025-10-13",
+        "positive_age_days": 184,
+        "total_negative_mentions": 6,
+        "total_positive_mentions": 33,
+        "topic": "food_dining"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "when arriving at the train station. our sink was clogged and the shampoo would not pump (and we could not",
+        "negative_date": "2025-10-14",
+        "negative_age_days": 183,
+        "positive_snippet": "blestone streets can be awfully rough). rooms and bathrooms are spacious, ac works well, elevators are fine and staff is f",
+        "positive_date": "2025-09-18",
+        "positive_age_days": 209,
+        "total_negative_mentions": 6,
+        "total_positive_mentions": 28,
+        "topic": "bathroom_quality"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "very pleased with this hotel.  my wife’s mobility scooter broke down and this hotel allowed us to s",
+        "negative_date": "2025-10-07",
+        "negative_age_days": 190,
+        "positive_snippet": "rooms and bathrooms are spacious, ac works well, elevators are fine and staff is friendly. breakfast is ava",
+        "positive_date": "2025-09-18",
+        "positive_age_days": 209,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 4,
+        "topic": "accessibility"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "ort.  (or vice versa.)  the hotel is located only steps from rome termini.  the rooms are small but well-appoi",
+        "negative_date": "2025-05-02",
+        "negative_age_days": 348,
+        "positive_snippet": "om the sun but the air conditioning helps.\n\nshort walkable distance to roma termini.\n\none of the very few pl",
+        "positive_date": "2025-09-30",
+        "positive_age_days": 197,
+        "total_negative_mentions": 10,
+        "total_positive_mentions": 21,
+        "topic": "walkability"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "room, the weird sink, it actually isn’t too bad. breakfast is reasonably priced, and just downstairs making",
+        "negative_date": "2025-09-30",
+        "negative_age_days": 197,
+        "positive_snippet": "ful hotel. friendly staff, clean rooms, delicious breakfast. would definitely stay there again.",
+        "positive_date": "2025-12-14",
+        "positive_age_days": 122,
+        "total_negative_mentions": 7,
+        "total_positive_mentions": 57,
+        "topic": "breakfast"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "“ tour is just outside the hotel. a lot of restaurants nearby. had a great dinner at the chinese restau",
+        "negative_date": "2025-11-12",
+        "negative_age_days": 154,
+        "positive_snippet": "clean room, staff courteous and helpful.",
+        "positive_date": "2025-12-24",
+        "positive_age_days": 112,
+        "total_negative_mentions": 13,
+        "total_positive_mentions": 144,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "baby , location is great and room was ready with baby crib when we arrived , breakfast is ok , no bottled wa",
+        "negative_date": "2023-02-28",
+        "negative_age_days": 1142,
+        "positive_snippet": "nice and spacious room. helpful staff at the reception. very convenient",
+        "positive_date": "2025-12-25",
+        "positive_age_days": 111,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 10,
+        "topic": "family_amenities"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "it’s easy to go to the bus and train station. the staff is good and the morning buffet is good. however t",
+        "negative_date": "2025-04-17",
+        "negative_age_days": 363,
+        "positive_snippet": "staff was awesome, extremely polite and helpful. locati",
+        "positive_date": "2025-12-27",
+        "positive_age_days": 109,
+        "total_negative_mentions": 7,
+        "total_positive_mentions": 149,
+        "topic": "staff_service"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": ".\n\none of the very few places to have a king size bed. \n\nthe chair and sink are terrible. the chair is",
+        "negative_date": "2025-09-30",
+        "negative_age_days": 197,
+        "positive_snippet": "was also very convenient. rooms were comfortable. bed and pillows were great. bathrooms were the only m",
+        "positive_date": "2025-10-13",
+        "positive_age_days": 184,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 53,
+        "topic": "bed_comfort"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "e stayed at the hotel for about five days. on our checkout date, we discovered a bed bug in our room and imm",
+        "negative_date": "2025-06-09",
+        "negative_age_days": 310,
+        "positive_snippet": "easy check in, very close to the train station, great area for",
+        "positive_date": "2025-10-29",
+        "positive_age_days": 168,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 11,
+        "topic": "check_in_out"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "very convenient since the hotel is near termini station.",
+        "negative_date": "2024-12-09",
+        "negative_age_days": 492,
+        "positive_snippet": "rinks at the bar woth appetizers.  loved location close to roma train terminal",
+        "positive_date": "2025-11-04",
+        "positive_age_days": 162,
+        "total_negative_mentions": 13,
+        "total_positive_mentions": 76,
+        "topic": "transit_convenient"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "tel is located only steps from rome termini.  the rooms are small but well-appointed and clean.  the bar/restaurant",
+        "negative_date": "2025-05-02",
+        "negative_age_days": 348,
+        "positive_snippet": "nice and spacious room. helpful staff at the reception. very conven",
+        "positive_date": "2025-12-25",
+        "positive_age_days": 111,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 25,
+        "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "leaving the platforms. the mini bar had the same price as the main bar which is rare and useful. superma",
+        "negative_date": "2024-07-02",
+        "negative_age_days": 652,
+        "positive_snippet": "onventionally located near rome's termini station worth two metro stops in the area and plenty of dining",
+        "positive_date": "2025-08-16",
+        "positive_age_days": 242,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 19,
+        "topic": "value_price"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "entral esp in terms of transportation. it is also safe despite being next to train station and not noisy",
+        "negative_date": "2024-06-08",
+        "negative_age_days": 676,
+        "positive_snippet": "clean, peaceful and safe. extremely accessible and connected via bus and t",
+        "positive_date": "2025-06-09",
+        "positive_age_days": 310,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 11,
+        "topic": "safety_perception"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "l the room was very small and washroom needs some renovation especially the bathrub.",
+        "negative_date": "2024-06-02",
+        "negative_age_days": 682,
+        "positive_snippet": "r from the hotel. \nthe room is spacious and newly renovated. the staff are very friendly. excellent customer",
+        "positive_date": "2025-11-12",
+        "positive_age_days": 154,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 3,
+        "topic": "renovation_age"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "all night construction noise across the street was very challenging! \nno notic",
+        "negative_date": "2024-10-29",
+        "negative_age_days": 533,
+        "positive_snippet": "staff was friendly and hotel was clean and quiet",
+        "positive_date": "2025-12-13",
+        "positive_age_days": 123,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 15,
+        "topic": "noise"
+      }
+    ]
+  },
+  "fa014137b3ea9af6a90c0a86a1d099e46f7e56d6eb33db1ad1ec4bdac68c3caa": {
+    "conflicts": [
+      {
+        "status": "conflicting",
+        "negative_snippet": "y row, and tons of restaurants and shops. we felt safe walking around at night—even our 21-year-old son walki",
+        "negative_date": "2025-07-22",
+        "negative_age_days": 267,
+        "positive_snippet": "loved the location and that we could walk and felt safe after dark. free parking and a good breakfast. ve",
+        "positive_date": "2025-01-14",
+        "positive_age_days": 456,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 3,
+        "topic": "safety_perception"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "as a huge time suck for a family of 4 with mature children that need privacy.",
+        "negative_date": "2025-07-21",
+        "negative_age_days": 268,
+        "positive_snippet": "ulous and spacious for 2 adults, 2 teens, and one child. cvs is also nearby which was convenient for us w",
+        "positive_date": "2025-03-22",
+        "positive_age_days": 389,
+        "total_negative_mentions": 6,
+        "total_positive_mentions": 17,
+        "topic": "family_amenities"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "ep good especially from the street noise smallest bathroom i have ever seen in a hotel could not even use th",
+        "negative_date": "2025-09-29",
+        "negative_age_days": 198,
+        "positive_snippet": "room has the sink, toilet, and shower all in the bathroom. this made it very hard for 4 of us to get ready",
+        "positive_date": "2025-07-21",
+        "positive_age_days": 268,
+        "total_negative_mentions": 5,
+        "total_positive_mentions": 6,
+        "topic": "bathroom_quality"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "w and 10 minutes away from old fisherman’s wharf (walking distance).\n\nbreakfast is included and includes all that yo",
+        "negative_date": "2025-07-26",
+        "negative_age_days": 263,
+        "positive_snippet": "this |MASK| inn is centrally located. walking distance to the wharf & cannerary row.\nthe hotel was clean",
+        "positive_date": "2026-01-15",
+        "positive_age_days": 90,
+        "total_negative_mentions": 7,
+        "total_positive_mentions": 67,
+        "topic": "walkability"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "ha la hora de check in, estube afuera del cuarto esperando 20 min, porqu",
+        "negative_date": "2025-06-07",
+        "negative_age_days": 312,
+        "positive_snippet": "the receptionist at check-in wasn't very friendly. breakfast could be better w",
+        "positive_date": "2025-12-12",
+        "positive_age_days": 124,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 18,
+        "topic": "check_in_out"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "closed to shipping and restaurants",
+        "negative_date": "2025-11-01",
+        "negative_age_days": 165,
+        "positive_snippet": "clean rooms, great staff, definitely recommend",
+        "positive_date": "2026-01-26",
+        "positive_age_days": 79,
+        "total_negative_mentions": 14,
+        "total_positive_mentions": 159,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "y from old fisherman’s wharf (walking distance).\n\nbreakfast is included and includes all that you may need, f",
+        "negative_date": "2025-07-26",
+        "negative_age_days": 263,
+        "positive_snippet": "he room was perfect. the staff was courteous. the breakfast was very good. we really enjoyed our stay.",
+        "positive_date": "2026-02-05",
+        "positive_age_days": 69,
+        "total_negative_mentions": 7,
+        "total_positive_mentions": 145,
+        "topic": "breakfast"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "everything looks old, dirty and outdated. all kick boards are missing since the carpet was",
+        "negative_date": "2024-05-04",
+        "negative_age_days": 711,
+        "positive_snippet": "we had a very clean, newly updated room.  it was a perfect spot for us while traveli",
+        "positive_date": "2025-08-10",
+        "positive_age_days": 248,
+        "total_negative_mentions": 5,
+        "total_positive_mentions": 20,
+        "topic": "renovation_age"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "SK| hotels and the room we got was small. the two beds looked like full and not queen sized beds. the tw",
+        "negative_date": "2025-12-24",
+        "negative_age_days": 112,
+        "positive_snippet": "ugh for all 5 people.  very clean and comfortable bed. breakfast was great! very satisfying.",
+        "positive_date": "2025-12-26",
+        "positive_age_days": 110,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 69,
+        "topic": "bed_comfort"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "too many steps. no elevator access on higher floors.",
+        "negative_date": "2024-12-12",
+        "negative_age_days": 489,
+        "positive_snippet": "times at night and in the morning. easy to hear upstairs and next door neighbors. also noticed the door t",
+        "positive_date": "2025-02-07",
+        "positive_age_days": 432,
+        "total_negative_mentions": 9,
+        "total_positive_mentions": 9,
+        "topic": "accessibility"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "otel is adequate, and has convenient under ground parking.  however, during my stay, it was full of young c",
+        "negative_date": "2025-11-02",
+        "negative_age_days": 164,
+        "positive_snippet": "everything was great except parking.",
+        "positive_date": "2026-01-10",
+        "positive_age_days": 95,
+        "total_negative_mentions": 12,
+        "total_positive_mentions": 57,
+        "topic": "parking"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "somewhat overpriced.",
+        "negative_date": "2024-10-13",
+        "negative_age_days": 549,
+        "positive_snippet": "omer service, close to everything in cannery row, affordable compared to other hotels next to it\nwill come bac",
+        "positive_date": "2025-10-25",
+        "positive_age_days": 172,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 17,
+        "topic": "value_price"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "e due to the central atrium design of the hotel.  staff unsuccessfully tried to control the children, how",
+        "negative_date": "2025-11-02",
+        "negative_age_days": 164,
+        "positive_snippet": "everything was great. the room was perfect. the staff was courteous. the breakfast was very good. we re",
+        "positive_date": "2026-02-05",
+        "positive_age_days": 69,
+        "total_negative_mentions": 8,
+        "total_positive_mentions": 158,
+        "topic": "staff_service"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "t a starbucks? just a few minutes walk or a small coffee shop literally across the street. lots of little beach",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "really nice and helpful. loved they did breakfast buffet to",
+        "positive_date": "2025-12-10",
+        "positive_age_days": 126,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 20,
+        "topic": "food_dining"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "mily of five only stayed one night, but there was enough room for us all. the tv was a little small considering",
+        "negative_date": "2025-02-04",
+        "negative_age_days": 435,
+        "positive_snippet": "the room was big enough for all 5 people.  very clean and comforta",
+        "positive_date": "2025-12-26",
+        "positive_age_days": 110,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 37,
+        "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "hotel running around the floor, causing a lot of noise due to the central atrium design of the hotel.  s",
+        "negative_date": "2025-11-02",
+        "negative_age_days": 164,
+        "positive_snippet": "o the wharf & cannerary row.\nthe hotel was clean, quiet, & the breakfast was good.",
+        "positive_date": "2026-01-15",
+        "positive_age_days": 90,
+        "total_negative_mentions": 19,
+        "total_positive_mentions": 23,
+        "topic": "noise"
+      }
+    ]
+  },
+  "7d027ef72c02eaa17af3c993fd5dba50d17b41a6280389a46c13c7e2c32a5b06": {
+    "conflicts": [
+      {
+        "status": "conflicting",
+        "negative_snippet": "o and exit from property was thru a gas station.  parking limited with no parking designated for checking i",
+        "negative_date": "2026-01-30",
+        "negative_age_days": 75,
+        "positive_snippet": "king and indoor pool was  heated very nice , also parking easy , breakfast nice.",
+        "positive_date": "2024-10-17",
+        "positive_age_days": 545,
+        "total_negative_mentions": 18,
+        "total_positive_mentions": 8,
+        "topic": "parking"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "dooes not spend any money on maintenance. indoor pool with broken heater. room was ok with the exceptio",
+        "negative_date": "2026-02-06",
+        "negative_age_days": 68,
+        "positive_snippet": "i loved the warm indoor pool on a cold night. exceptional hospitality. right o",
+        "positive_date": "2026-01-21",
+        "positive_age_days": 84,
+        "total_negative_mentions": 18,
+        "total_positive_mentions": 21,
+        "topic": "family_amenities"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "ken heater. room was ok with the exception of the bathroom. shower rod looked like it was used as a chin up",
+        "negative_date": "2026-02-06",
+        "negative_age_days": 68,
+        "positive_snippet": "ni fridge and microwave. also came with 4 sets of towels including hand towels which worked out for my da",
+        "positive_date": "2026-01-21",
+        "positive_age_days": 84,
+        "total_negative_mentions": 72,
+        "total_positive_mentions": 21,
+        "topic": "bathroom_quality"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "large enough to find a place to stay while car in shop and close to restaurants, stores and lyft and uber are quic",
+        "negative_date": "2025-06-16",
+        "negative_age_days": 303,
+        "positive_snippet": "located right off the highway, restaurants close by,  provided everything i needed with friendly s",
+        "positive_date": "2023-03-02",
+        "positive_age_days": 1140,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 3,
+        "topic": "walkability"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "right next to the expressway on an off ramp. very noisy in the rooms facing it. no chairs or benches to s",
+        "negative_date": "2025-12-22",
+        "negative_age_days": 114,
+        "positive_snippet": "it was very clean, bed was super comfy and it was quiet for being right next to the interstate.",
+        "positive_date": "2025-11-19",
+        "positive_age_days": 147,
+        "total_negative_mentions": 24,
+        "total_positive_mentions": 15,
+        "topic": "noise"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "t work, staff was ok but powerless, room was very worn.",
+        "negative_date": "2025-12-10",
+        "negative_age_days": 126,
+        "positive_snippet": "the room was dated, but clean. i stood around for 15-20 min waiting",
+        "positive_date": "2025-07-15",
+        "positive_age_days": 274,
+        "total_negative_mentions": 22,
+        "total_positive_mentions": 15,
+        "topic": "renovation_age"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "e road to the hilton. it was more expensive but i felt safer there.",
+        "negative_date": "2024-01-23",
+        "negative_age_days": 813,
+        "positive_snippet": "had to park in the gas station next door at 1am.  not very comfortable with that. the plus side michelle was fantastic t",
+        "positive_date": "2023-09-05",
+        "positive_age_days": 953,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 4,
+        "topic": "safety_perception"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": ". i went down the road to the hilton. it was more expensive but i felt safer there.",
+        "negative_date": "2024-01-23",
+        "negative_age_days": 813,
+        "positive_snippet": "nice place and decent price.  the breakfast could have been better choices of",
+        "positive_date": "2025-12-21",
+        "positive_age_days": 115,
+        "total_negative_mentions": 9,
+        "total_positive_mentions": 11,
+        "topic": "value_price"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "machines were not workin g so i had to go to the gross gas station next door to get water. the hotel sit",
+        "negative_date": "2025-12-22",
+        "negative_age_days": 114,
+        "positive_snippet": "rooms were clean and great pillows!",
+        "positive_date": "2026-01-26",
+        "positive_age_days": 79,
+        "total_negative_mentions": 65,
+        "total_positive_mentions": 95,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "phone didn’t work, staff was ok but powerless, room was very worn.",
+        "negative_date": "2025-12-10",
+        "negative_age_days": 126,
+        "positive_snippet": "xcellent and had superior customer service. susan went above and beyond the call of duty assisting us with our handicap a",
+        "positive_date": "2026-01-24",
+        "positive_age_days": 81,
+        "total_negative_mentions": 35,
+        "total_positive_mentions": 92,
+        "topic": "staff_service"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "o their thing unless you have a toy size dog! the vending machines were not workin g so i had to go to the",
+        "negative_date": "2025-12-22",
+        "negative_age_days": 114,
+        "positive_snippet": "ity. right off the highway and surrounded by many food options. sam's club close by to refuel or if you",
+        "positive_date": "2026-01-21",
+        "positive_age_days": 84,
+        "total_negative_mentions": 12,
+        "total_positive_mentions": 15,
+        "topic": "food_dining"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "not bother us and it has a small indoor pool and breakfast.",
+        "negative_date": "2025-06-16",
+        "negative_age_days": 303,
+        "positive_snippet": "sible room. marcie was great with assisting us at breakfast. she greeted us daily with a smile and recognized",
+        "positive_date": "2026-01-24",
+        "positive_age_days": 81,
+        "total_negative_mentions": 18,
+        "total_positive_mentions": 53,
+        "topic": "breakfast"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "very difficult to access, parking is tight, room was cramped and lacked amenities,",
+        "negative_date": "2024-02-13",
+        "negative_age_days": 792,
+        "positive_snippet": "rooms are very spacious and clean.",
+        "positive_date": "2024-04-26",
+        "positive_age_days": 719,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 14,
+        "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "te after shortly learning i mistakingly booked an handicapped room (not needed) after a long and sore 3+ car",
+        "negative_date": "2025-11-19",
+        "negative_age_days": 147,
+        "positive_snippet": "and beyond the call of duty assisting us with our handicap accessible room. marcie was great with assisting",
+        "positive_date": "2026-01-24",
+        "positive_age_days": 81,
+        "total_negative_mentions": 12,
+        "total_positive_mentions": 11,
+        "topic": "accessibility"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "rought it to the attention of the desk clerk upon checkout, and she was very receptive to the information.",
+        "negative_date": "2024-12-03",
+        "negative_age_days": 498,
+        "positive_snippet": "nvenience this had never happened to me before. i checked in courty yard marriott waaay better anyway",
+        "positive_date": "2025-06-13",
+        "positive_age_days": 306,
+        "total_negative_mentions": 20,
+        "total_positive_mentions": 17,
+        "topic": "check_in_out"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "there were bugs in my bed biting me. i have a huge red bug bite on my chest",
+        "negative_date": "2025-08-04",
+        "negative_age_days": 254,
+        "positive_snippet": "rooms were clean and great pillows!",
+        "positive_date": "2026-01-26",
+        "positive_age_days": 79,
+        "total_negative_mentions": 27,
+        "total_positive_mentions": 46,
+        "topic": "bed_comfort"
+      }
+    ]
+  },
+  "3b984f3ba8df55b2609a1e33fd694cf8407842e1d833c9b4d993b07fc83a2820": {
+    "conflicts": [
+      {
+        "status": "stale_issue",
+        "negative_snippet": "smatched tiles...no smoke detectors...no fridge...breakfast was very basic...there must be more fruit choices",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "very nice. everyone was great. breakfast was great",
+        "positive_date": "2023-03-02",
+        "positive_age_days": 1140,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 1,
+        "topic": "breakfast"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "ore fruit choices then pineapple and watermelon?  food was cold...but coffee was hot. casino a friendly",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "room was very affordable and clean. the in-house restaurant had excellent and very affordable food with priva",
+        "positive_date": "2023-03-02",
+        "positive_age_days": 1140,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 2,
+        "topic": "food_dining"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "|MASK| is an old hotel and casino that was bought and remodeled by the s",
+        "negative_date": "2024-12-27",
+        "negative_age_days": 474,
+        "positive_snippet": ". needs new towels(they're wear off) , bathrooms renovation( facets, drains, shower handle, head shower) new",
+        "positive_date": "2023-03-16",
+        "positive_age_days": 1126,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 2,
+        "topic": "renovation_age"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "e was no wifi in the room and it was a little bit noisy because a bar there is right in from of the room,",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": null,
+        "positive_date": null,
+        "positive_age_days": null,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 0,
+        "topic": "noise"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": ". it's in a busy part of town with the casino downstairs.",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": null,
+        "positive_date": null,
+        "positive_age_days": null,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 0,
+        "topic": "accessibility"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "icacion en el centro de pz, el casino y el restaurante todo bien el servicio al cliente muy bien. las h",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "the hotel is quirky and different. the room was clean and spacious. beautiful bathroom and shower. a le",
+        "positive_date": "2025-04-04",
+        "positive_age_days": 376,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 8,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "the room was small..bed very comfortable...bathroom adequate....some mism",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "comfortable",
+        "positive_date": "2025-01-15",
+        "positive_age_days": 455,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 3,
+        "topic": "bed_comfort"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "the room was small..bed very comfortable...bathroom adequate....some mismatched tiles...no smoke dete",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "erent. the room was clean and spacious. beautiful bathroom and shower. a let down that there was no good wat",
+        "positive_date": "2025-04-04",
+        "positive_age_days": 376,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 3,
+        "topic": "bathroom_quality"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "small room, not like the pictures. in the pictures the room",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "l is quirky and different. the room was clean and spacious. beautiful bathroom and shower. a let down that t",
+        "positive_date": "2025-04-04",
+        "positive_age_days": 376,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 2,
+        "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "the job. not as noisy as other people say. hotel parking only fits 3 cars.",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "location to downtown. very friendly staff. gated parking. lots of restaurants within walking distance.",
+        "positive_date": "2023-03-16",
+        "positive_age_days": 1126,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 1,
+        "topic": "parking"
+      }
+    ]
+  },
+  "f2d8d9557208d58577e9df7ff34e42bf86fb5b10fdfae0c3040d14c374a2a2b9": {
+    "conflicts": [
+      {
+        "status": "conflicting",
+        "negative_snippet": "iture was stained and gross. the place smelled of mold. what was really upsetting was the pictures onlin",
+        "negative_date": "2025-10-19",
+        "negative_age_days": 178,
+        "positive_snippet": "it's the best use of our limited dollars when we want to visit new smyrna. and, it's a short walk to ch",
+        "positive_date": "2023-03-17",
+        "positive_age_days": 1125,
+        "total_negative_mentions": 15,
+        "total_positive_mentions": 39,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "ot recommend this place are comforter, sheets and bed covered in stuff all layers it was disgusting, th",
+        "negative_date": "2025-09-23",
+        "negative_age_days": 204,
+        "positive_snippet": "xtremely nice and the room was cleaned daily. the bed could have been more comfortable. i did enjoy the",
+        "positive_date": "2023-03-17",
+        "positive_age_days": 1125,
+        "total_negative_mentions": 8,
+        "total_positive_mentions": 14,
+        "topic": "bed_comfort"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "g. old school keys as well, no key cards. minimal parking - most of which is in the sand. ramp to the beach",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "cation. very pricey for accomadations. not enough parking spaces!",
+        "positive_date": "2023-03-02",
+        "positive_age_days": 1140,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 3,
+        "topic": "parking"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "se a makeover, but the location is superb and the price can't be beat. we've stayed before, we'll stay ag",
+        "negative_date": "2023-03-17",
+        "negative_age_days": 1125,
+        "positive_snippet": "it was a wonderful facility for the price and the staff was always helpful.",
+        "positive_date": "2023-03-17",
+        "positive_age_days": 1125,
+        "total_negative_mentions": 5,
+        "total_positive_mentions": 16,
+        "topic": "value_price"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "an i apologize, that didn’t help us with morning shower!  also no soap only shampoo in the shower! not a",
+        "negative_date": "2024-02-14",
+        "negative_age_days": 791,
+        "positive_snippet": "oking condition. the room was a bit dated and the bathroom needs to be remodeled but overall was ok.",
+        "positive_date": "2023-03-16",
+        "positive_age_days": 1126,
+        "total_negative_mentions": 9,
+        "total_positive_mentions": 6,
+        "topic": "bathroom_quality"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "th this place, just a nice, okay sort of stay. an older hotel, it could use a makeover, but the location is sup",
+        "negative_date": "2023-03-17",
+        "negative_age_days": 1125,
+        "positive_snippet": "ll repairing irma damage. interior clean but very dated.",
+        "positive_date": "2023-03-16",
+        "positive_age_days": 1126,
+        "total_negative_mentions": 13,
+        "total_positive_mentions": 12,
+        "topic": "renovation_age"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "a plus. we got a room by the pool which was very noisy on friday evening.",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "orrect.\nthe staff very good and happy\nthe room is quiet but the odor was not very good.\nthe pool is vert",
+        "positive_date": "2023-03-02",
+        "positive_age_days": 1140,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 1,
+        "topic": "noise"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "the worst i have ever experienced. complained on checkout..but got no satisfaction.\ni never ever write revi",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "hotel was very clean and well maintained.  upon checkout the office was not open as the information sheet",
+        "positive_date": "2023-03-16",
+        "positive_age_days": 1126,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 2,
+        "topic": "check_in_out"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "at disturbed me was the poor lighting  around the staircases.  the night of arrival we had difficulty fin",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "had a balcony with good view of beach and ocean. \nno elevators with only exterior stairs was major difficulty.",
+        "positive_date": "2023-03-16",
+        "positive_age_days": 1126,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 1,
+        "topic": "accessibility"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "te entrance back to hotel property. nearby we had breakfast place (cj's) within 0.5 miles.",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "comfortable and the location is great. there is a breakfast place have a mile south that was really good. 7-e",
+        "positive_date": "2023-03-02",
+        "positive_age_days": 1140,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 1,
+        "topic": "breakfast"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "right away. that was a plus. we got a room by the pool which was very noisy on friday evening.",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "stay was ok  rooms were nice  pool was nice and  clean",
+        "positive_date": "2023-03-17",
+        "positive_age_days": 1125,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 18,
+        "topic": "family_amenities"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "older property, badly remodeled, nice location, staff alright.",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "it was a wonderful facility for the price and the staff was always helpful.",
+        "positive_date": "2023-03-17",
+        "positive_age_days": 1125,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 30,
+        "topic": "staff_service"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "y small unless you rent an efficiency and the bathrooms even smaller.  but unless you plan to spend much time in you",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "clean and spacious with a lot of amenities. great beach access. the",
+        "positive_date": "2023-03-16",
+        "positive_age_days": 1126,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 4,
+        "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "beach with a little playground nearby. also it is safe for kids since you can walk over one block and th",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "comfortable. i did enjoy the facility and i felt very safe..",
+        "positive_date": "2023-03-17",
+        "positive_age_days": 1125,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 3,
+        "topic": "safety_perception"
+      }
+    ]
+  },
+  "110f01b8ae518a0ee41047bce5c22572988a435e10ead72dc1af793bba8ce0b0": {
+    "conflicts": [
+      {
+        "status": "conflicting",
+        "negative_snippet": "ternoon or evening… since they are few steps from train station and entrance to pompeii. but pretty affordable an",
+        "negative_date": "2025-10-02",
+        "negative_age_days": 195,
+        "positive_snippet": "ean. bathroom was spacious and clean. right next btrain station. very good breakfast. right next to |MASK| ruins",
+        "positive_date": "2025-08-05",
+        "positive_age_days": 253,
+        "total_negative_mentions": 6,
+        "total_positive_mentions": 8,
+        "topic": "transit_convenient"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "the tv didn't work, no hot drink facilities, the shower was only a trickle and the room was very dark. th",
+        "negative_date": "2026-01-01",
+        "negative_age_days": 104,
+        "positive_snippet": "aff. room was spacious for family of five. clean. bathroom was spacious and clean. right next btrain station",
+        "positive_date": "2025-08-05",
+        "positive_age_days": 253,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 3,
+        "topic": "bathroom_quality"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "very noisy , not a spot for easy afternoon or evening… since",
+        "negative_date": "2025-10-02",
+        "negative_age_days": 195,
+        "positive_snippet": "sort of \"dead\" after dark. if you want peace and quiet, except for the train passing thru, then stay her",
+        "positive_date": "2025-09-28",
+        "positive_age_days": 199,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 8,
+        "topic": "noise"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "ain to the station at the hotel otherwise it’s an expensive taxi ride from the other station- lesson learned.",
+        "negative_date": "2026-02-05",
+        "negative_age_days": 69,
+        "positive_snippet": "ourteous, room was clean, good location, and good value for money",
+        "positive_date": "2025-11-04",
+        "positive_age_days": 162,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 6,
+        "topic": "value_price"
+      },
+      {
+        "status": "conflicting",
+        "negative_snippet": "te villa, about 10 mins walk from the main hotel. parking was available a few doors away in the grounds of",
+        "negative_date": "2026-01-01",
+        "negative_age_days": 104,
+        "positive_snippet": "cafe / restaurant / convenience store across the parking lot.  it is close to the archeological park and a",
+        "positive_date": "2025-12-02",
+        "positive_age_days": 134,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 2,
+        "topic": "parking"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "of the neighbours talking and moving around. for breakfast we had to walk back to the main hotel each mornin",
+        "negative_date": "2026-01-01",
+        "negative_age_days": 104,
+        "positive_snippet": "lean - looked recently renovated, helpful staff.  breakfast was included at the restaurant across the street",
+        "positive_date": "2026-02-05",
+        "positive_age_days": 69,
+        "total_negative_mentions": 5,
+        "total_positive_mentions": 17,
+        "topic": "breakfast"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "nært sentralstasjonen, arkeologisk park og restauranter. veldig trivelig personale, god service og info",
+        "negative_date": "2025-10-14",
+        "negative_age_days": 183,
+        "positive_snippet": "ly made the time there more enjoyable.  hotel was clean - looked recently renovated, helpful staff.  brea",
+        "positive_date": "2026-02-05",
+        "positive_age_days": 69,
+        "total_negative_mentions": 7,
+        "total_positive_mentions": 30,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "ast at |MASK|.  the room was incredibly small and bed was hard as a rock.  we got the old switch-a-roo.",
+        "negative_date": "2025-07-24",
+        "negative_age_days": 265,
+        "positive_snippet": "s but very clean rooms. classic tiles everywhere. beds were decent. breakfast was great, espresso bar, p",
+        "positive_date": "2025-10-05",
+        "positive_age_days": 192,
+        "total_negative_mentions": 4,
+        "total_positive_mentions": 4,
+        "topic": "bed_comfort"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "h morning, for a small continental breakfast. the staff were very pleasant, and the location could not be",
+        "negative_date": "2026-01-01",
+        "negative_age_days": 104,
+        "positive_snippet": "le.  hotel was clean - looked recently renovated, helpful staff.  breakfast was included at the restaurant across",
+        "positive_date": "2026-02-05",
+        "positive_age_days": 69,
+        "total_negative_mentions": 3,
+        "total_positive_mentions": 31,
+        "topic": "staff_service"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "every morning. there are not many options to eat dinner late in the evening that are in walking distance,",
+        "negative_date": "2025-09-28",
+        "negative_age_days": 199,
+        "positive_snippet": "ed, helpful staff.  breakfast was included at the restaurant across the street and there was lots of parking.",
+        "positive_date": "2026-02-05",
+        "positive_age_days": 69,
+        "total_negative_mentions": 5,
+        "total_positive_mentions": 9,
+        "topic": "food_dining"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "s there. \n\nthe room was small but comfortable. we checked in late. our room was not ready, but housekeeping go",
+        "negative_date": "2023-03-16",
+        "negative_age_days": 1126,
+        "positive_snippet": "we check in after midnight and the front desk gentleman was v",
+        "positive_date": "2024-05-20",
+        "positive_age_days": 695,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 2,
+        "topic": "check_in_out"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "room was too small, bath room/restroom is way too small",
+        "negative_date": "2024-10-14",
+        "negative_age_days": 548,
+        "positive_snippet": "staff are friendly and very helpful, rooms are spacious and clean",
+        "positive_date": "2025-10-18",
+        "positive_age_days": 179,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 2,
+        "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "for easy afternoon or evening… since they are few steps from train station and entrance to pompeii. but pretty",
+        "negative_date": "2025-10-02",
+        "negative_age_days": 195,
+        "positive_snippet": "is a great place to stay.  the entrance is a one minute walk and it’s not the entrance most groups use so you",
+        "positive_date": "2026-02-05",
+        "positive_age_days": 69,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 6,
+        "topic": "walkability"
+      }
+    ]
+  },
+  "e52d67a758ce4ad0229aacc97e5dfe89984c384c51a70208f9e0cc65c9cd4676": {
+    "conflicts": [
+      {
+        "status": "conflicting",
+        "negative_snippet": "n bloom. |MASK| only downside was |MASK| wet-room bathroom — |MASK| shower leaked and left |MASK| floor wet",
+        "negative_date": "2025-12-04",
+        "negative_age_days": 132,
+        "positive_snippet": "ng that i didn’t like was |MASK| toilet in |MASK| shower , but that is so popular in thailand 🤗",
+        "positive_date": "2023-03-02",
+        "positive_age_days": 1140,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 1,
+        "topic": "bathroom_quality"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "i picked this hotel based on reviews and area. check in was fast and easy. our room was on |MASK| 2nd flo",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": null,
+        "positive_date": null,
+        "positive_age_days": null,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 0,
+        "topic": "check_in_out"
+      },
+      {
+        "status": "stale_issue",
+        "negative_snippet": "fast and easy. our room was on |MASK| 2nd floor, no elevators so you do have to carry your luggage up flights.",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": null,
+        "positive_date": null,
+        "positive_age_days": null,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 0,
+        "topic": "accessibility"
+      }
+    ],
+    "resolved": [
+      {
+        "status": "resolved",
+        "negative_snippet": "lk to |MASK| khao san road. any small nice restaurants near.\na beautiful old mansion made to a hotel.\nb",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "room was clean and simple. just what we needed! |MASK| location",
+        "positive_date": "2026-01-18",
+        "positive_age_days": 87,
+        "total_negative_mentions": 2,
+        "total_positive_mentions": 13,
+        "topic": "cleanliness"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "barco a las principales atracciones de la ciudad tranquilo limpio y el personal muy amable",
+        "negative_date": "2025-03-21",
+        "negative_age_days": 390,
+        "positive_snippet": "longer than ideal.\n\n|MASK| location is perfect: a quiet street but steps from great restaurants, shops, a",
+        "positive_date": "2025-12-04",
+        "positive_age_days": 132,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 6,
+        "topic": "noise"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "m was small but fits 2 people great. they offer a safe and a robe in |MASK| closet and shampoo, soap, to",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "beautifully decorated, great, safe and clean for |MASK| price.",
+        "positive_date": "2024-04-04",
+        "positive_age_days": 741,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 1,
+        "topic": "safety_perception"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "itioner worked great, our room was nice and cold. room was small but fits 2 people great. they offer a safe and a",
+        "negative_date": "2023-03-02",
+        "negative_age_days": 1140,
+        "positive_snippet": "spacious and clean room. staff was exceptional! very nice",
+        "positive_date": "2023-04-09",
+        "positive_age_days": 1102,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 1,
+        "topic": "room_size"
+      }
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 """
-Follow-up Question Agent — 2-slot design, powered by OpenAI.
+Follow-up Question Agent — 2+1 slot design, powered by OpenAI.
 
 Entry point: `decide_questions(review_text_or_ctx, property_id) -> AgentDecision`
 
@@ -10,6 +10,11 @@ Slot 2 — INFORMATION GAP
     Data-driven: picks from the hotel's least-covered evidence labels
     (loaded from hotel_evidence_profiles.json + aspect_dictionary.json)
     to fill missing information.
+
+Slot 3 — CONFLICT RESOLUTION  (conditional)
+    Only appears when past reviews contain contradictory or unresolved
+    signals on the same topic.  Asks the current guest to confirm the
+    latest status so the conflict can be marked resolved.
 """
 from __future__ import annotations
 
@@ -25,9 +30,11 @@ from openai import OpenAI
 try:
     from .schema import AgentDecision, Aspect, Question, ResponseType, ReviewContext
     from .evidence_analysis import match_labels
+    from .conflict_detection import get_active_conflicts
 except ImportError:
     from schema import AgentDecision, Aspect, Question, ResponseType, ReviewContext
     from evidence_analysis import match_labels
+    from conflict_detection import get_active_conflicts
 
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
@@ -41,7 +48,7 @@ ALLOWED_RESPONSE_TYPES = [
     ResponseType.FREE_TEXT.value,
     ResponseType.PRIVATE_TEXT.value,
 ]
-ALLOWED_ROLES = ["comment_deepdive", "information_gap"]
+ALLOWED_ROLES = ["comment_deepdive", "information_gap", "conflict_resolution"]
 
 # ── Data caches ──────────────────────────────────────────────────────────
 _aspect_dict: dict | None = None
@@ -242,10 +249,46 @@ def _build_response_schema() -> dict:
     }
 
 
+def _build_conflict_context(conflicts: list[dict]) -> str:
+    """Format conflict records into a prompt section for Slot 3."""
+    if not conflicts:
+        return ""
+
+    STATUS_DESC = {
+        "conflicting": "Recent reviews DISAGREE — one says good, another says bad.",
+        "persistent": "Multiple guests reported this issue and no one has confirmed it's fixed.",
+        "stale_issue": "A past guest reported this issue long ago. No recent review mentions it — unknown if fixed.",
+    }
+
+    lines: list[str] = []
+    for c in conflicts:
+        desc = STATUS_DESC.get(c["status"], c["status"])
+        neg_snip = c.get("negative_snippet", "")[:200]
+        pos_snip = c.get("positive_snippet") or ""
+        pos_snip = pos_snip[:200]
+
+        block = (
+            f"  Topic: **{c['topic']}**  |  Status: {c['status'].upper()}\n"
+            f"  {desc}\n"
+            f"  ⚠️ THE SPECIFIC ISSUE — extract the concrete detail from this snippet for your question:\n"
+            f"  Negative review ({c.get('negative_date', '?')}, {c.get('negative_age_days', '?')} days ago):\n"
+            f'    "{neg_snip}"\n'
+        )
+        if pos_snip:
+            block += (
+                f"  Contradicting positive review ({c.get('positive_date', '?')}, {c.get('positive_age_days', '?')} days ago):\n"
+                f'    "{pos_snip}"\n'
+            )
+        lines.append(block)
+
+    return "\n".join(lines)
+
+
 def _build_prompt(
     review_text: str,
     gap_aspects: list[dict],
     guest_rating_context: str,
+    conflicts: list[dict] | None = None,
 ) -> str:
     # Format gap aspects for the prompt
     gap_lines: list[str] = []
@@ -258,8 +301,68 @@ def _build_prompt(
         )
     gap_context = "\n\n".join(gap_lines) if gap_lines else "  No specific gaps identified — use your best judgment."
 
+    has_conflicts = bool(conflicts)
+    conflict_context = _build_conflict_context(conflicts) if has_conflicts else ""
+    total_questions = 3 if has_conflicts else 2
+
+    # Slot 3 section (only when conflicts exist)
+    slot3_section = ""
+    if has_conflicts:
+        slot3_section = f"""
+
+═══════════════════════════════════════════════════════
+QUESTION 3 — CONFLICT RESOLUTION  (role: "conflict_resolution")
+═══════════════════════════════════════════════════════
+Past reviews for this hotel contain CONTRADICTORY or UNRESOLVED signals on the topic(s) below.
+Ask the current guest about the SPECIFIC issue so we can resolve the conflict.
+
+{conflict_context}
+
+Rules for Q3:
+- The question MUST reference the SPECIFIC scenario from the snippets above, NOT the generic topic category.
+  Good: "A previous guest mentioned the upper pool was closed due to a broken pump. Was the pool available during your stay?"
+  Good: "Some past guests reported mold in the bathroom. Did you notice any issues with bathroom cleanliness?"
+  Good: "A guest mentioned no fridges in the rooms. Was there a fridge in your room?"
+  Bad:  "How was the cleanliness during your stay?"  ← TOO VAGUE, do not do this
+  Bad:  "How were the family amenities?"  ← TOO VAGUE, do not do this
+- Extract the concrete detail from the negative_snippet (broken pump, mold, missing fridge, etc.) and ask about that specific thing.
+- Frame neutrally — do NOT assume the issue still exists or is fixed.
+- Use `quick_tap` with options specific to the scenario, e.g.: "Pool was open and working", "Pool was still closed/broken", "Didn't use the pool".
+  Do NOT use generic options like "Working fine" / "Still an issue".
+- Include the conflict topic as the `aspect`.
+- DEDUPLICATION: If Q1 or Q2 already covers the same aspect as the conflict, SKIP this conflict and pick the next one from the list. If no non-overlapping conflict exists, do NOT generate Q3 — return only 2 questions.
+- The `reason` field MUST mention the specific issue from past reviews (not just "contradictory signals").
+"""
+
+    # Output rules
+    if has_conflicts:
+        output_rules = f"""═══════════════════════════════════════════════════════
+OUTPUT RULES
+═══════════════════════════════════════════════════════
+1. Return 2 or 3 questions: Q1 "comment_deepdive", Q2 "information_gap", and optionally Q3 "conflict_resolution".
+   - Include Q3 ONLY if the conflict topic does NOT overlap with Q1 or Q2's aspect. If it overlaps, return only 2 questions.
+2. Use `quick_tap` for single-choice, `multi_select` when multiple answers apply, `free_text` only when options would be too limiting.
+3. Provide 4-6 concrete, scenario-specific options for quick_tap/multi_select. Include "Other" only when it genuinely helps.
+4. Each question must use one of these aspects: {", ".join(ALLOWED_ASPECTS)}.
+5. Each question needs a short `reason` explaining why you asked it.
+6. Use qids: "q_deepdive_01" for Q1, "q_gap_01" for Q2, "q_conflict_01" for Q3.
+7. Make questions concise, friendly, and actionable. Avoid generic phrases like "Anything else?" or "How was X during your stay?"
+8. Set `private` to true only for sensitive issues (hygiene, safety, pests)."""
+    else:
+        output_rules = f"""═══════════════════════════════════════════════════════
+OUTPUT RULES
+═══════════════════════════════════════════════════════
+1. Return exactly 2 questions: Q1 with role "comment_deepdive", Q2 with role "information_gap".
+2. Use `quick_tap` for single-choice, `multi_select` when multiple answers apply, `free_text` only when options would be too limiting.
+3. Provide 4-6 concrete options for quick_tap/multi_select. Include "Other" only when it genuinely helps.
+4. Each question must use one of these aspects: {", ".join(ALLOWED_ASPECTS)}.
+5. Each question needs a short `reason` explaining why you asked it.
+6. Use qids: "q_deepdive_01" for Q1, "q_gap_01" for Q2.
+7. Make questions concise, friendly, and actionable. Avoid generic phrases like "Anything else?"
+8. Set `private` to true only for sensitive issues (hygiene, safety, pests)."""
+
     return f"""You are a hotel review follow-up agent.
-Generate exactly 2 follow-up questions for the guest who just submitted a review.
+Generate exactly {total_questions} follow-up questions for the guest who just submitted a review.
 
 ═══════════════════════════════════════════════════════
 QUESTION 1 — COMMENT DEEP-DIVE  (role: "comment_deepdive")
@@ -292,18 +395,8 @@ Rules for Q2:
   Example: if the guest stayed with family, a "family_amenities" gap question feels natural.
 - Do NOT repeat anything the guest already covered in their review.
 - If the gap aspect has 0% coverage, this is the highest priority — the hotel has ZERO data on this topic.
-
-═══════════════════════════════════════════════════════
-OUTPUT RULES
-═══════════════════════════════════════════════════════
-1. Return exactly 2 questions: Q1 with role "comment_deepdive", Q2 with role "information_gap".
-2. Use `quick_tap` for single-choice, `multi_select` when multiple answers apply, `free_text` only when options would be too limiting.
-3. Provide 4-6 concrete options for quick_tap/multi_select. Include "Other" only when it genuinely helps.
-4. Each question must use one of these aspects: {", ".join(ALLOWED_ASPECTS)}.
-5. Each question needs a short `reason` explaining why you asked it.
-6. Use qids: "q_deepdive_01" for Q1, "q_gap_01" for Q2.
-7. Make questions concise, friendly, and actionable. Avoid generic phrases like "Anything else?"
-8. Set `private` to true only for sensitive issues (hygiene, safety, pests).
+{slot3_section}
+{output_rules}
 
 ═══════════════════════════════════════════════════════
 GUEST INPUT
@@ -343,11 +436,20 @@ def decide_questions(
     # Find this hotel's lowest-coverage aspects, excluding already-mentioned ones
     gap_aspects = _get_gap_aspects(resolved_pid or "", review_mentioned)
 
+    # Check for unresolved conflicts on this property
+    conflicts: list[dict] = []
+    if resolved_pid:
+        try:
+            conflicts = get_active_conflicts(resolved_pid, top_n=1)
+        except Exception:
+            conflicts = []
+
     # Build context
     guest_rating_context = _build_guest_rating_context(review_text_or_ctx)
 
     # Build prompt and call OpenAI
-    prompt = _build_prompt(review_text, gap_aspects, guest_rating_context)
+    max_q = 3 if conflicts else 2
+    prompt = _build_prompt(review_text, gap_aspects, guest_rating_context, conflicts)
 
     client = OpenAI()
     model = os.getenv("OPENAI_MODEL", DEFAULT_OPENAI_MODEL)
@@ -359,12 +461,12 @@ def decide_questions(
                 "content": [{"type": "input_text", "text": prompt}],
             }
         ],
-        max_output_tokens=1200,
+        max_output_tokens=1800 if max_q > 2 else 1200,
         text={"format": _build_response_schema()},
     )
 
     parsed = json.loads(response.output_text.strip())
-    generated = parsed.get("questions", [])[:MAX_QUESTIONS]
+    generated = parsed.get("questions", [])[:max_q]
 
     questions: list[Question] = []
     rationale: dict[str, str] = {}
@@ -393,3 +495,89 @@ def decide_questions(
         rationale=rationale,
         skipped=skipped,
     )
+
+
+# ── Deep-dive follow-up (dynamic, after Q1 answer) ────────────────────
+
+def generate_deepdive_followup(
+    review_text: str,
+    original_question: str,
+    selected_options: list[str],
+    property_id: str | None = None,
+) -> dict | None:
+    """
+    After the guest answers Q1 (broad comment_deepdive), generate a single
+    follow-up question that digs deeper into the specific aspects they selected.
+    """
+    if not selected_options:
+        return None
+
+    if not os.getenv("OPENAI_API_KEY"):
+        raise RuntimeError("Missing OPENAI_API_KEY.")
+
+    selected_text = ", ".join(selected_options)
+
+    prompt = f"""You are a hotel review follow-up agent.
+
+A guest just wrote this review:
+"{review_text}"
+
+We asked them: "{original_question}"
+They selected these answers: [{selected_text}]
+
+Based on their selections, generate ONE specific follow-up question that digs deeper into what they chose.
+
+Rules:
+- Focus on the aspects the guest selected, especially anything negative or noteworthy.
+- If they mentioned a problem (e.g., "Noise was an issue"), ask for concrete details: where did the noise come from? what time? how severe?
+- If they mentioned something positive (e.g., "Staff was great"), ask what specifically stood out: a particular interaction? someone who went above and beyond?
+- The question must be SPECIFIC and SCENARIO-BASED, not generic.
+  Good: "Where did the noise mainly come from?"  with options like "Street traffic", "Other guests", "Elevator/hallway", "Air conditioning unit"
+  Bad:  "Can you tell us more about the noise?"  ← too vague
+- Use `multi_select` with 4-6 concrete options that cover the most common scenarios.
+- Always include "Other" as the last option.
+- The question should feel like a natural continuation of the conversation.
+
+Aspects to choose from: {", ".join(ALLOWED_ASPECTS)}
+
+Return a JSON object with: qid, role, aspect, text_en, response_type, options, private, reason.
+Use qid "q_deepdive_02" and role "comment_deepdive".
+Return JSON only."""
+
+    schema = {
+        "type": "json_schema",
+        "name": "deepdive_followup",
+        "strict": True,
+        "schema": {
+            "type": "object",
+            "properties": {
+                "qid": {"type": "string"},
+                "role": {"type": "string"},
+                "aspect": {"type": "string", "enum": ALLOWED_ASPECTS},
+                "text_en": {"type": "string"},
+                "response_type": {
+                    "type": "string",
+                    "enum": ALLOWED_RESPONSE_TYPES,
+                },
+                "options": {"type": "array", "items": {"type": "string"}},
+                "private": {"type": "boolean"},
+                "reason": {"type": "string"},
+            },
+            "required": [
+                "qid", "role", "aspect", "text_en",
+                "response_type", "options", "private", "reason",
+            ],
+            "additionalProperties": False,
+        },
+    }
+
+    client = OpenAI()
+    model = os.getenv("OPENAI_MODEL", DEFAULT_OPENAI_MODEL)
+    response = client.responses.create(
+        model=model,
+        input=[{"role": "user", "content": [{"type": "input_text", "text": prompt}]}],
+        max_output_tokens=800,
+        text={"format": schema},
+    )
+
+    return json.loads(response.output_text.strip())

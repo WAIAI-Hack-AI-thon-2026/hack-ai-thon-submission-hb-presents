@@ -1,18 +1,22 @@
 import { useState } from 'react'
 
 const ROLE_LABELS = {
-  comment_deepdive:  { text: 'About your review',    color: '#00355F', bg: '#E8F0FE' },
-  information_gap:   { text: 'Help us learn more',    color: '#7C5C00', bg: '#FFF8E1' },
+  comment_deepdive:      { text: 'About your review',        color: '#00355F', bg: '#E8F0FE' },
+  information_gap:       { text: 'Help us learn more',        color: '#7C5C00', bg: '#FFF8E1' },
+  conflict_resolution:   { text: 'Has this changed?',         color: '#7C2D12', bg: '#FFF1F2' },
 }
 
-export default function FollowUpCards({ property, questions, onComplete }) {
+export default function FollowUpCards({ property, questions: initialQuestions, reviewText, onComplete }) {
+  const [allQuestions, setAllQuestions] = useState(initialQuestions)
   const [current,  setCurrent]  = useState(0)
   const [selected, setSelected] = useState([])   // multi-select array
   const [otherText, setOtherText] = useState('')  // text for "Other"
   const [answers,  setAnswers]  = useState({})
+  const [loading,  setLoading]  = useState(false)
+  const [didDeepDive, setDidDeepDive] = useState(false)
 
-  const q      = questions[current]
-  const isLast = current === questions.length - 1
+  const q      = allQuestions[current]
+  const isLast = current === allQuestions.length - 1
   const reasoning = q?.reasoning || q?.reason || ''
   const roleInfo = ROLE_LABELS[q?.role] || null
   const showOtherInput = selected.includes('Other')
@@ -25,13 +29,63 @@ export default function FollowUpCards({ property, questions, onComplete }) {
     if (opt === 'Other' && selected.includes('Other')) setOtherText('')
   }
 
-  function handleNext() {
+  async function handleNext() {
     let value = selected
     if (showOtherInput && otherText.trim()) {
       value = selected.map((o) => o === 'Other' ? `Other: ${otherText.trim()}` : o)
     }
     const updated = { ...answers, [q.id]: value }
     setAnswers(updated)
+
+    // If this was a conflict_resolution question, resolve it in the backend
+    if (q.role === 'conflict_resolution' && property?.id) {
+      fetch('/api/resolve-conflict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          propertyId: property.id,
+          topic: q.aspect || '',
+          answer: value.join(', '),
+        }),
+      }).catch(() => {})  // best-effort
+    }
+
+    // After Q1 (comment_deepdive): fetch a targeted follow-up based on what the guest selected
+    if (q.role === 'comment_deepdive' && reviewText && !didDeepDive) {
+      setDidDeepDive(true)
+      setLoading(true)
+      setSelected([])
+      setOtherText('')
+      try {
+        const res = await fetch('/api/followup-deepdive', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            reviewText,
+            propertyId: property?.id || '',
+            originalQuestion: q.text,
+            selectedOptions: value,
+          }),
+        })
+        if (res.ok) {
+          const data = await res.json()
+          if (data.question) {
+            setAllQuestions((prev) => [
+              ...prev.slice(0, current + 1),
+              data.question,
+              ...prev.slice(current + 1),
+            ])
+            setCurrent((c) => c + 1)
+            setLoading(false)
+            return
+          }
+        }
+      } catch (e) {
+        console.warn('[/api/followup-deepdive] failed:', e.message)
+      }
+      setLoading(false)
+    }
+
     setSelected([])
     setOtherText('')
     if (isLast) onComplete(updated)
@@ -55,9 +109,9 @@ export default function FollowUpCards({ property, questions, onComplete }) {
         </h2>
 
         {/* Progress dots */}
-        {questions.length > 1 && (
+        {allQuestions.length > 1 && (
           <div style={{ display: 'flex', gap: 6, marginBottom: 20 }}>
-            {questions.map((_, i) => (
+            {allQuestions.map((_, i) => (
               <div
                 key={i}
                 className={`dot ${i === current ? 'active' : ''}`}
@@ -67,8 +121,18 @@ export default function FollowUpCards({ property, questions, onComplete }) {
           </div>
         )}
 
+        {/* Loading state — generating follow-up */}
+        {loading && (
+          <div className="card" style={{ padding: '48px 24px', textAlign: 'center' }}>
+            <span className="spinner" style={{ marginBottom: 16 }} />
+            <p style={{ color: '#64748b', fontSize: 15, marginTop: 16 }}>
+              Tailoring a follow-up based on your answer...
+            </p>
+          </div>
+        )}
+
         {/* Question card */}
-        <div className="card" style={{ padding: '24px' }}>
+        {!loading && <div className="card" style={{ padding: '24px' }}>
           {/* Role badge */}
           <div style={{ marginBottom: 16, display: 'flex', gap: 8 }}>
             {roleInfo ? (
@@ -169,7 +233,7 @@ export default function FollowUpCards({ property, questions, onComplete }) {
               Skip
             </button>
           </div>
-        </div>
+        </div>}
 
         {/* Footer note */}
         <p style={{

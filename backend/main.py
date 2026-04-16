@@ -17,11 +17,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 try:
-    from .agent import decide_questions
+    from .agent import decide_questions, generate_deepdive_followup
     from .schema import ReviewContext
+    from .conflict_detection import resolve_conflict
 except ImportError:
-    from agent import decide_questions
+    from agent import decide_questions, generate_deepdive_followup
     from schema import ReviewContext
+    from conflict_detection import resolve_conflict
 
 
 app = FastAPI(
@@ -131,6 +133,7 @@ def analyze(body: AnalyzeInput):
                 "text":    q.text_en,
                 "options": q.options,
                 "role":    q.role,
+                "aspect":  q.aspect.value,
                 "reasoning": decision.rationale.get(q.qid, ""),
             }
             for q in decision.questions
@@ -167,4 +170,76 @@ def decide(body: ReviewInput):
         ],
         "rationale": decision.rationale,
         "skipped": [{"qid": s[0], "reason": s[1]} for s in decision.skipped],
+    }
+
+
+# ── Deep-dive follow-up (dynamic after Q1) ──────────────────────────────
+
+class DeepDiveInput(BaseModel):
+    reviewText: str
+    propertyId: str = ""
+    originalQuestion: str = ""
+    selectedOptions: list[str] = []
+
+
+@app.post("/api/followup-deepdive")
+def followup_deepdive(body: DeepDiveInput):
+    """
+    Called after the guest answers Q1 (comment_deepdive).
+    Generates a single follow-up question that digs deeper into the
+    specific aspects the guest selected.
+    """
+    if not body.selectedOptions:
+        return {"question": None}
+
+    try:
+        result = generate_deepdive_followup(
+            review_text=body.reviewText.strip(),
+            original_question=body.originalQuestion,
+            selected_options=body.selectedOptions,
+            property_id=body.propertyId or None,
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    if not result:
+        return {"question": None}
+
+    return {
+        "question": {
+            "id": result["qid"],
+            "text": result["text_en"],
+            "options": result["options"],
+            "role": result["role"],
+            "aspect": result["aspect"],
+            "reasoning": result.get("reason", ""),
+        }
+    }
+
+
+# ── Conflict resolution ─────────────────────────────────────────────────
+
+class ResolveConflictInput(BaseModel):
+    propertyId: str
+    topic: str
+    answer: str = ""
+
+
+@app.post("/api/resolve-conflict")
+def resolve_conflict_endpoint(body: ResolveConflictInput):
+    """
+    Called after a guest answers a Slot 3 (conflict_resolution) question.
+    If the guest confirms the issue is fixed, mark the conflict as resolved
+    so future guests won't be asked about it again.
+    """
+    pid = body.propertyId.strip()
+    topic = body.topic.strip()
+    if not pid or not topic:
+        raise HTTPException(status_code=400, detail="propertyId and topic are required")
+
+    resolved = resolve_conflict(pid, topic)
+    return {
+        "resolved": resolved,
+        "propertyId": pid,
+        "topic": topic,
     }

@@ -102,15 +102,17 @@ export default function App() {
   const [step,     setStep]     = useState('select')   // select|review|followup|done
   const [property, setProperty] = useState(null)
   const [questions, setQuestions] = useState([])
+  const [reviewText, setReviewText] = useState('')
 
-  async function handleReviewSubmit({ rating, reviewText }) {
+  async function handleReviewSubmit({ rating, reviewText: text }) {
     // button already shows loading state; this resolves when done
+    setReviewText(text)
     const qs = await analyzeReview({
       propertyId:  property.id,
       city:        property.city,
       country:     property.country,
       rating,
-      reviewText,
+      reviewText:  text,
     })
     setQuestions(qs)
     setStep('followup')
@@ -139,6 +141,7 @@ export default function App() {
         <FollowUpCards
           property={property}
           questions={questions}
+          reviewText={reviewText}
           onComplete={() => setStep('done')}
         />
       )}
