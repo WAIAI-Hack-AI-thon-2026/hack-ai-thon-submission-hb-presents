@@ -148,11 +148,12 @@ def update_hotel_rating_profile(
             "overall_rating_count": int(profile.get("overall_rating_count", 0) or 0),
             "star_rating": profile.get("star_rating"),
             "profile": profile,
+            "total_reviews": int(profile.get("total_reviews", 0) or 0),
         }
 
-    current_count = int(profile.get("overall_rating_count", 0) or 0)
+    current_count = int(profile.get("total_reviews", 0) or 0)
 
-    current_avg_raw = profile.get("overall_rating_avg")
+    current_avg_raw = profile.get("star_rating")
     try:
         current_avg = float(current_avg_raw) if current_avg_raw is not None else 0.0
     except (TypeError, ValueError):
@@ -163,6 +164,7 @@ def update_hotel_rating_profile(
 
     profile["overall_rating_count"] = next_count
     profile["overall_rating_avg"] = next_avg
+    profile["star_rating"] = next_avg
     profile["total_reviews"] = int(profile.get("total_reviews", 0) or 0) + 1
     if normalized_submission_id:
         processed_ids = [item for item in processed_ids if str(item).strip() != normalized_submission_id]
