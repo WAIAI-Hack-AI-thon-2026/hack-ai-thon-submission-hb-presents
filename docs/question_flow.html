@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask What Matters — Question Flow</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; margin: 0; padding: 40px 20px; }
+  h1 { text-align: center; color: #00355F; font-size: 24px; margin-bottom: 8px; }
+  h2 { text-align: center; color: #64748b; font-size: 14px; font-weight: 400; margin-bottom: 40px; }
+  .mermaid { display: flex; justify-content: center; }
+  .legend { max-width: 700px; margin: 40px auto 0; padding: 24px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; }
+  .legend h3 { margin: 0 0 12px; font-size: 15px; color: #1a2638; }
+  .legend-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; color: #475569; }
+  .legend-dot { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<h1>Ask What Matters — Question Generation Flow</h1>
+<h2>Complete pipeline from review submission to follow-up questions</h2>
+
+<div class="mermaid">
+flowchart TD
+    A["Guest submits review\n(rating + text)"] --> B["POST /api/analyze"]
+
+    B --> C["match_labels(review_text)\nDetect which aspects the\nreview already mentions"]
+
+    B --> D["_get_gap_aspects(property_id)\nFind lowest-coverage aspects\nfor this hotel"]
+
+    B --> E{"Has property_id?"}
+    E -- Yes --> F["get_active_conflicts(property_id)\nLoad unresolved conflicts\nfrom hotel_conflicts.json"]
+    E -- No --> G["conflicts = empty"]
+    F --> H{"Conflicts found?"}
+    G --> H
+
+    C --> I["Build LLM Prompt"]
+    D --> I
+    H -- Yes --> I
+    H -- No --> I
+
+    I --> J["Call OpenAI GPT-4.1-mini\n(structured JSON output)"]
+
+    J --> K["Q1: Comment Deep-dive\n(role: comment_deepdive)\nDig deeper into what\nguest wrote about"]
+
+    J --> L["Q2: Information Gap\n(role: information_gap)\nAsk about low-coverage\naspects for this hotel"]
+
+    H -- "Yes + no overlap\nwith Q1/Q2" --> M["Q3: Conflict Resolution\n(role: conflict_resolution)\nAsk about SPECIFIC issue\nfrom contradictory reviews"]
+
+    K --> N["Frontend: Show Q1"]
+    N --> O["Guest selects options"]
+    O --> P{"First comment_deepdive\nanswered? (didDeepDive=false)"}
+
+    P -- Yes --> Q["POST /api/followup-deepdive\nSend review + Q1 text +\nselected options"]
+    Q --> R["OpenAI generates ONE\ntargeted follow-up based\non guest's selections"]
+    R --> S["Q1.5: Dynamic Deep-dive\n(inserted after Q1)\nSpecific to what guest chose"]
+    S --> T["Guest answers Q1.5"]
+
+    P -- No / API fails --> U["Show next question"]
+    T --> U
+
+    U --> V{"More questions?"}
+    V -- Yes --> W["Show Q2 / Q3"]
+    W --> X["Guest answers"]
+    X --> Y{"Was this a\nconflict_resolution\nquestion?"}
+    Y -- Yes --> Z["POST /api/resolve-conflict\n(fire-and-forget)\nMark conflict as resolved\nin hotel_conflicts.json"]
+    Z --> AA{"More questions?"}
+    Y -- No --> AA
+    AA -- Yes --> W
+    AA -- No --> AB["Thank You screen"]
+    V -- No --> AB
+
+    style A fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style K fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style L fill:#FFF8E1,stroke:#7C5C00,color:#7C5C00
+    style M fill:#FFF1F2,stroke:#7C2D12,color:#7C2D12
+    style S fill:#E0F2FE,stroke:#0369A1,color:#0369A1
+    style AB fill:#ECFDF5,stroke:#059669,color:#059669
+    style J fill:#F3E8FF,stroke:#7C3AED,color:#7C3AED
+    style R fill:#F3E8FF,stroke:#7C3AED,color:#7C3AED
+    style Z fill:#FEF3C7,stroke:#D97706,color:#92400E
+</div>
+
+<div class="legend">
+  <h3>Color Legend</h3>
+  <div class="legend-item"><div class="legend-dot" style="background:#E8F0FE;border:1px solid #00355F"></div> Comment Deep-dive (Slot 1) — based on what the guest wrote</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E0F2FE;border:1px solid #0369A1"></div> Dynamic Deep-dive (Slot 1.5) — generated after Q1 answer, one-shot only</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FFF8E1;border:1px solid #7C5C00"></div> Information Gap (Slot 2) — fills low-coverage data for this hotel</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FFF1F2;border:1px solid #7C2D12"></div> Conflict Resolution (Slot 3) — conditional, only when contradictory reviews exist</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F3E8FF;border:1px solid #7C3AED"></div> LLM Call (OpenAI GPT-4.1-mini)</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FEF3C7;border:1px solid #D97706"></div> Side-effect: update conflict database</div>
+</div>
+
+</body>
+</html>

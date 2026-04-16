@@ -15,12 +15,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 try:
-    from .agent import decide_questions, generate_deepdive_followup
+    from .agent import decide_questions
     from .ratings import parse_rating_payload
     from .schema import ReviewContext
     from .conflict_detection import resolve_conflict
 except ImportError:
-    from agent import decide_questions, generate_deepdive_followup
+    from agent import decide_questions
     from ratings import parse_rating_payload
     from schema import ReviewContext
     from conflict_detection import resolve_conflict
@@ -82,8 +82,6 @@ def analyze(body: AnalyzeInput):
     Returns  { questions: [{ id, text, options }] }
     """
     text = body.reviewText.strip()
-    if not text:
-        raise HTTPException(status_code=400, detail="reviewText cannot be empty")
 
     overall_rating, sub_ratings = parse_rating_payload(body.rating)
 
@@ -146,50 +144,6 @@ def decide(body: ReviewInput):
         ],
         "rationale": decision.rationale,
         "skipped": [{"qid": s[0], "reason": s[1]} for s in decision.skipped],
-    }
-
-
-# ── Deep-dive follow-up (dynamic after Q1) ──────────────────────────────
-
-class DeepDiveInput(BaseModel):
-    reviewText: str
-    propertyId: str = ""
-    originalQuestion: str = ""
-    selectedOptions: list[str] = []
-
-
-@app.post("/api/followup-deepdive")
-def followup_deepdive(body: DeepDiveInput):
-    """
-    Called after the guest answers Q1 (comment_deepdive).
-    Generates a single follow-up question that digs deeper into the
-    specific aspects the guest selected.
-    """
-    if not body.selectedOptions:
-        return {"question": None}
-
-    try:
-        result = generate_deepdive_followup(
-            review_text=body.reviewText.strip(),
-            original_question=body.originalQuestion,
-            selected_options=body.selectedOptions,
-            property_id=body.propertyId or None,
-        )
-    except Exception as exc:
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
-
-    if not result:
-        return {"question": None}
-
-    return {
-        "question": {
-            "id": result["qid"],
-            "text": result["text_en"],
-            "options": result["options"],
-            "role": result["role"],
-            "aspect": result["aspect"],
-            "reasoning": result.get("reason", ""),
-        }
     }
 
 

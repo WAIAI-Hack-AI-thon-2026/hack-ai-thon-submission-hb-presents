@@ -2,20 +2,10 @@ import { useState } from 'react'
 
 const STAR_LABELS = { 1: 'Terrible', 2: 'Poor', 3: 'Okay', 4: 'Good', 5: 'Excellent' }
 const RATING_FIELDS = [
-  ['roomcleanliness', 'Room cleanliness'],
-  ['service', 'Service'],
-  ['roomcomfort', 'Room comfort'],
-  ['hotelcondition', 'Hotel condition'],
-  ['roomquality', 'Room quality'],
-  ['convenienceoflocation', 'Convenience of location'],
-  ['neighborhoodsatisfaction', 'Neighborhood satisfaction'],
-  ['valueformoney', 'Value for money'],
-  ['roomamenitiesscore', 'Room amenities'],
-  ['communication', 'Communication'],
-  ['ecofriendliness', 'Eco-friendliness'],
-  ['checkin', 'Check-in'],
-  ['onlinelisting', 'Online listing'],
+  ['cleanliness', 'Cleanliness'],
+  ['service', 'Staff & Service'],
   ['location', 'Location'],
+  ['value', 'Value for Money'],
 ]
 
 function createInitialRatings() {
@@ -58,16 +48,27 @@ export default function ReviewForm({ property, onSubmit }) {
   const [ratings, setRatings]         = useState(createInitialRatings)
   const [reviewText, setReviewText]   = useState('')
   const [isSubmitting, setSubmitting] = useState(false)
-
-  const canSubmit = ratings.overall > 0 && reviewText.trim().length > 0 && !isSubmitting
+  const [errorMsg, setErrorMsg]     = useState('')
 
   function setRatingValue(field, value) {
     setRatings((current) => ({ ...current, [field]: value }))
+    setErrorMsg('')
   }
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (!canSubmit) return
+    if (isSubmitting) return
+
+    if (ratings.overall === 0) {
+      setErrorMsg('Please select an overall rating.')
+      return
+    }
+    const missing = RATING_FIELDS.filter(([key]) => ratings[key] === 0).map(([, label]) => label)
+    if (missing.length > 0) {
+      setErrorMsg(`Please rate: ${missing.join(', ')}`)
+      return
+    }
+
     setSubmitting(true)
     try {
       await onSubmit({ rating: ratings, reviewText })
@@ -135,9 +136,6 @@ export default function ReviewForm({ property, onSubmit }) {
                       <div style={{ fontSize: 14, fontWeight: 600, color: '#1e293b' }}>
                         {label}
                       </div>
-                      <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>
-                        Leave unrated to send `0.0`
-                      </div>
                     </div>
                     <StarPicker
                       value={ratings[field]}
@@ -155,7 +153,7 @@ export default function ReviewForm({ property, onSubmit }) {
                 color: '#64748b', textTransform: 'uppercase',
                 letterSpacing: '0.06em', marginBottom: 12,
               }}>
-                Your review
+                Your review (optional)
               </label>
               <textarea
                 className="review-textarea"
@@ -174,7 +172,7 @@ export default function ReviewForm({ property, onSubmit }) {
             </div>
 
             {/* Submit */}
-            <button type="submit" className="btn-primary" disabled={!canSubmit}>
+            <button type="submit" className="btn-primary" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
                   <span className="spinner" />
@@ -184,6 +182,11 @@ export default function ReviewForm({ property, onSubmit }) {
                 'Submit Review'
               )}
             </button>
+            {errorMsg && (
+              <p style={{ color: '#ef4444', fontSize: 13, textAlign: 'center', marginTop: 12 }}>
+                {errorMsg}
+              </p>
+            )}
           </form>
         </div>
       </div>

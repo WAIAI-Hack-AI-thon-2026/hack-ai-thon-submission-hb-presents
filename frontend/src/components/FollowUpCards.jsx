@@ -6,17 +6,14 @@ const ROLE_LABELS = {
   conflict_resolution:   { text: 'Has this changed?',         color: '#7C2D12', bg: '#FFF1F2' },
 }
 
-export default function FollowUpCards({ property, questions: initialQuestions, reviewText, onComplete }) {
-  const [allQuestions, setAllQuestions] = useState(initialQuestions)
+export default function FollowUpCards({ property, questions, onComplete }) {
   const [current,  setCurrent]  = useState(0)
   const [selected, setSelected] = useState([])   // multi-select array
   const [otherText, setOtherText] = useState('')  // text for "Other"
   const [answers,  setAnswers]  = useState({})
-  const [loading,  setLoading]  = useState(false)
-  const [didDeepDive, setDidDeepDive] = useState(false)
 
-  const q      = allQuestions[current]
-  const isLast = current === allQuestions.length - 1
+  const q      = questions[current]
+  const isLast = current === questions.length - 1
   const reasoning = q?.reasoning || q?.reason || ''
   const roleInfo = ROLE_LABELS[q?.role] || null
   const showOtherInput = selected.includes('Other')
@@ -29,7 +26,7 @@ export default function FollowUpCards({ property, questions: initialQuestions, r
     if (opt === 'Other' && selected.includes('Other')) setOtherText('')
   }
 
-  async function handleNext() {
+  function handleNext() {
     let value = selected
     if (showOtherInput && otherText.trim()) {
       value = selected.map((o) => o === 'Other' ? `Other: ${otherText.trim()}` : o)
@@ -48,42 +45,6 @@ export default function FollowUpCards({ property, questions: initialQuestions, r
           answer: value.join(', '),
         }),
       }).catch(() => {})  // best-effort
-    }
-
-    // After Q1 (comment_deepdive): fetch a targeted follow-up based on what the guest selected
-    if (q.role === 'comment_deepdive' && reviewText && !didDeepDive) {
-      setDidDeepDive(true)
-      setLoading(true)
-      setSelected([])
-      setOtherText('')
-      try {
-        const res = await fetch('/api/followup-deepdive', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            reviewText,
-            propertyId: property?.id || '',
-            originalQuestion: q.text,
-            selectedOptions: value,
-          }),
-        })
-        if (res.ok) {
-          const data = await res.json()
-          if (data.question) {
-            setAllQuestions((prev) => [
-              ...prev.slice(0, current + 1),
-              data.question,
-              ...prev.slice(current + 1),
-            ])
-            setCurrent((c) => c + 1)
-            setLoading(false)
-            return
-          }
-        }
-      } catch (e) {
-        console.warn('[/api/followup-deepdive] failed:', e.message)
-      }
-      setLoading(false)
     }
 
     setSelected([])
@@ -109,9 +70,9 @@ export default function FollowUpCards({ property, questions: initialQuestions, r
         </h2>
 
         {/* Progress dots */}
-        {allQuestions.length > 1 && (
+        {questions.length > 1 && (
           <div style={{ display: 'flex', gap: 6, marginBottom: 20 }}>
-            {allQuestions.map((_, i) => (
+            {questions.map((_, i) => (
               <div
                 key={i}
                 className={`dot ${i === current ? 'active' : ''}`}
@@ -121,18 +82,8 @@ export default function FollowUpCards({ property, questions: initialQuestions, r
           </div>
         )}
 
-        {/* Loading state — generating follow-up */}
-        {loading && (
-          <div className="card" style={{ padding: '48px 24px', textAlign: 'center' }}>
-            <span className="spinner" style={{ marginBottom: 16 }} />
-            <p style={{ color: '#64748b', fontSize: 15, marginTop: 16 }}>
-              Tailoring a follow-up based on your answer...
-            </p>
-          </div>
-        )}
-
         {/* Question card */}
-        {!loading && <div className="card" style={{ padding: '24px' }}>
+        <div className="card" style={{ padding: '24px' }}>
           {/* Role badge */}
           <div style={{ marginBottom: 16, display: 'flex', gap: 8 }}>
             {roleInfo ? (
@@ -233,7 +184,7 @@ export default function FollowUpCards({ property, questions: initialQuestions, r
               Skip
             </button>
           </div>
-        </div>}
+        </div>
 
         {/* Footer note */}
         <p style={{

@@ -231,18 +231,6 @@
     "conflicts": [
       {
         "status": "conflicting",
-        "negative_snippet": "ey charged my room and again on my credit card. \n\npool area has stained towels. seating stained and torn",
-        "negative_date": "2025-10-24",
-        "negative_age_days": 173,
-        "positive_snippet": "i liked this property. the outdoor pool is charming, and the bar and front desk staff wer",
-        "positive_date": "2025-07-21",
-        "positive_age_days": 268,
-        "total_negative_mentions": 9,
-        "total_positive_mentions": 19,
-        "topic": "family_amenities"
-      },
-      {
-        "status": "conflicting",
         "negative_snippet": "d well. it couldve used a small sitting area with couch instead of a table . the lighting was terrible an",
         "negative_date": "2026-01-04",
         "negative_age_days": 101,
@@ -398,6 +386,19 @@
         "total_negative_mentions": 2,
         "total_positive_mentions": 7,
         "topic": "accessibility"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "ey charged my room and again on my credit card. \n\npool area has stained towels. seating stained and torn",
+        "negative_date": "2025-10-24",
+        "negative_age_days": 173,
+        "positive_snippet": "i liked this property. the outdoor pool is charming, and the bar and front desk staff wer",
+        "positive_date": "2025-07-21",
+        "positive_age_days": 268,
+        "total_negative_mentions": 9,
+        "total_positive_mentions": 19,
+        "topic": "family_amenities",
+        "resolved_date": "2026-04-15"
       }
     ]
   },

@@ -361,22 +361,52 @@ OUTPUT RULES
 7. Make questions concise, friendly, and actionable. Avoid generic phrases like "Anything else?"
 8. Set `private` to true only for sensitive issues (hygiene, safety, pests)."""
 
-    return f"""You are a hotel review follow-up agent.
-Generate exactly {total_questions} follow-up questions for the guest who just submitted a review.
+    has_review_text = bool(review_text.strip())
 
-═══════════════════════════════════════════════════════
+    if has_review_text:
+        q1_section = """═══════════════════════════════════════════════════════
 QUESTION 1 — COMMENT DEEP-DIVE  (role: "comment_deepdive")
 ═══════════════════════════════════════════════════════
-Based on what the guest wrote, ask a follow-up that digs deeper or extends their experience.
+Based on what the guest wrote AND their ratings, ask a follow-up that digs deeper.
 
 Rules:
 - If the guest mentions a specific problem, drill into the root cause or details.
   Example: guest says "noisy" → ask where the noise came from (street, neighbors, elevator, AC).
 - If the guest mentions something positive, ask what specifically stood out.
   Example: guest says "great staff" → ask which interaction was most memorable.
-- If the review is vague or very short, ask a clarifying question about what stood out most.
-- The aspect MUST match a topic the guest actually discussed.
-- Prefer `quick_tap` or `multi_select` with 4-6 concrete, scenario-based options.
+- If the review is vague or very short (e.g. just "great" or "good"), USE THE RATINGS to guide your question:
+  - If a sub-rating is notably LOW (1-2 stars), ask about that specific aspect: "You rated [aspect] quite low — what went wrong?"
+  - If all ratings are HIGH, ask which aspect impressed them most, with concrete scenario-based options.
+- If sub-ratings show a gap between overall and a specific category, probe that gap.
+  Example: overall=4 but cleanliness=2 → ask what the cleanliness issue was.
+- The aspect MUST match a topic the guest discussed OR a sub-rating category.
+- Prefer `quick_tap` or `multi_select` with 4-6 concrete, scenario-based options."""
+    else:
+        q1_section = """═══════════════════════════════════════════════════════
+QUESTION 1 — RATING-DRIVEN QUESTION  (role: "comment_deepdive")
+═══════════════════════════════════════════════════════
+The guest only gave ratings without writing a review. Use the RATINGS to drive your question.
+
+Rules:
+- CHECK the sub-ratings carefully. Your question strategy depends on what the ratings reveal:
+  1. If ANY sub-rating is notably LOW (1-2 stars): ask specifically about that aspect.
+     Example: staff=2 → "What happened with the staff that didn't meet expectations?" with options like "Rude behavior", "Slow service", "Unhelpful with requests", "Language barrier", "Other"
+  2. If there's a GAP between overall and a sub-rating: probe the outlier.
+     Example: overall=4 but noise=2 → "You rated noise quite low — where was the noise coming from?"
+  3. If ALL ratings are HIGH (4-5 stars): ask which aspect stood out most.
+     Example: "What made your stay so great?" with options covering the high-rated areas.
+  4. If NO sub-ratings are provided (only overall): ask a broad "what stood out" question.
+- Use `multi_select` with 4-6 concrete, scenario-based options.
+- The question should feel natural and reference the rating insight without being robotic.
+  Good: "You rated cleanliness quite low — what was the issue?"
+  Bad:  "Your cleanliness sub-rating was 2/5, please elaborate." ← too robotic"""
+
+    review_or_rating = f'"{review_text}"' if has_review_text else "(No review text — guest only submitted a rating.)"
+
+    return f"""You are a hotel review follow-up agent.
+Generate exactly {total_questions} follow-up questions for the guest who just submitted a review.
+
+{q1_section}
 
 ═══════════════════════════════════════════════════════
 QUESTION 2 — INFORMATION GAP  (role: "information_gap")
@@ -403,7 +433,7 @@ GUEST INPUT
 ═══════════════════════════════════════════════════════
 
 Review text:
-"{review_text}"
+{review_or_rating}
 
 {guest_rating_context}
 
@@ -417,8 +447,6 @@ def decide_questions(
     property_id: str | None = None,
 ) -> AgentDecision:
     review_text = _extract_review_text(review_text_or_ctx)
-    if not review_text:
-        raise ValueError("review_text cannot be empty")
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError(
@@ -431,7 +459,7 @@ def decide_questions(
         resolved_pid = (review_text_or_ctx.property_id or "").strip() or None
 
     # Detect which aspects the review already covers (via evidence_analysis patterns)
-    review_mentioned = match_labels(review_text)
+    review_mentioned = match_labels(review_text) if review_text.strip() else []
 
     # Find this hotel's lowest-coverage aspects, excluding already-mentioned ones
     gap_aspects = _get_gap_aspects(resolved_pid or "", review_mentioned)
@@ -495,89 +523,3 @@ def decide_questions(
         rationale=rationale,
         skipped=skipped,
     )
-
-
-# ── Deep-dive follow-up (dynamic, after Q1 answer) ────────────────────
-
-def generate_deepdive_followup(
-    review_text: str,
-    original_question: str,
-    selected_options: list[str],
-    property_id: str | None = None,
-) -> dict | None:
-    """
-    After the guest answers Q1 (broad comment_deepdive), generate a single
-    follow-up question that digs deeper into the specific aspects they selected.
-    """
-    if not selected_options:
-        return None
-
-    if not os.getenv("OPENAI_API_KEY"):
-        raise RuntimeError("Missing OPENAI_API_KEY.")
-
-    selected_text = ", ".join(selected_options)
-
-    prompt = f"""You are a hotel review follow-up agent.
-
-A guest just wrote this review:
-"{review_text}"
-
-We asked them: "{original_question}"
-They selected these answers: [{selected_text}]
-
-Based on their selections, generate ONE specific follow-up question that digs deeper into what they chose.
-
-Rules:
-- Focus on the aspects the guest selected, especially anything negative or noteworthy.
-- If they mentioned a problem (e.g., "Noise was an issue"), ask for concrete details: where did the noise come from? what time? how severe?
-- If they mentioned something positive (e.g., "Staff was great"), ask what specifically stood out: a particular interaction? someone who went above and beyond?
-- The question must be SPECIFIC and SCENARIO-BASED, not generic.
-  Good: "Where did the noise mainly come from?"  with options like "Street traffic", "Other guests", "Elevator/hallway", "Air conditioning unit"
-  Bad:  "Can you tell us more about the noise?"  ← too vague
-- Use `multi_select` with 4-6 concrete options that cover the most common scenarios.
-- Always include "Other" as the last option.
-- The question should feel like a natural continuation of the conversation.
-
-Aspects to choose from: {", ".join(ALLOWED_ASPECTS)}
-
-Return a JSON object with: qid, role, aspect, text_en, response_type, options, private, reason.
-Use qid "q_deepdive_02" and role "comment_deepdive".
-Return JSON only."""
-
-    schema = {
-        "type": "json_schema",
-        "name": "deepdive_followup",
-        "strict": True,
-        "schema": {
-            "type": "object",
-            "properties": {
-                "qid": {"type": "string"},
-                "role": {"type": "string"},
-                "aspect": {"type": "string", "enum": ALLOWED_ASPECTS},
-                "text_en": {"type": "string"},
-                "response_type": {
-                    "type": "string",
-                    "enum": ALLOWED_RESPONSE_TYPES,
-                },
-                "options": {"type": "array", "items": {"type": "string"}},
-                "private": {"type": "boolean"},
-                "reason": {"type": "string"},
-            },
-            "required": [
-                "qid", "role", "aspect", "text_en",
-                "response_type", "options", "private", "reason",
-            ],
-            "additionalProperties": False,
-        },
-    }
-
-    client = OpenAI()
-    model = os.getenv("OPENAI_MODEL", DEFAULT_OPENAI_MODEL)
-    response = client.responses.create(
-        model=model,
-        input=[{"role": "user", "content": [{"type": "input_text", "text": prompt}]}],
-        max_output_tokens=800,
-        text={"format": schema},
-    )
-
-    return json.loads(response.output_text.strip())
