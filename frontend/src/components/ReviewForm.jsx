@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-const STAR_LABELS = { 1: 'Terrible', 2: 'Poor', 3: 'Okay', 4: 'Good', 5: 'Excellent' }
 const RATING_FIELDS = [
   ['cleanliness', 'Cleanliness'],
   ['service', 'Staff & Service'],
@@ -17,7 +16,7 @@ function StarPicker({ value, onChange }) {
   const active = hovered || value
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
       <div
         style={{ display: 'flex', gap: 2 }}
         onMouseLeave={() => setHovered(0)}
@@ -35,11 +34,6 @@ function StarPicker({ value, onChange }) {
           </button>
         ))}
       </div>
-      {value > 0 && (
-        <span style={{ fontSize: 15, fontWeight: 600, color: '#00355F' }}>
-          {STAR_LABELS[value]}
-        </span>
-      )}
     </div>
   )
 }
@@ -48,6 +42,8 @@ export default function ReviewForm({ property, onSubmit }) {
   const [ratings, setRatings]         = useState(createInitialRatings)
   const [reviewText, setReviewText]   = useState('')
   const [isSubmitting, setSubmitting] = useState(false)
+
+  const canSubmit = ratings.overall > 0 && !isSubmitting
   const [errorMsg, setErrorMsg]     = useState('')
 
   function setRatingValue(field, value) {
@@ -163,6 +159,9 @@ export default function ReviewForm({ property, onSubmit }) {
                 placeholder="Tell future travelers what your stay was like..."
                 disabled={isSubmitting}
               />
+              <p style={{ fontSize: 12, color: '#94a3b8', marginTop: 8 }}>
+                Optional
+              </p>
               <p style={{
                 textAlign: 'right', fontSize: 12,
                 color: '#94a3b8', marginTop: 4,

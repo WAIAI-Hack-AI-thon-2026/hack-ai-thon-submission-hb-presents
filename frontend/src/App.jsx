@@ -11,11 +11,15 @@ const FALLBACK_QUESTIONS = [
     id: 'q_bathroom',
     text: 'How was the bathroom during your stay?',
     options: ['Spotless', 'Average', 'Cleanliness issue', 'Something broken'],
+    aspect: 'bathroom_quality',
+    role: 'information_gap',
   },
   {
     id: 'q_billing',
     text: 'Were there any surprises on your bill or deposit?',
     options: ['No issues', 'Minor confusion', 'Unexpected charge', 'Still unresolved'],
+    aspect: 'value_price',
+    role: 'information_gap',
   },
 ]
 
@@ -33,6 +37,7 @@ async function analyzeReview(payload) {
     clearTimeout(timer)
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
+    console.log('[/api/analyze] profile update:', data.profileUpdate)
     if (!Array.isArray(data.questions) || data.questions.length === 0)
       throw new Error('Empty questions')
     return data.questions
@@ -116,6 +121,28 @@ export default function App() {
     setStep('followup')
   }
 
+  async function handleFollowUpComplete({ answers = {}, questions: askedQuestions = [] } = {}) {
+    try {
+      const res = await fetch('/api/submit-followups', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          propertyId: property?.id || '',
+          questions: askedQuestions,
+          answers,
+        }),
+      })
+      const data = await res.json().catch(() => null)
+      console.log('[submit-followups] updated profile response:', data)
+      if (!res.ok) {
+        console.warn('[/api/submit-followups] request failed:', data || res.status)
+      }
+    } catch (err) {
+      console.warn('[/api/submit-followups] failed:', err.message)
+    }
+    setStep('done')
+  }
+
   return (
     <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
       <Header
@@ -139,7 +166,8 @@ export default function App() {
         <FollowUpCards
           property={property}
           questions={questions}
-          onComplete={() => setStep('done')}
+          reviewText={reviewText}
+          onComplete={handleFollowUpComplete}
         />
       )}
       {step === 'done' && (

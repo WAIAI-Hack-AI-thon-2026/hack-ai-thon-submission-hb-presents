@@ -15,12 +15,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 try:
-    from .agent import decide_questions
+    from .agent import decide_questions, generate_deepdive_followup, invalidate_evidence_profile_cache
+    from .evidence_profiles import update_hotel_evidence_profile
+    from .evidence_profiles import update_hotel_rating_profile
     from .ratings import parse_rating_payload
     from .schema import ReviewContext
     from .conflict_detection import resolve_conflict
 except ImportError:
-    from agent import decide_questions
+    from agent import decide_questions, generate_deepdive_followup, invalidate_evidence_profile_cache
+    from evidence_profiles import update_hotel_evidence_profile
+    from evidence_profiles import update_hotel_rating_profile
     from ratings import parse_rating_payload
     from schema import ReviewContext
     from conflict_detection import resolve_conflict
@@ -69,6 +73,12 @@ class DecisionOut(BaseModel):
     skipped: list[dict[str, str]]
 
 
+class SubmitFollowUpsInput(BaseModel):
+    propertyId: str
+    questions: list[dict] = []
+    answers: dict = {}
+
+
 @app.get("/health")
 def health():
     return {"status": "ok", "version": "0.2.0"}
@@ -84,6 +94,13 @@ def analyze(body: AnalyzeInput):
     text = body.reviewText.strip()
 
     overall_rating, sub_ratings = parse_rating_payload(body.rating)
+    rating_profile_update = None
+    if body.propertyId:
+        rating_profile_update = update_hotel_rating_profile(
+            property_id=body.propertyId,
+            rating_payload=sub_ratings,
+        )
+        invalidate_evidence_profile_cache()
 
     review_ctx = ReviewContext(
         review_id=f"r_{body.propertyId or 'unknown'}",
@@ -111,7 +128,8 @@ def analyze(body: AnalyzeInput):
                 "reasoning": decision.rationale.get(q.qid, ""),
             }
             for q in decision.questions
-        ]
+        ],
+        "profileUpdate": rating_profile_update,
     }
 
 
@@ -173,3 +191,21 @@ def resolve_conflict_endpoint(body: ResolveConflictInput):
         "propertyId": pid,
         "topic": topic,
     }
+
+
+@app.post("/api/submit-followups")
+def submit_followups(body: SubmitFollowUpsInput):
+    pid = body.propertyId.strip()
+    if not pid:
+        raise HTTPException(status_code=400, detail="propertyId is required")
+
+    try:
+        result = update_hotel_evidence_profile(
+            property_id=pid,
+            questions=body.questions,
+            answers=body.answers,
+        )
+        invalidate_evidence_profile_cache()
+        return result
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc

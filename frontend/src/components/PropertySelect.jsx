@@ -46,18 +46,6 @@ export default function PropertySelect({ properties, onSelect }) {
                     <Stars count={p.starRating} />
                   </>
                 )}
-                {p.score && (
-                  <>
-                    <span style={{ color: '#e2e8f0' }}>·</span>
-                    <span style={{
-                      background: '#00355F', color: '#fff',
-                      fontSize: 11, fontWeight: 700,
-                      padding: '2px 7px', borderRadius: 6,
-                    }}>
-                      {p.score}
-                    </span>
-                  </>
-                )}
               </div>
               <div style={{
                 marginTop: 8,
