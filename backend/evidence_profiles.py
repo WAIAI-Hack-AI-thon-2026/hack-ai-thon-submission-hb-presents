@@ -32,6 +32,10 @@ def _profiles_path() -> Path:
     return _resolve_data_dir() / "hotel_evidence_profiles.json"
 
 
+def _property_intel_path() -> Path:
+    return _resolve_data_dir() / "property_intel.json"
+
+
 def _has_answer(value: object) -> bool:
     if isinstance(value, list):
         return len(value) > 0
@@ -62,6 +66,41 @@ def _default_profile() -> dict:
         "frequently_mentioned": [],
         "never_mentioned": sorted(EVIDENCE_LABELS.keys()),
     }
+
+
+def load_property_intel() -> list[dict]:
+    path = _property_intel_path()
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            parsed = json.load(handle)
+        return parsed if isinstance(parsed, list) else []
+    except (OSError, json.JSONDecodeError):
+        return []
+
+
+def _save_property_intel(rows: list[dict]) -> None:
+    path = _property_intel_path()
+    with path.open("w", encoding="utf-8") as handle:
+        json.dump(rows, handle, indent=2, ensure_ascii=False)
+        handle.write("\n")
+
+
+def sync_property_intel_entry(property_id: str, profile: dict) -> None:
+    pid = (property_id or "").strip()
+    if not pid:
+        return
+
+    rows = load_property_intel()
+    for row in rows:
+        if str(row.get("id") or "").strip() != pid:
+            continue
+        overall_avg = profile.get("overall_rating_avg")
+        if overall_avg is not None:
+            row["starRating"] = float(overall_avg)
+        if profile.get("total_reviews") is not None:
+            row["totalReviews"] = int(profile["total_reviews"])
+        _save_property_intel(rows)
+        return
 
 
 def update_hotel_rating_profile(
@@ -107,10 +146,13 @@ def update_hotel_rating_profile(
     profile["overall_rating_count"] = next_count
     profile["overall_rating_avg"] = next_avg
     profile["star_rating"] = f"{next_avg:.1f}"
+    profile["total_reviews"] = int(profile.get("total_reviews", 0) or 0) + 1
 
     with path.open("w", encoding="utf-8") as handle:
         json.dump(profiles, handle, indent=2, ensure_ascii=False)
         handle.write("\n")
+
+    sync_property_intel_entry(pid, profile)
 
     return {
         "updated": True,
@@ -198,6 +240,8 @@ def update_hotel_evidence_profile(
     with path.open("w", encoding="utf-8") as handle:
         json.dump(profiles, handle, indent=2, ensure_ascii=False)
         handle.write("\n")
+
+    sync_property_intel_entry(pid, profile)
 
     return {
         "updated": True,

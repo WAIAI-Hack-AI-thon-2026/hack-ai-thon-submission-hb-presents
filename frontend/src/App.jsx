@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PropertySelect from './components/PropertySelect'
 import ReviewForm     from './components/ReviewForm'
 import FollowUpCards  from './components/FollowUpCards'
 import ThankYou       from './components/ThankYou'
-import { PROPERTIES } from './propertyIntel'
 
 // ── Fallback questions (demo-safe) ──────────────────────────────────────────
 const FALLBACK_QUESTIONS = [
@@ -45,6 +44,25 @@ async function analyzeReview(payload) {
     console.warn('[/api/analyze] failed, using fallback:', err.message)
     return FALLBACK_QUESTIONS
   }
+}
+
+async function loadProperties() {
+  const res = await fetch('/api/properties')
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  const data = await res.json()
+  return Array.isArray(data.properties) ? data.properties : []
+}
+
+function applyProfileToProperties(properties, propertyId, profile) {
+  if (!profile || !propertyId) return properties
+  return properties.map((property) => {
+    if (property.id !== propertyId) return property
+    return {
+      ...property,
+      starRating: profile.overall_rating_avg ?? property.starRating,
+      totalReviews: typeof profile.total_reviews === 'number' ? profile.total_reviews : property.totalReviews,
+    }
+  })
 }
 
 // ── Header ──────────────────────────────────────────────────────────────────
@@ -105,20 +123,51 @@ function Header({ showBack, onBack }) {
 // ── App ─────────────────────────────────────────────────────────────────────
 export default function App() {
   const [step,     setStep]     = useState('select')   // select|review|followup|done
+  const [properties, setProperties] = useState([])
   const [property, setProperty] = useState(null)
   const [questions, setQuestions] = useState([])
   const [reviewText, setReviewText] = useState('')
 
+  useEffect(() => {
+    loadProperties()
+      .then(setProperties)
+      .catch((err) => console.warn('[/api/properties] failed:', err.message))
+  }, [])
+
   async function handleReviewSubmit({ rating, reviewText }) {
     // button already shows loading state; this resolves when done
     setReviewText(reviewText)
-    const qs = await analyzeReview({
-      propertyId:  property.id,
-      city:        property.city,
-      country:     property.country,
-      rating,
-      reviewText,
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), 25000)
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        propertyId:  property.id,
+        city:        property.city,
+        country:     property.country,
+        rating,
+        reviewText,
+      }),
+      signal: controller.signal,
     })
+    clearTimeout(timer)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+    console.log('[/api/analyze] profile update:', data.profileUpdate)
+    const qs = Array.isArray(data.questions) && data.questions.length > 0
+      ? data.questions
+      : FALLBACK_QUESTIONS
+    if (data.profileUpdate?.profile) {
+      setProperties((current) => applyProfileToProperties(current, property.id, data.profileUpdate.profile))
+      setProperty((current) => current ? {
+        ...current,
+        starRating: data.profileUpdate.profile.overall_rating_avg ?? current.starRating,
+        totalReviews: typeof data.profileUpdate.profile.total_reviews === 'number'
+          ? data.profileUpdate.profile.total_reviews
+          : current.totalReviews,
+      } : current)
+    }
     setQuestions(qs)
     setStep('followup')
   }
@@ -136,6 +185,15 @@ export default function App() {
       })
       const data = await res.json().catch(() => null)
       console.log('[submit-followups] updated profile response:', data)
+      if (data?.profile) {
+        setProperties((current) => applyProfileToProperties(current, property?.id, data.profile))
+        setProperty((current) => current ? {
+          ...current,
+          totalReviews: typeof data.profile.total_reviews === 'number'
+            ? data.profile.total_reviews
+            : current.totalReviews,
+        } : current)
+      }
       if (!res.ok) {
         console.warn('[/api/submit-followups] request failed:', data || res.status)
       }
@@ -154,7 +212,7 @@ export default function App() {
 
       {step === 'select'  && (
         <PropertySelect
-          properties={PROPERTIES}
+          properties={properties}
           onSelect={(p) => { setProperty(p); setStep('review') }}
         />
       )}

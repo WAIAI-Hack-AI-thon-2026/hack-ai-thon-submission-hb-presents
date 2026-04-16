@@ -584,63 +584,73 @@
   },
   "a036cbe1d9fbf9cba088075d1b4d966ee871df55aa4a58ba0da23c116c499052": {
     "location": "Mbombela, South Africa",
-    "star_rating": "3.5",
-    "total_reviews": 10,
-    "reviews_with_text": 8,
+    "star_rating": "3.0",
+    "total_reviews": 14,
+    "reviews_with_text": 10,
     "frequently_mentioned": [
       {
         "label": "breakfast",
         "count": 3,
-        "percentage": 37.5
+        "percentage": 30.0
+      },
+      {
+        "label": "staff_service",
+        "count": 3,
+        "percentage": 30.0
       },
       {
         "label": "cleanliness",
         "count": 2,
-        "percentage": 25.0
-      },
-      {
-        "label": "staff_service",
-        "count": 2,
-        "percentage": 25.0
+        "percentage": 20.0
       },
       {
         "label": "value_price",
         "count": 2,
-        "percentage": 25.0
+        "percentage": 20.0
       },
       {
-        "label": "walkability",
+        "label": "family_amenities",
         "count": 1,
-        "percentage": 12.5
-      },
-      {
-        "label": "safety_perception",
-        "count": 1,
-        "percentage": 12.5
+        "percentage": 10.0
       },
       {
         "label": "food_dining",
         "count": 1,
-        "percentage": 12.5
+        "percentage": 10.0
+      },
+      {
+        "label": "parking",
+        "count": 1,
+        "percentage": 10.0
       },
       {
         "label": "renovation_age",
         "count": 1,
-        "percentage": 12.5
+        "percentage": 10.0
+      },
+      {
+        "label": "safety_perception",
+        "count": 1,
+        "percentage": 10.0
+      },
+      {
+        "label": "walkability",
+        "count": 1,
+        "percentage": 10.0
       }
     ],
     "never_mentioned": [
       "accessibility",
-      "transit_convenient",
-      "noise",
-      "parking",
-      "family_amenities",
-      "leisure_location",
-      "bed_comfort",
       "bathroom_quality",
+      "bed_comfort",
       "check_in_out",
-      "room_size"
-    ]
+      "leisure_location",
+      "noise",
+      "room_size",
+      "transit_convenient"
+    ],
+    "overall_rating_count": 2,
+    "overall_rating_avg": 3.0
   },
   "db38b19b897dbece3e34919c662b3fd66d23b615395d11fb69264dd3a9b17723": {
     "location": "Broomfield, United States",

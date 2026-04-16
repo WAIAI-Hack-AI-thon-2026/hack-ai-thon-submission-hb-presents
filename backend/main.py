@@ -16,14 +16,14 @@ from pydantic import BaseModel
 
 try:
     from .agent import decide_questions, invalidate_evidence_profile_cache
-    from .evidence_profiles import update_hotel_evidence_profile
+    from .evidence_profiles import load_property_intel, update_hotel_evidence_profile
     from .evidence_profiles import update_hotel_rating_profile
     from .ratings import parse_rating_payload
     from .schema import ReviewContext
     from .conflict_detection import resolve_conflict
 except ImportError:
     from agent import decide_questions, invalidate_evidence_profile_cache
-    from evidence_profiles import update_hotel_evidence_profile
+    from evidence_profiles import load_property_intel, update_hotel_evidence_profile
     from evidence_profiles import update_hotel_rating_profile
     from ratings import parse_rating_payload
     from schema import ReviewContext
@@ -82,6 +82,11 @@ class SubmitFollowUpsInput(BaseModel):
 @app.get("/health")
 def health():
     return {"status": "ok", "version": "0.2.0"}
+
+
+@app.get("/api/properties")
+def properties():
+    return {"properties": load_property_intel()}
 
 
 @app.post("/api/analyze")
