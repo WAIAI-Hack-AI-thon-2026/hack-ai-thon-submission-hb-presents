@@ -14,7 +14,6 @@ export default function FollowUpCards({ property, questions, onComplete }) {
 
   const q      = questions[current]
   const isLast = current === questions.length - 1
-  const reasoning = q?.reasoning || q?.reason || ''
   const roleInfo = ROLE_LABELS[q?.role] || null
   const showOtherInput = selected.includes('Other')
   const hasAnswer = selected.length > 0 && (!showOtherInput || otherText.trim())
@@ -116,11 +115,6 @@ export default function FollowUpCards({ property, questions, onComplete }) {
           }}>
             {q.text}
           </p>
-          {reasoning && (
-            <p style={{ fontSize: '0.8rem', color: '#6b7280', marginTop: '-10px', marginBottom: 18 }}>
-              📊 {reasoning}
-            </p>
-          )}
 
           {/* Pill options — multi-select */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: showOtherInput ? 12 : 28 }}>

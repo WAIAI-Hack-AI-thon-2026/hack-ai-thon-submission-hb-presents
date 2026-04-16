@@ -228,20 +228,7 @@
     ]
   },
   "ff26cdda236b233f7c481f0e896814075ac6bed335e162e0ff01d5491343f838": {
-    "conflicts": [
-      {
-        "status": "conflicting",
-        "negative_snippet": "d well. it couldve used a small sitting area with couch instead of a table . the lighting was terrible an",
-        "negative_date": "2026-01-04",
-        "negative_age_days": 101,
-        "positive_snippet": "clean and great beds.",
-        "positive_date": "2025-11-29",
-        "positive_age_days": 137,
-        "total_negative_mentions": 10,
-        "total_positive_mentions": 74,
-        "topic": "bed_comfort"
-      }
-    ],
+    "conflicts": [],
     "resolved": [
       {
         "status": "resolved",
@@ -398,6 +385,19 @@
         "total_negative_mentions": 9,
         "total_positive_mentions": 19,
         "topic": "family_amenities",
+        "resolved_date": "2026-04-15"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "d well. it couldve used a small sitting area with couch instead of a table . the lighting was terrible an",
+        "negative_date": "2026-01-04",
+        "negative_age_days": 101,
+        "positive_snippet": "clean and great beds.",
+        "positive_date": "2025-11-29",
+        "positive_age_days": 137,
+        "total_negative_mentions": 10,
+        "total_positive_mentions": 74,
+        "topic": "bed_comfort",
         "resolved_date": "2026-04-15"
       }
     ]
@@ -1671,18 +1671,6 @@
   "e52d67a758ce4ad0229aacc97e5dfe89984c384c51a70208f9e0cc65c9cd4676": {
     "conflicts": [
       {
-        "status": "conflicting",
-        "negative_snippet": "n bloom. |MASK| only downside was |MASK| wet-room bathroom — |MASK| shower leaked and left |MASK| floor wet",
-        "negative_date": "2025-12-04",
-        "negative_age_days": 132,
-        "positive_snippet": "ng that i didn’t like was |MASK| toilet in |MASK| shower , but that is so popular in thailand 🤗",
-        "positive_date": "2023-03-02",
-        "positive_age_days": 1140,
-        "total_negative_mentions": 1,
-        "total_positive_mentions": 1,
-        "topic": "bathroom_quality"
-      },
-      {
         "status": "stale_issue",
         "negative_snippet": "i picked this hotel based on reviews and area. check in was fast and easy. our room was on |MASK| 2nd flo",
         "negative_date": "2023-03-02",
@@ -1755,6 +1743,19 @@
         "total_negative_mentions": 1,
         "total_positive_mentions": 1,
         "topic": "room_size"
+      },
+      {
+        "status": "resolved",
+        "negative_snippet": "n bloom. |MASK| only downside was |MASK| wet-room bathroom — |MASK| shower leaked and left |MASK| floor wet",
+        "negative_date": "2025-12-04",
+        "negative_age_days": 132,
+        "positive_snippet": "ng that i didn’t like was |MASK| toilet in |MASK| shower , but that is so popular in thailand 🤗",
+        "positive_date": "2023-03-02",
+        "positive_age_days": 1140,
+        "total_negative_mentions": 1,
+        "total_positive_mentions": 1,
+        "topic": "bathroom_quality",
+        "resolved_date": "2026-04-15"
       }
     ]
   }

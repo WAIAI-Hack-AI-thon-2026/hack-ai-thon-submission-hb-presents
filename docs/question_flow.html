@@ -19,15 +19,13 @@
 <body>
 
 <h1>Ask What Matters — Question Generation Flow</h1>
-<h2>Complete pipeline from review submission to follow-up questions</h2>
+<h2>2-slot pipeline: Slot 1 (deep-dive) + Slot 2 (conflict OR gap)</h2>
 
 <div class="mermaid">
 flowchart TD
-    A["Guest submits review\n(rating + text)"] --> B["POST /api/analyze"]
+    A["Guest submits review\n(ratings + optional text)"] --> B["POST /api/analyze"]
 
     B --> C["match_labels(review_text)\nDetect which aspects the\nreview already mentions"]
-
-    B --> D["_get_gap_aspects(property_id)\nFind lowest-coverage aspects\nfor this hotel"]
 
     B --> E{"Has property_id?"}
     E -- Yes --> F["get_active_conflicts(property_id)\nLoad unresolved conflicts\nfrom hotel_conflicts.json"]
@@ -35,59 +33,52 @@ flowchart TD
     F --> H{"Conflicts found?"}
     G --> H
 
-    C --> I["Build LLM Prompt"]
+    H -- Yes --> SKIP_GAP["Skip gap loading\nSlot 2 = Conflict Resolution"]
+    H -- No --> D["_get_gap_aspects(property_id)\nFind lowest-coverage aspects\nfor this hotel\nSlot 2 = Information Gap"]
+
+    C --> I["Build LLM Prompt\n(2 questions)"]
+    SKIP_GAP --> I
     D --> I
-    H -- Yes --> I
-    H -- No --> I
 
     I --> J["Call OpenAI GPT-4.1-mini\n(structured JSON output)"]
 
-    J --> K["Q1: Comment Deep-dive\n(role: comment_deepdive)\nDig deeper into what\nguest wrote about"]
+    J --> K{"Has review text?"}
+    K -- Yes --> K1["Q1: Comment Deep-dive\nDig deeper into what\nguest wrote about"]
+    K -- No --> K2["Q1: Rating-Driven\nUse sub-ratings to decide\nwhat to ask about"]
 
-    J --> L["Q2: Information Gap\n(role: information_gap)\nAsk about low-coverage\naspects for this hotel"]
+    J --> L{"Conflicts exist?"}
+    L -- Yes --> M["Q2: Conflict Resolution\nAsk about SPECIFIC issue\nfrom contradictory reviews"]
+    L -- No --> N["Q2: Information Gap\nAsk about low-coverage\naspects for this hotel"]
 
-    H -- "Yes + no overlap\nwith Q1/Q2" --> M["Q3: Conflict Resolution\n(role: conflict_resolution)\nAsk about SPECIFIC issue\nfrom contradictory reviews"]
+    K1 --> O["Frontend: Show Q1"]
+    K2 --> O
+    O --> P["Guest selects options"]
+    P --> Q["Show Q2"]
 
-    K --> N["Frontend: Show Q1"]
-    N --> O["Guest selects options"]
-    O --> P{"First comment_deepdive\nanswered? (didDeepDive=false)"}
+    M --> Q
+    N --> Q
 
-    P -- Yes --> Q["POST /api/followup-deepdive\nSend review + Q1 text +\nselected options"]
-    Q --> R["OpenAI generates ONE\ntargeted follow-up based\non guest's selections"]
-    R --> S["Q1.5: Dynamic Deep-dive\n(inserted after Q1)\nSpecific to what guest chose"]
-    S --> T["Guest answers Q1.5"]
-
-    P -- No / API fails --> U["Show next question"]
-    T --> U
-
-    U --> V{"More questions?"}
-    V -- Yes --> W["Show Q2 / Q3"]
-    W --> X["Guest answers"]
-    X --> Y{"Was this a\nconflict_resolution\nquestion?"}
-    Y -- Yes --> Z["POST /api/resolve-conflict\n(fire-and-forget)\nMark conflict as resolved\nin hotel_conflicts.json"]
-    Z --> AA{"More questions?"}
-    Y -- No --> AA
-    AA -- Yes --> W
-    AA -- No --> AB["Thank You screen"]
-    V -- No --> AB
+    Q --> R["Guest answers Q2"]
+    R --> S{"Was Q2 a\nconflict_resolution?"}
+    S -- Yes --> T["POST /api/resolve-conflict\n(fire-and-forget)\nMark conflict as resolved\nin hotel_conflicts.json"]
+    T --> U["Thank You screen"]
+    S -- No --> U
 
     style A fill:#E8F0FE,stroke:#00355F,color:#00355F
-    style K fill:#E8F0FE,stroke:#00355F,color:#00355F
-    style L fill:#FFF8E1,stroke:#7C5C00,color:#7C5C00
+    style K1 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style K2 fill:#E8F0FE,stroke:#00355F,color:#00355F
+    style N fill:#FFF8E1,stroke:#7C5C00,color:#7C5C00
     style M fill:#FFF1F2,stroke:#7C2D12,color:#7C2D12
-    style S fill:#E0F2FE,stroke:#0369A1,color:#0369A1
-    style AB fill:#ECFDF5,stroke:#059669,color:#059669
+    style U fill:#ECFDF5,stroke:#059669,color:#059669
     style J fill:#F3E8FF,stroke:#7C3AED,color:#7C3AED
-    style R fill:#F3E8FF,stroke:#7C3AED,color:#7C3AED
-    style Z fill:#FEF3C7,stroke:#D97706,color:#92400E
+    style T fill:#FEF3C7,stroke:#D97706,color:#92400E
 </div>
 
 <div class="legend">
   <h3>Color Legend</h3>
-  <div class="legend-item"><div class="legend-dot" style="background:#E8F0FE;border:1px solid #00355F"></div> Comment Deep-dive (Slot 1) — based on what the guest wrote</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#E0F2FE;border:1px solid #0369A1"></div> Dynamic Deep-dive (Slot 1.5) — generated after Q1 answer, one-shot only</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#FFF8E1;border:1px solid #7C5C00"></div> Information Gap (Slot 2) — fills low-coverage data for this hotel</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#FFF1F2;border:1px solid #7C2D12"></div> Conflict Resolution (Slot 3) — conditional, only when contradictory reviews exist</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#E8F0FE;border:1px solid #00355F"></div> Slot 1: Comment Deep-dive / Rating-Driven — based on what the guest wrote or rated</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FFF1F2;border:1px solid #7C2D12"></div> Slot 2 (priority): Conflict Resolution — when contradictory/stale/persistent reviews exist</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#FFF8E1;border:1px solid #7C5C00"></div> Slot 2 (fallback): Information Gap — fills low-coverage data when no conflicts exist</div>
   <div class="legend-item"><div class="legend-dot" style="background:#F3E8FF;border:1px solid #7C3AED"></div> LLM Call (OpenAI GPT-4.1-mini)</div>
   <div class="legend-item"><div class="legend-dot" style="background:#FEF3C7;border:1px solid #D97706"></div> Side-effect: update conflict database</div>
 </div>
