@@ -1,79 +1,129 @@
 import { useState } from 'react'
 
-const DEMO_REVIEWS = [
-  {
-    label: 'Angry guest (short)',
-    text: 'Awful stay. Never again.',
-  },
-  {
-    label: 'Happy guest (detailed)',
-    text: 'Great location, 5 minutes walk from the main street. The room was clean and the bed was comfortable. Breakfast had good variety.',
-  },
-  {
-    label: 'Mixed (family trip)',
-    text: 'Decent but dated. Room was small for the four of us. The AC barely worked in the summer heat.',
-  },
-]
+const STAR_LABELS = { 1: 'Terrible', 2: 'Poor', 3: 'Okay', 4: 'Good', 5: 'Excellent' }
 
-export default function ReviewForm({ onSubmit }) {
-  const [text, setText] = useState('')
+function StarPicker({ value, onChange }) {
+  const [hovered, setHovered] = useState(0)
+  const active = hovered || value
 
-  const canSubmit = text.trim().length > 0
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+      <div
+        style={{ display: 'flex', gap: 2 }}
+        onMouseLeave={() => setHovered(0)}
+      >
+        {[1, 2, 3, 4, 5].map((n) => (
+          <button
+            key={n}
+            type="button"
+            className={`star-btn ${n <= active ? 'lit' : ''}`}
+            onMouseEnter={() => setHovered(n)}
+            onClick={() => onChange(n)}
+            aria-label={`${n} star${n > 1 ? 's' : ''}`}
+          >
+            ★
+          </button>
+        ))}
+      </div>
+      {value > 0 && (
+        <span style={{ fontSize: 15, fontWeight: 600, color: '#00355F' }}>
+          {STAR_LABELS[value]}
+        </span>
+      )}
+    </div>
+  )
+}
 
-  function handleSubmit(e) {
+export default function ReviewForm({ property, onSubmit }) {
+  const [rating, setRating]           = useState(0)
+  const [reviewText, setReviewText]   = useState('')
+  const [isSubmitting, setSubmitting] = useState(false)
+
+  const canSubmit = rating > 0 && reviewText.trim().length > 0 && !isSubmitting
+
+  async function handleSubmit(e) {
     e.preventDefault()
     if (!canSubmit) return
-    onSubmit(text.trim())
+    setSubmitting(true)
+    try {
+      await onSubmit({ rating, reviewText })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
-    <div className="space-y-6">
-      {/* Quick demo buttons */}
-      <div className="card">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
-          Demo scenarios
-        </p>
-        <div className="flex flex-col gap-2">
-          {DEMO_REVIEWS.map((s) => (
-            <button
-              key={s.label}
-              type="button"
-              onClick={() => onSubmit(s.text)}
-              className="btn-secondary text-left justify-start text-sm"
-            >
-              {s.label}
-            </button>
-          ))}
+    <>
+      {/* Hotel context strip */}
+      <div className="hotel-strip">
+        <div style={{ maxWidth: 640, margin: '0 auto', padding: '0 20px',
+                      display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span>{property.flag}</span>
+          <span>{property.city}, {property.country}</span>
         </div>
       </div>
 
-      {/* Review form */}
-      <div className="card">
-        <h2 className="text-lg font-bold text-gray-900 mb-1">How was your stay?</h2>
-        <p className="text-sm text-gray-500 mb-6">Tell us about your experience at the hotel.</p>
+      <div className="fade-in" style={{ maxWidth: 640, margin: '0 auto', padding: '28px 20px 48px' }}>
+        <div className="card" style={{ padding: '28px 24px' }}>
+          <h2 style={{ fontSize: 20, fontWeight: 700, color: '#1a2638', marginBottom: 4 }}>
+            How was your stay?
+          </h2>
+          <p style={{ fontSize: 14, color: '#64748b', marginBottom: 28 }}>
+            Your honest review helps other travelers make better decisions.
+          </p>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Your review
-            </label>
-            <textarea
-              rows={4}
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Share your experience — what stood out, what could be better..."
-              className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                         focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent
-                         resize-none placeholder:text-gray-400"
-            />
-            <p className="mt-1 text-right text-xs text-gray-400">{text.length} chars</p>
-          </div>
+          <form onSubmit={handleSubmit}>
+            {/* Star rating */}
+            <div style={{ marginBottom: 28 }}>
+              <label style={{
+                display: 'block', fontSize: 12, fontWeight: 700,
+                color: '#64748b', textTransform: 'uppercase',
+                letterSpacing: '0.06em', marginBottom: 12,
+              }}>
+                Overall rating
+              </label>
+              <StarPicker value={rating} onChange={setRating} />
+            </div>
 
-          <button type="submit" className="btn-primary w-full" disabled={!canSubmit}>
-            Submit review
-          </button>
-        </form>
+            {/* Text area */}
+            <div style={{ marginBottom: 28 }}>
+              <label style={{
+                display: 'block', fontSize: 12, fontWeight: 700,
+                color: '#64748b', textTransform: 'uppercase',
+                letterSpacing: '0.06em', marginBottom: 12,
+              }}>
+                Your review
+              </label>
+              <textarea
+                className="review-textarea"
+                rows={6}
+                value={reviewText}
+                onChange={(e) => setReviewText(e.target.value)}
+                placeholder="Tell future travelers what your stay was like..."
+                disabled={isSubmitting}
+              />
+              <p style={{
+                textAlign: 'right', fontSize: 12,
+                color: '#94a3b8', marginTop: 4,
+              }}>
+                {reviewText.length} characters
+              </p>
+            </div>
+
+            {/* Submit */}
+            <button type="submit" className="btn-primary" disabled={!canSubmit}>
+              {isSubmitting ? (
+                <>
+                  <span className="spinner" />
+                  Analyzing your review...
+                </>
+              ) : (
+                'Submit Review'
+              )}
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

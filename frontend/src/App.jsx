@@ -1,102 +1,159 @@
 import { useState } from 'react'
-import ReviewForm from './components/ReviewForm'
-import FollowUpSection from './components/FollowUpSection'
-import ThankYou from './components/ThankYou'
-import { submitReview } from './api/client'
+import PropertySelect from './components/PropertySelect'
+import ReviewForm     from './components/ReviewForm'
+import FollowUpCards  from './components/FollowUpCards'
+import ThankYou       from './components/ThankYou'
 
-// step: 'form' | 'loading' | 'followup' | 'done'
+// ── Property data (from the real dataset — names masked) ────────────────────
+export const PROPERTIES = [
+  { id: 1, city: 'Pompeii',           country: 'Italy',        flag: '🇮🇹', stars: 4,   score: 8.4 },
+  { id: 2, city: 'New Smyrna Beach',  country: 'Florida, USA', flag: '🇺🇸', stars: 2,   score: null },
+  { id: 3, city: 'Ocala',             country: 'Florida, USA', flag: '🇺🇸', stars: 2.5, score: null },
+  { id: 4, city: 'Amsterdam',         country: 'Netherlands',  flag: '🇳🇱', stars: 4,   score: 8.7 },
+  { id: 5, city: 'Barcelona',         country: 'Spain',        flag: '🇪🇸', stars: 4,   score: 8.5 },
+  { id: 6, city: 'Rome',              country: 'Italy',        flag: '🇮🇹', stars: 3,   score: 7.9 },
+]
 
+// ── Fallback questions (demo-safe) ──────────────────────────────────────────
+const FALLBACK_QUESTIONS = [
+  {
+    id: 'q_bathroom',
+    text: 'How was the bathroom during your stay?',
+    options: ['Spotless', 'Average', 'Cleanliness issue', 'Something broken'],
+  },
+  {
+    id: 'q_billing',
+    text: 'Were there any surprises on your bill or deposit?',
+    options: ['No issues', 'Minor confusion', 'Unexpected charge', 'Still unresolved'],
+  },
+]
+
+// ── API call ────────────────────────────────────────────────────────────────
+async function analyzeReview(payload) {
+  try {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), 25000)
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: controller.signal,
+    })
+    clearTimeout(timer)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+    if (!Array.isArray(data.questions) || data.questions.length === 0)
+      throw new Error('Empty questions')
+    return data.questions
+  } catch (err) {
+    console.warn('[/api/analyze] failed, using fallback:', err.message)
+    return FALLBACK_QUESTIONS
+  }
+}
+
+// ── Header ──────────────────────────────────────────────────────────────────
+function Header({ showBack, onBack }) {
+  return (
+    <header style={{
+      background: '#00355F',
+      position: 'sticky', top: 0, zIndex: 50,
+    }}>
+      <div style={{
+        maxWidth: 640, margin: '0 auto',
+        padding: '0 20px',
+        display: 'flex', alignItems: 'center',
+        height: 58, gap: 12,
+      }}>
+        {showBack ? (
+          <button
+            onClick={onBack}
+            style={{
+              background: 'none', border: 'none',
+              color: 'rgba(255,255,255,0.85)',
+              fontSize: 15, fontWeight: 500,
+              fontFamily: 'inherit', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: 5,
+              padding: '6px 0',
+            }}
+          >
+            {/* Left arrow SVG */}
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="2"
+                    strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            Back
+          </button>
+        ) : (
+          /* Logo */
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {/* Yellow circle with navy lines */}
+            <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+              <circle cx="17" cy="17" r="17" fill="#FFC72C"/>
+              <rect x="9"  y="11.5" width="16" height="2.5" rx="1.25" fill="#00355F"/>
+              <rect x="9"  y="16"   width="11" height="2.5" rx="1.25" fill="#00355F"/>
+              <rect x="9"  y="20.5" width="13" height="2.5" rx="1.25" fill="#00355F"/>
+            </svg>
+            <span style={{
+              color: '#fff', fontWeight: 700, fontSize: 17,
+              letterSpacing: '-0.3px',
+            }}>
+              Ask What Matters
+            </span>
+          </div>
+        )}
+      </div>
+    </header>
+  )
+}
+
+// ── App ─────────────────────────────────────────────────────────────────────
 export default function App() {
-  const [step, setStep] = useState('form')
-  const [decision, setDecision] = useState(null)
-  const [error, setError] = useState(null)
+  const [step,     setStep]     = useState('select')   // select|review|followup|done
+  const [property, setProperty] = useState(null)
+  const [questions, setQuestions] = useState([])
 
-  async function handleReviewSubmit(reviewText) {
-    setStep('loading')
-    setError(null)
-    try {
-      const result = await submitReview(reviewText)
-      setDecision(result)
-      setStep(result.questions.length > 0 ? 'followup' : 'done')
-    } catch (err) {
-      setError(err.message || 'Could not reach the agent. Is the backend running?')
-      setStep('form')
-    }
-  }
-
-  function handleAnswersSubmit() {
-    setStep('done')
-  }
-
-  function handleReset() {
-    setStep('form')
-    setDecision(null)
-    setError(null)
+  async function handleReviewSubmit({ rating, reviewText }) {
+    // button already shows loading state; this resolves when done
+    const qs = await analyzeReview({
+      propertyId:  property.id,
+      city:        property.city,
+      country:     property.country,
+      rating,
+      reviewText,
+    })
+    setQuestions(qs)
+    setStep('followup')
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-50 via-gray-50 to-white">
-      {/* Header */}
-      <header className="border-b border-gray-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-lg mx-auto px-4 py-4 flex items-center gap-3">
-          <span className="text-2xl">🏨</span>
-          <div>
-            <h1 className="text-base font-bold text-gray-900 leading-tight">Ask What Matters</h1>
-            <p className="text-xs text-gray-500">Adaptive AI · HB Presents</p>
-          </div>
-          {step !== 'form' && (
-            <button
-              onClick={handleReset}
-              className="ml-auto text-xs text-brand-600 hover:text-brand-800 font-medium"
-            >
-              New review
-            </button>
-          )}
-        </div>
-      </header>
+    <div style={{ minHeight: '100vh', background: '#f8fafc' }}>
+      <Header
+        showBack={step === 'review'}
+        onBack={() => setStep('select')}
+      />
 
-      {/* Progress bar */}
-      <div className="h-1 bg-gray-100">
-        <div
-          className="h-full bg-brand-500 transition-all duration-500"
-          style={{
-            width:
-              step === 'form'     ? '33%' :
-              step === 'loading'  ? '55%' :
-              step === 'followup' ? '70%' : '100%',
-          }}
+      {step === 'select'  && (
+        <PropertySelect
+          properties={PROPERTIES}
+          onSelect={(p) => { setProperty(p); setStep('review') }}
         />
-      </div>
-
-      <main className="max-w-lg mx-auto px-4 py-8">
-        {error && (
-          <div className="mb-4 px-4 py-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm">
-            {error}
-          </div>
-        )}
-
-        {step === 'form' && (
-          <ReviewForm onSubmit={handleReviewSubmit} />
-        )}
-
-        {step === 'loading' && (
-          <div className="flex flex-col items-center justify-center py-24 gap-4">
-            <div className="w-10 h-10 border-4 border-brand-200 border-t-brand-600 rounded-full animate-spin" />
-            <p className="text-sm text-gray-500 font-medium">AI is analyzing your review...</p>
-          </div>
-        )}
-
-        {step === 'followup' && decision && (
-          <FollowUpSection
-            decision={decision}
-            onSubmit={handleAnswersSubmit}
-          />
-        )}
-
-        {step === 'done' && (
-          <ThankYou onReset={handleReset} />
-        )}
-      </main>
+      )}
+      {step === 'review'  && (
+        <ReviewForm
+          property={property}
+          onSubmit={handleReviewSubmit}
+        />
+      )}
+      {step === 'followup' && (
+        <FollowUpCards
+          property={property}
+          questions={questions}
+          onComplete={() => setStep('done')}
+        />
+      )}
+      {step === 'done' && (
+        <ThankYou onReset={() => setStep('select')} />
+      )}
     </div>
   )
 }

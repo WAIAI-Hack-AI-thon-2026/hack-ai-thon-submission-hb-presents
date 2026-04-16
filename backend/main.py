@@ -38,6 +38,15 @@ class ReviewInput(BaseModel):
     review_text: str = ""
 
 
+class AnalyzeInput(BaseModel):
+    """Frontend payload from the Ask What Matters UI."""
+    propertyId: int = 0
+    city: str = ""
+    country: str = ""
+    rating: float | None = None
+    reviewText: str = ""
+
+
 class QuestionOut(BaseModel):
     qid: str
     aspect: str
@@ -57,6 +66,34 @@ class DecisionOut(BaseModel):
 @app.get("/health")
 def health():
     return {"status": "ok", "version": "0.2.0"}
+
+
+@app.post("/api/analyze")
+def analyze(body: AnalyzeInput):
+    """
+    Called by the React frontend.
+    Accepts { propertyId, city, country, rating, reviewText }
+    Returns  { questions: [{ id, text, options }] }
+    """
+    text = body.reviewText.strip()
+    if not text:
+        raise HTTPException(status_code=400, detail="reviewText cannot be empty")
+
+    try:
+        decision = decide_questions(text)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+    return {
+        "questions": [
+            {
+                "id":      q.qid,
+                "text":    q.text_en,
+                "options": q.options,
+            }
+            for q in decision.questions
+        ]
+    }
 
 
 @app.post("/api/decide")

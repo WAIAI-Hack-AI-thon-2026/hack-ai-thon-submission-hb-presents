@@ -3,51 +3,144 @@
 @tailwind utilities;
 
 @layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; }
   body {
-    @apply bg-gray-50 text-gray-900 font-sans antialiased;
+    font-family: 'DM Sans', sans-serif;
+    background: #f8fafc;
+    color: #1a2638;
+    margin: 0;
   }
 }
 
-@layer components {
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
-           bg-brand-700 text-white font-semibold text-sm
-           hover:bg-brand-800 active:scale-95
-           disabled:opacity-50 disabled:cursor-not-allowed
-           transition-all duration-150 shadow-sm;
-  }
+/* ── Page transition ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.25s ease forwards; }
 
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
-           bg-white text-gray-700 font-semibold text-sm border border-gray-200
-           hover:bg-gray-50 active:scale-95
-           transition-all duration-150 shadow-sm;
-  }
+/* ── Loading spinner ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
 
-  .card {
-    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6;
-  }
+/* ── Card ── */
+.card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
 
-  .pill-option {
-    @apply px-4 py-2 rounded-full border-2 text-sm font-medium cursor-pointer
-           transition-all duration-150 select-none;
-  }
+/* ── Property card ── */
+.property-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+  display: flex; align-items: center;
+  padding: 16px 18px; gap: 14px;
+  width: 100%; text-align: left;
+  font-family: 'DM Sans', sans-serif;
+}
+.property-card:hover {
+  border-color: #00355F;
+  box-shadow: 0 4px 20px rgba(0,53,95,0.12);
+  transform: translateY(-1px);
+}
+.property-card:active { transform: scale(0.99); }
 
-  .pill-option-idle {
-    @apply border-gray-200 text-gray-600 hover:border-brand-500 hover:text-brand-700 hover:bg-brand-50;
-  }
+/* ── Primary button ── */
+.btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; padding: 15px 20px;
+  background: #00355F; color: #fff;
+  border: none; border-radius: 12px;
+  font-size: 16px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.btn-primary:hover:not(:disabled) { background: #002a4a; }
+.btn-primary:active:not(:disabled) { transform: scale(0.99); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  .pill-option-selected {
-    @apply border-brand-600 text-brand-700 bg-brand-50;
-  }
+/* ── Pill option button ── */
+.pill-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 9px 16px; border-radius: 999px;
+  border: 1.5px solid #00355F;
+  background: #fff; color: #00355F;
+  font-size: 14px; font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+.pill-btn:hover { background: #f0f5ff; }
+.pill-btn:active { transform: scale(0.97); }
+.pill-btn.selected {
+  background: #00355F; color: #fff;
+  border-color: #00355F;
+}
 
-  .aspect-badge {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium
-           bg-brand-50 text-brand-700;
-  }
+/* ── Star button ── */
+.star-btn {
+  background: none; border: none; padding: 2px;
+  font-size: 32px; cursor: pointer; line-height: 1;
+  color: #e2e8f0;
+  transition: color 0.1s ease, transform 0.1s ease;
+}
+.star-btn.lit { color: #FFC72C; }
+.star-btn:hover { transform: scale(1.12); }
 
-  .private-banner {
-    @apply flex items-center gap-2 px-3 py-2 rounded-lg bg-amber-50 border border-amber-200
-           text-amber-700 text-xs font-medium;
-  }
+/* ── Textarea ── */
+.review-textarea {
+  width: 100%; resize: none;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15px; line-height: 1.55;
+  font-family: 'DM Sans', sans-serif;
+  color: #1a2638; outline: none;
+  transition: border-color 0.15s ease;
+}
+.review-textarea::placeholder { color: #94a3b8; }
+.review-textarea:focus { border-color: #00355F; }
+
+/* ── Hotel context strip ── */
+.hotel-strip {
+  background: #f0f5ff;
+  border-bottom: 1px solid #dce8f5;
+  padding: 10px 0;
+  font-size: 13px; font-weight: 600; color: #00355F;
+}
+
+/* ── Progress dots ── */
+.dot {
+  height: 8px; border-radius: 999px;
+  background: #e2e8f0;
+  transition: all 0.2s ease;
+}
+.dot.active { background: #00355F; }
+
+/* ── Stat pill ── */
+.stat-pill {
+  display: inline-flex; align-items: center;
+  padding: 8px 16px; border-radius: 999px;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  font-size: 13px; font-weight: 600; color: #00355F;
+  white-space: nowrap;
 }

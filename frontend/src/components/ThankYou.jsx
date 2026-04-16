@@ -1,29 +1,69 @@
+const STATS = [
+  '4,162 reviews analyzed',
+  '7 languages',
+  '13 properties',
+]
+
 export default function ThankYou({ onReset }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center space-y-6">
-      <div className="w-20 h-20 rounded-full bg-brand-50 flex items-center justify-center text-4xl shadow-inner">
-        ✅
+    <div
+      className="fade-in"
+      style={{
+        maxWidth: 640, margin: '0 auto',
+        padding: '56px 20px 48px',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', textAlign: 'center',
+      }}
+    >
+      {/* Yellow circle + checkmark */}
+      <div style={{
+        width: 80, height: 80, borderRadius: '50%',
+        background: '#FFC72C',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        marginBottom: 24,
+        boxShadow: '0 4px 20px rgba(255,199,44,0.40)',
+      }}>
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+          <path
+            d="M7 18l8 8L29 10"
+            stroke="#00355F" strokeWidth="3.5"
+            strokeLinecap="round" strokeLinejoin="round"
+          />
+        </svg>
       </div>
 
-      <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-gray-900">All done!</h2>
-        <p className="text-gray-500 text-sm max-w-xs mx-auto">
-          Your feedback has been submitted. The property team will review it — thank you for helping improve future stays.
-        </p>
+      {/* Title */}
+      <h2 style={{
+        fontSize: 28, fontWeight: 700, color: '#1a2638',
+        marginBottom: 10, letterSpacing: '-0.4px',
+      }}>
+        Review submitted!
+      </h2>
+      <p style={{
+        fontSize: 15, color: '#64748b',
+        marginBottom: 36, maxWidth: 300, lineHeight: 1.55,
+      }}>
+        Thank you — your feedback helps future travelers choose with confidence.
+      </p>
+
+      {/* Stats pills */}
+      <div style={{
+        display: 'flex', flexWrap: 'wrap',
+        gap: 10, justifyContent: 'center',
+        marginBottom: 40,
+      }}>
+        {STATS.map((s) => (
+          <span key={s} className="stat-pill">{s}</span>
+        ))}
       </div>
 
-      <div className="flex flex-col items-center gap-1 text-sm text-gray-400">
-        <p>Powered by</p>
-        <p className="font-semibold text-brand-700">Ask What Matters · HB Presents</p>
-        <p className="text-xs">Wharton Hack-AI-thon 2026</p>
-      </div>
-
+      {/* CTA */}
       <button
-        type="button"
+        className="btn-primary"
         onClick={onReset}
-        className="btn-secondary mt-4"
+        style={{ maxWidth: 300 }}
       >
-        ← Try another review
+        Write Another Review
       </button>
     </div>
   )
