@@ -94,6 +94,11 @@ def _load_evidence_profiles() -> dict:
     return _evidence_profiles
 
 
+def invalidate_evidence_profile_cache() -> None:
+    global _evidence_profiles
+    _evidence_profiles = None
+
+
 # ── Gap detection ────────────────────────────────────────────────────────
 
 def _get_gap_aspects(
@@ -417,8 +422,9 @@ def decide_questions(
     property_id: str | None = None,
 ) -> AgentDecision:
     review_text = _extract_review_text(review_text_or_ctx)
+    review_text_for_matching = review_text
     if not review_text:
-        raise ValueError("review_text cannot be empty")
+        review_text = "No written review provided."
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError(
@@ -431,7 +437,7 @@ def decide_questions(
         resolved_pid = (review_text_or_ctx.property_id or "").strip() or None
 
     # Detect which aspects the review already covers (via evidence_analysis patterns)
-    review_mentioned = match_labels(review_text)
+    review_mentioned = match_labels(review_text_for_matching)
 
     # Find this hotel's lowest-coverage aspects, excluding already-mentioned ones
     gap_aspects = _get_gap_aspects(resolved_pid or "", review_mentioned)

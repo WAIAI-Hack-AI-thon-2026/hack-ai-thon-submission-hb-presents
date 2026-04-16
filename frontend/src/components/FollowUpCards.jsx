@@ -88,7 +88,7 @@ export default function FollowUpCards({ property, questions: initialQuestions, r
 
     setSelected([])
     setOtherText('')
-    if (isLast) onComplete(updated)
+    if (isLast) onComplete({ answers: updated, questions: allQuestions })
     else setCurrent((c) => c + 1)
   }
 
@@ -222,7 +222,7 @@ export default function FollowUpCards({ property, questions: initialQuestions, r
           {/* Skip */}
           <div style={{ textAlign: 'center' }}>
             <button
-              onClick={() => onComplete(answers)}
+              onClick={() => onComplete({ answers, questions: allQuestions })}
               style={{
                 background: 'none', border: 'none',
                 color: '#94a3b8', fontSize: 13,
