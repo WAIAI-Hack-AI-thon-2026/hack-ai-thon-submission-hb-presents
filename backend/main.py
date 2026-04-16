@@ -7,8 +7,6 @@ Run:
 """
 from __future__ import annotations
 
-import json
-
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -18,10 +16,12 @@ from pydantic import BaseModel
 
 try:
     from .agent import decide_questions, generate_deepdive_followup
+    from .ratings import parse_rating_payload
     from .schema import ReviewContext
     from .conflict_detection import resolve_conflict
 except ImportError:
     from agent import decide_questions, generate_deepdive_followup
+    from ratings import parse_rating_payload
     from schema import ReviewContext
     from conflict_detection import resolve_conflict
 
@@ -85,31 +85,7 @@ def analyze(body: AnalyzeInput):
     if not text:
         raise HTTPException(status_code=400, detail="reviewText cannot be empty")
 
-    overall_rating: float | None = None
-    sub_ratings: dict[str, float] = {}
-    if isinstance(body.rating, (int, float)):
-        overall_rating = float(body.rating)
-    elif isinstance(body.rating, str):
-        try:
-            parsed_rating = json.loads(body.rating)
-            if isinstance(parsed_rating, dict):
-                for key, value in parsed_rating.items():
-                    try:
-                        sub_ratings[str(key)] = float(value)
-                    except (TypeError, ValueError):
-                        continue
-                if "overall" in sub_ratings and sub_ratings["overall"] > 0:
-                    overall_rating = sub_ratings["overall"]
-        except json.JSONDecodeError:
-            overall_rating = None
-    elif isinstance(body.rating, dict):
-        for key, value in body.rating.items():
-            try:
-                sub_ratings[str(key)] = float(value)
-            except (TypeError, ValueError):
-                continue
-        if "overall" in sub_ratings and sub_ratings["overall"] > 0:
-            overall_rating = sub_ratings["overall"]
+    overall_rating, sub_ratings = parse_rating_payload(body.rating)
 
     review_ctx = ReviewContext(
         review_id=f"r_{body.propertyId or 'unknown'}",

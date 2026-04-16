@@ -26,7 +26,13 @@ def aspect_not_in_text(ctx: ReviewContext, aspect: Aspect) -> bool:
 
 
 def subrating_missing(ctx: ReviewContext, field: str) -> bool:
-    return ctx.sub_ratings.get(field) is None
+    value = ctx.sub_ratings.get(field)
+    if value is None:
+        return True
+    try:
+        return float(value) <= 0
+    except (TypeError, ValueError):
+        return True
 
 
 def hot_or_cold_month(ctx: ReviewContext) -> bool:

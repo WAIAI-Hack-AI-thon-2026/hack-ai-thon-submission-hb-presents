@@ -1,6 +1,26 @@
 import { useState } from 'react'
 
 const STAR_LABELS = { 1: 'Terrible', 2: 'Poor', 3: 'Okay', 4: 'Good', 5: 'Excellent' }
+const RATING_FIELDS = [
+  ['roomcleanliness', 'Room cleanliness'],
+  ['service', 'Service'],
+  ['roomcomfort', 'Room comfort'],
+  ['hotelcondition', 'Hotel condition'],
+  ['roomquality', 'Room quality'],
+  ['convenienceoflocation', 'Convenience of location'],
+  ['neighborhoodsatisfaction', 'Neighborhood satisfaction'],
+  ['valueformoney', 'Value for money'],
+  ['roomamenitiesscore', 'Room amenities'],
+  ['communication', 'Communication'],
+  ['ecofriendliness', 'Eco-friendliness'],
+  ['checkin', 'Check-in'],
+  ['onlinelisting', 'Online listing'],
+  ['location', 'Location'],
+]
+
+function createInitialRatings() {
+  return Object.fromEntries([['overall', 0], ...RATING_FIELDS.map(([key]) => [key, 0])])
+}
 
 function StarPicker({ value, onChange }) {
   const [hovered, setHovered] = useState(0)
@@ -35,18 +55,22 @@ function StarPicker({ value, onChange }) {
 }
 
 export default function ReviewForm({ property, onSubmit }) {
-  const [rating, setRating]           = useState(0)
+  const [ratings, setRatings]         = useState(createInitialRatings)
   const [reviewText, setReviewText]   = useState('')
   const [isSubmitting, setSubmitting] = useState(false)
 
-  const canSubmit = rating > 0 && reviewText.trim().length > 0 && !isSubmitting
+  const canSubmit = ratings.overall > 0 && reviewText.trim().length > 0 && !isSubmitting
+
+  function setRatingValue(field, value) {
+    setRatings((current) => ({ ...current, [field]: value }))
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
     if (!canSubmit) return
     setSubmitting(true)
     try {
-      await onSubmit({ rating, reviewText })
+      await onSubmit({ rating: ratings, reviewText })
     } finally {
       setSubmitting(false)
     }
@@ -81,7 +105,47 @@ export default function ReviewForm({ property, onSubmit }) {
               }}>
                 Overall rating
               </label>
-              <StarPicker value={rating} onChange={setRating} />
+              <StarPicker value={ratings.overall} onChange={(value) => setRatingValue('overall', value)} />
+            </div>
+
+            <div style={{ marginBottom: 28 }}>
+              <label style={{
+                display: 'block', fontSize: 12, fontWeight: 700,
+                color: '#64748b', textTransform: 'uppercase',
+                letterSpacing: '0.06em', marginBottom: 12,
+              }}>
+                Category ratings
+              </label>
+              <div style={{ display: 'grid', gap: 16 }}>
+                {RATING_FIELDS.map(([field, label]) => (
+                  <div
+                    key={field}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: 16,
+                      padding: '14px 16px',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: 14,
+                      background: '#fff',
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontSize: 14, fontWeight: 600, color: '#1e293b' }}>
+                        {label}
+                      </div>
+                      <div style={{ fontSize: 12, color: '#94a3b8', marginTop: 2 }}>
+                        Leave unrated to send `0.0`
+                      </div>
+                    </div>
+                    <StarPicker
+                      value={ratings[field]}
+                      onChange={(value) => setRatingValue(field, value)}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Text area */}
