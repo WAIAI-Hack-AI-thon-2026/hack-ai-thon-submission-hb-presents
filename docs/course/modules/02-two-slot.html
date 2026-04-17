@@ -1,0 +1,101 @@
+<section class="module" id="module-2" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">The Two-Slot Decision</h1>
+      <p class="module-subtitle">One fixed question, one situational question. That single rule pins down everything the agent does.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The journalist metaphor -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A journalist's two questions</h2>
+
+        <p>Imagine a reporter interviewing someone about a city council meeting. They have time for exactly two questions. What do they ask?</p>
+
+        <p>Question one is obvious: <em>"You mentioned you were frustrated about the zoning vote — can you say more?"</em> You follow up on what the source <strong>just said</strong>.</p>
+
+        <p>Question two depends on context. If a previous source contradicted them, the reporter asks them to settle it. If nobody's mentioned a specific angle yet, the reporter probes that blank spot.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">This agent does exactly that</strong>
+            <p>Slot 1 is always the "you just told me X" follow-up. Slot 2 is either <strong>conflict resolution</strong> (when the hotel has unsettled disagreements) or <strong>information gap</strong> (when a topic is suspiciously uncovered).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: The two slots visual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The two slots, visualized</h2>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">1</div>
+            <h4 class="pattern-title">Slot 1 — Comment Deep-Dive</h4>
+            <p class="pattern-desc">Always about <em>this</em> guest's review and ratings. Acknowledge what they said, then dig deeper or broaden. Never robotic.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">2a</div>
+            <h4 class="pattern-title">Slot 2a — Conflict Resolution</h4>
+            <p class="pattern-desc">If past reviews disagree ("pool was great" vs "pool was closed"), ask the current guest to be the tiebreaker.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">2b</div>
+            <h4 class="pattern-title">Slot 2b — Information Gap</h4>
+            <p class="pattern-desc">If no conflicts exist, pick a topic the hotel has zero data on (breakfast? accessibility?) and ask about that.</p>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-6)"><strong>Critical constraint:</strong> Slot 2 is <em>either</em> conflict <em>or</em> gap. Never both. Never neither. Conflicts always win when they exist.</p>
+      </section>
+
+      <!-- Screen 4: Decision tree flow -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The decision tree, end-to-end</h2>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Read the review text</strong>
+              <p>Run regex over it to detect which topics the guest already mentioned. Those get marked as "already covered."</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Look up the hotel's conflict list</strong>
+              <p>Does this property have any unresolved "guests disagree" topics? If yes, pick the top one for Slot 2.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>No conflicts? Compute information gaps</strong>
+              <p>Score every topic by how little this hotel has been reviewed on it. Skip topics the guest already covered.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Build one big prompt</strong>
+              <p>Hand Slot 1 context (the review, ratings) and Slot 2 context (either the conflict snippets or the gap list) to the LLM.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong>Get JSON back, render</strong>
+              <p>The LLM returns two questions in a strict JSON schema. The frontend turns them into tap-able cards.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

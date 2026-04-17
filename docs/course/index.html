@@ -31,10 +31,8 @@
       <span class="nav-title">Ask What Matters</span>
       <div class="nav-dots" id="nav-dots" role="tablist">
         <button class="nav-dot" data-target="module-1" data-tooltip="The Problem" role="tab" aria-label="Module 1: The Problem"></button>
-        <button class="nav-dot" data-target="module-2" data-tooltip="Meet the Actors" role="tab" aria-label="Module 2: Meet the Actors"></button>
-        <button class="nav-dot" data-target="module-3" data-tooltip="The Two-Slot Decision" role="tab" aria-label="Module 3: The Two-Slot Decision"></button>
-        <button class="nav-dot" data-target="module-4" data-tooltip="Rules + LLM" role="tab" aria-label="Module 4: Rules Pick, LLM Polishes"></button>
-        <button class="nav-dot" data-target="module-5" data-tooltip="The Data Flywheel" role="tab" aria-label="Module 5: The Data Flywheel"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="The Two-Slot Decision" role="tab" aria-label="Module 2: The Two-Slot Decision"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="Meet the Actors" role="tab" aria-label="Module 3: Meet the Actors"></button>
       </div>
     </div>
   </nav>
@@ -181,6 +179,107 @@
 
     <header class="module-header animate-in">
       <span class="module-number">02</span>
+      <h1 class="module-title">The Two-Slot Decision</h1>
+      <p class="module-subtitle">One fixed question, one situational question. That single rule pins down everything the agent does.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The journalist metaphor -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A journalist's two questions</h2>
+
+        <p>Imagine a reporter interviewing someone about a city council meeting. They have time for exactly two questions. What do they ask?</p>
+
+        <p>Question one is obvious: <em>"You mentioned you were frustrated about the zoning vote — can you say more?"</em> You follow up on what the source <strong>just said</strong>.</p>
+
+        <p>Question two depends on context. If a previous source contradicted them, the reporter asks them to settle it. If nobody's mentioned a specific angle yet, the reporter probes that blank spot.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">This agent does exactly that</strong>
+            <p>Slot 1 is always the "you just told me X" follow-up. Slot 2 is either <strong>conflict resolution</strong> (when the hotel has unsettled disagreements) or <strong>information gap</strong> (when a topic is suspiciously uncovered).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: The two slots visual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The two slots, visualized</h2>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">1</div>
+            <h4 class="pattern-title">Slot 1 — Comment Deep-Dive</h4>
+            <p class="pattern-desc">Always about <em>this</em> guest's review and ratings. Acknowledge what they said, then dig deeper or broaden. Never robotic.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">2a</div>
+            <h4 class="pattern-title">Slot 2a — Conflict Resolution</h4>
+            <p class="pattern-desc">If past reviews disagree ("pool was great" vs "pool was closed"), ask the current guest to be the tiebreaker.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">2b</div>
+            <h4 class="pattern-title">Slot 2b — Information Gap</h4>
+            <p class="pattern-desc">If no conflicts exist, pick a topic the hotel has zero data on (breakfast? accessibility?) and ask about that.</p>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-6)"><strong>Critical constraint:</strong> Slot 2 is <em>either</em> conflict <em>or</em> gap. Never both. Never neither. Conflicts always win when they exist.</p>
+      </section>
+
+      <!-- Screen 4: Decision tree flow -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The decision tree, end-to-end</h2>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Read the review text</strong>
+              <p>Run regex over it to detect which topics the guest already mentioned. Those get marked as "already covered."</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Look up the hotel's conflict list</strong>
+              <p>Does this property have any unresolved "guests disagree" topics? If yes, pick the top one for Slot 2.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>No conflicts? Compute information gaps</strong>
+              <p>Score every topic by how little this hotel has been reviewed on it. Skip topics the guest already covered.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Build one big prompt</strong>
+              <p>Hand Slot 1 context (the review, ratings) and Slot 2 context (either the conflict snippets or the gap list) to the LLM.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong>Get JSON back, render</strong>
+              <p>The LLM returns two questions in a strict JSON schema. The frontend turns them into tap-able cards.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+<section class="module" id="module-3" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
       <h1 class="module-title">Meet the Cast</h1>
       <p class="module-subtitle">Six characters do all the work. Once you know who they are, the whole system makes sense.</p>
     </header>
@@ -298,607 +397,6 @@
           <div class="callout-content">
             <strong class="callout-title">Separation of concerns, in plain English</strong>
             <p>When each piece has a narrow job, a bug is easier to trace ("which actor is lying?"), a change is easier to make ("just swap the LLM"), and a test is easier to write ("does the Rule Engine detect 'musty'? ignore everything else"). This is one of the oldest and most important patterns in software.</p>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-</section>
-<section class="module" id="module-3" style="background: var(--color-bg-warm)">
-  <div class="module-content">
-
-    <header class="module-header animate-in">
-      <span class="module-number">03</span>
-      <h1 class="module-title">The Two-Slot Decision</h1>
-      <p class="module-subtitle">One fixed question, one situational question. That single rule pins down everything the agent does.</p>
-    </header>
-
-    <div class="module-body">
-
-      <!-- Screen 1: The journalist metaphor -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">A journalist's two questions</h2>
-
-        <p>Imagine a reporter interviewing someone about a city council meeting. They have time for exactly two questions. What do they ask?</p>
-
-        <p>Question one is obvious: <em>"You mentioned you were frustrated about the zoning vote — can you say more?"</em> You follow up on what the source <strong>just said</strong>.</p>
-
-        <p>Question two depends on context. If a previous source contradicted them, the reporter asks them to settle it. If nobody's mentioned a specific angle yet, the reporter probes that blank spot.</p>
-
-        <div class="callout callout-accent">
-          <div class="callout-icon">💡</div>
-          <div class="callout-content">
-            <strong class="callout-title">This agent does exactly that</strong>
-            <p>Slot 1 is always the "you just told me X" follow-up. Slot 2 is either <strong>conflict resolution</strong> (when the hotel has unsettled disagreements) or <strong>information gap</strong> (when a topic is suspiciously uncovered).</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 2: The two slots visual -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">The two slots, visualized</h2>
-
-        <div class="pattern-cards">
-          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
-            <div class="pattern-icon" style="background: var(--color-actor-1)">1</div>
-            <h4 class="pattern-title">Slot 1 — Comment Deep-Dive</h4>
-            <p class="pattern-desc">Always about <em>this</em> guest's review and ratings. Acknowledge what they said, then dig deeper or broaden. Never robotic.</p>
-          </div>
-          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
-            <div class="pattern-icon" style="background: var(--color-actor-2)">2a</div>
-            <h4 class="pattern-title">Slot 2a — Conflict Resolution</h4>
-            <p class="pattern-desc">If past reviews disagree ("pool was great" vs "pool was closed"), ask the current guest to be the tiebreaker.</p>
-          </div>
-          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
-            <div class="pattern-icon" style="background: var(--color-actor-3)">2b</div>
-            <h4 class="pattern-title">Slot 2b — Information Gap</h4>
-            <p class="pattern-desc">If no conflicts exist, pick a topic the hotel has zero data on (breakfast? accessibility?) and ask about that.</p>
-          </div>
-        </div>
-
-        <p style="margin-top: var(--space-6)"><strong>Critical constraint:</strong> Slot 2 is <em>either</em> conflict <em>or</em> gap. Never both. Never neither. Conflicts always win when they exist.</p>
-      </section>
-
-      <!-- Screen 3: The decision logic in code -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">The decision in code</h2>
-
-        <p>The whole "conflict beats gap" logic lives in one six-line block inside [backend/agent.py](backend/agent.py). Plain code, no AI needed.</p>
-
-        <div class="translation-block animate-in">
-          <div class="translation-code">
-            <span class="translation-label">CODE</span>
-            <pre><code><span class="code-line"><span class="code-comment"># Check for unresolved conflicts on this property</span></span>
-<span class="code-line">conflicts: list[dict] = []</span>
-<span class="code-line"><span class="code-keyword">if</span> resolved_pid:</span>
-<span class="code-line">    conflicts = get_active_conflicts(resolved_pid, top_n=<span class="code-number">1</span>)</span>
-<span class="code-line"></span>
-<span class="code-line"><span class="code-comment"># Slot 2: conflict takes priority; only load gaps when no conflicts</span></span>
-<span class="code-line">gap_aspects: list[dict] = []</span>
-<span class="code-line"><span class="code-keyword">if</span> <span class="code-keyword">not</span> conflicts:</span>
-<span class="code-line">    gap_aspects = _get_gap_aspects(resolved_pid <span class="code-keyword">or</span> <span class="code-string">""</span>, review_mentioned)</span></code></pre>
-          </div>
-          <div class="translation-english">
-            <span class="translation-label">PLAIN ENGLISH</span>
-            <div class="translation-lines">
-              <p class="tl">Start with an empty list of conflicts.</p>
-              <p class="tl">If we know which hotel this is, look up its conflicts file and grab the top one (if any).</p>
-              <p class="tl">Now Slot 2's decision: if there's <em>any</em> conflict, we'll ask about that. Only if there are zero conflicts do we bother computing information gaps.</p>
-              <p class="tl">This <em>if not conflicts</em> is the entire priority rule — four words doing all the work.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 4: Decision tree flow -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">The decision tree, end-to-end</h2>
-
-        <div class="step-cards">
-          <div class="step-card">
-            <div class="step-num">1</div>
-            <div class="step-body">
-              <strong>Read the review text</strong>
-              <p>Run regex over it to detect which topics the guest already mentioned. Those get marked as "already covered."</p>
-            </div>
-          </div>
-          <div class="step-card">
-            <div class="step-num">2</div>
-            <div class="step-body">
-              <strong>Look up the hotel's conflict list</strong>
-              <p>Does this property have any unresolved "guests disagree" topics? If yes, pick the top one for Slot 2.</p>
-            </div>
-          </div>
-          <div class="step-card">
-            <div class="step-num">3</div>
-            <div class="step-body">
-              <strong>No conflicts? Compute information gaps</strong>
-              <p>Score every topic by how little this hotel has been reviewed on it. Skip topics the guest already covered.</p>
-            </div>
-          </div>
-          <div class="step-card">
-            <div class="step-num">4</div>
-            <div class="step-body">
-              <strong>Build one big prompt</strong>
-              <p>Hand Slot 1 context (the review, ratings) and Slot 2 context (either the conflict snippets or the gap list) to the LLM.</p>
-            </div>
-          </div>
-          <div class="step-card">
-            <div class="step-num">5</div>
-            <div class="step-body">
-              <strong>Get JSON back, render</strong>
-              <p>The LLM returns two questions in a strict JSON schema. The frontend turns them into tap-able cards.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 5: Tier-based gap sampling -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">How the "information gap" gets picked</h2>
-
-        <p>The gap logic has a clever trick: it splits candidate topics into <strong>tiers</strong> by coverage, then randomly picks within tiers. So never-mentioned topics come first, but different guests aren't always asked the same thing.</p>
-
-        <div class="translation-block animate-in">
-          <div class="translation-code">
-            <span class="translation-label">CODE</span>
-            <pre><code><span class="code-line">tier_a: list[dict] = []  <span class="code-comment"># &lt;= 5% coverage</span></span>
-<span class="code-line">tier_b: list[dict] = []  <span class="code-comment"># 5-25% coverage</span></span>
-<span class="code-line"></span>
-<span class="code-line"><span class="code-keyword">for</span> aspect_key, info <span class="code-keyword">in</span> aspect_dict.items():</span>
-<span class="code-line">    <span class="code-keyword">if</span> aspect_key <span class="code-keyword">in</span> mentioned_set: <span class="code-keyword">continue</span></span>
-<span class="code-line">    <span class="code-comment"># ... compute pct ...</span></span>
-<span class="code-line">    <span class="code-keyword">if</span> pct &lt;= <span class="code-number">5.0</span>: tier_a.append(entry)</span>
-<span class="code-line">    <span class="code-keyword">elif</span> pct &lt;= <span class="code-number">25.0</span>: tier_b.append(entry)</span>
-<span class="code-line"></span>
-<span class="code-line">random.shuffle(tier_a); random.shuffle(tier_b)</span>
-<span class="code-line">pool = tier_a + tier_b</span>
-<span class="code-line"><span class="code-keyword">return</span> pool[:pick_n]</span></code></pre>
-          </div>
-          <div class="translation-english">
-            <span class="translation-label">PLAIN ENGLISH</span>
-            <div class="translation-lines">
-              <p class="tl">Two buckets: "barely any reviews mention this" and "some reviews mention this."</p>
-              <p class="tl">For each possible topic, skip any the guest already wrote about.</p>
-              <p class="tl">If this hotel has less than 5% coverage on the topic, it goes into the urgent bucket. Between 5% and 25% goes into the less-urgent bucket.</p>
-              <p class="tl">Shuffle <em>within</em> each bucket so different guests see different questions — but the urgent bucket always gets picked from first.</p>
-              <p class="tl">Return the top three. The LLM picks one of these for Slot 2b.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="callout callout-info">
-          <div class="callout-icon">🔍</div>
-          <div class="callout-content">
-            <strong class="callout-title">Why tiers, not pure scoring?</strong>
-            <p>A pure score would give the same top-3 to every guest forever, creating a feedback loop. Tiers + randomness spread the data-gathering effort across many topics while still prioritizing the biggest blanks. Crowdsourcing in disguise.</p>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-</section>
-<section class="module" id="module-4" style="background: var(--color-bg)">
-  <div class="module-content">
-
-    <header class="module-header animate-in">
-      <span class="module-number">04</span>
-      <h1 class="module-title">Rules Pick. LLM Polishes.</h1>
-      <p class="module-subtitle">The hybrid pattern that keeps the system testable <em>and</em> gives it human warmth.</p>
-    </header>
-
-    <div class="module-body">
-
-      <!-- Screen 1: The cue card metaphor -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Think of a talk show host</h2>
-
-        <p>Before the show, a producer writes cue cards: <em>"Ask about her new album. Mention the Grammy. Pivot to the tour dates."</em> The cards are blunt and structural. The host never reads them aloud.</p>
-
-        <p>On stage, the host turns those cards into a flowing conversation — adding warmth, timing jokes, rephrasing for the moment. The <strong>producer decides the topic</strong>. The <strong>host picks the words</strong>.</p>
-
-        <div class="callout callout-accent">
-          <div class="callout-icon">💡</div>
-          <div class="callout-content">
-            <strong class="callout-title">That's exactly what this agent does</strong>
-            <p>Python rules are the producer. They write structured cue cards: <em>"Slot 1: acknowledge the bathroom complaint. Slot 2: resolve the fridge conflict. Use these exact 4 options."</em> The LLM is the host. It takes that structure and writes natural, polite questions.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 2: Why not just "ask the LLM everything"? -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Why not just let the LLM decide everything?</h2>
-
-        <p>"Just dump the review into <span class="term" data-definition="ChatGPT is OpenAI's chat product, powered by GPT-4 family language models. 'Asking ChatGPT' is the same as calling the OpenAI API with a single prompt.">ChatGPT</span> and ask for two questions" would save a lot of code. It would also introduce problems the team chose to avoid.</p>
-
-        <div class="pattern-cards">
-          <div class="pattern-card" style="border-top: 3px solid var(--color-error)">
-            <div class="pattern-icon" style="background: var(--color-error)">🎲</div>
-            <h4 class="pattern-title">Non-determinism</h4>
-            <p class="pattern-desc">Same review, different questions each call. Impossible to test. The gap-priority logic couldn't be proven with a unit test.</p>
-          </div>
-          <div class="pattern-card" style="border-top: 3px solid var(--color-error)">
-            <div class="pattern-icon" style="background: var(--color-error)">👻</div>
-            <h4 class="pattern-title">Hallucinations</h4>
-            <p class="pattern-desc">The LLM might invent a conflict ("past guests mentioned bedbugs") that doesn't exist in the data. Rules can only reference real conflicts.</p>
-          </div>
-          <div class="pattern-card" style="border-top: 3px solid var(--color-error)">
-            <div class="pattern-icon" style="background: var(--color-error)">💉</div>
-            <h4 class="pattern-title">Prompt injection</h4>
-            <p class="pattern-desc">A malicious guest could write "ignore previous instructions" in their review. With rules, the LLM only controls <em>wording</em> — it can't change the system's behavior.</p>
-          </div>
-          <div class="pattern-card" style="border-top: 3px solid var(--color-accent)">
-            <div class="pattern-icon" style="background: var(--color-accent)">🎯</div>
-            <h4 class="pattern-title">Predictable priorities</h4>
-            <p class="pattern-desc">Bathroom issues score 8.84; location scores 1.80. Rules encode what <em>matters</em>. LLMs have no way to know which gaps the hotel actually cares about.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 3: The rule engine in action -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Step 1 — rules read the review</h2>
-
-        <p>Before any AI is involved, <span class="term" data-definition="Regex (regular expressions) is a mini-language for pattern matching in text. /mold|musty|smell/ means 'match any of these three words'. Fast, zero ambiguity.">regex</span> patterns scan the review for topics. Nothing fancy. Just matching words.</p>
-
-        <div class="translation-block animate-in">
-          <div class="translation-code">
-            <span class="translation-label">CODE</span>
-            <pre><code><span class="code-line"><span class="code-keyword">def</span> <span class="code-function">detect_aspects</span>(text: str) -&gt; set[Aspect]:</span>
-<span class="code-line">    <span class="code-string">"""Regex-based detection: fast, cheap, testable."""</span></span>
-<span class="code-line">    <span class="code-keyword">if</span> <span class="code-keyword">not</span> text: <span class="code-keyword">return</span> set()</span>
-<span class="code-line">    low = text.lower()</span>
-<span class="code-line">    hits: set[Aspect] = set()</span>
-<span class="code-line">    <span class="code-keyword">for</span> aspect, patterns <span class="code-keyword">in</span> ASPECT_PATTERNS.items():</span>
-<span class="code-line">        <span class="code-keyword">for</span> pat <span class="code-keyword">in</span> patterns:</span>
-<span class="code-line">            <span class="code-keyword">if</span> re.search(pat, low):</span>
-<span class="code-line">                hits.add(aspect)</span>
-<span class="code-line">                <span class="code-keyword">break</span></span>
-<span class="code-line">    <span class="code-keyword">return</span> hits</span></code></pre>
-          </div>
-          <div class="translation-english">
-            <span class="translation-label">PLAIN ENGLISH</span>
-            <div class="translation-lines">
-              <p class="tl">Take the review text and lowercase it so "Bathroom" matches "bathroom."</p>
-              <p class="tl">Walk through every known topic (bathroom, smell, noise, staff, ...) and its keyword patterns.</p>
-              <p class="tl">As soon as any pattern matches, mark that topic as mentioned and stop checking its other patterns. One hit is enough.</p>
-              <p class="tl">Hand back the set of topics this review covers. The agent uses this to avoid asking about things the guest already told us.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 4: The cue card (prompt) -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Step 2 — rules hand the LLM a cue card</h2>
-
-        <p>The agent builds a long, structured prompt. It's not a polite request — it's a <em>specification</em>. It names the slots, the allowed options, the tone rules, and the exact JSON shape to return.</p>
-
-        <div class="translation-block animate-in">
-          <div class="translation-code">
-            <span class="translation-label">CODE (excerpt)</span>
-            <pre><code><span class="code-line">QUESTION 1 — COMMENT DEEP-DIVE  (role: <span class="code-string">"comment_deepdive"</span>)</span>
-<span class="code-line"></span>
-<span class="code-line">Case B: SPECIFIC negative:</span>
-<span class="code-line">  Step 1 — Acknowledge with empathy: <span class="code-string">"We're sorry to hear..."</span></span>
-<span class="code-line">  Step 2 — Ask about OTHER areas: <span class="code-string">"Were there any other aspects..."</span></span>
-<span class="code-line">  Options should be BROAD, covering different aspects EXCLUDING</span>
-<span class="code-line">  the one they already complained about:</span>
-<span class="code-line">    - FIRST option MUST be a positive escape:</span>
-<span class="code-line">      <span class="code-string">"Apart from that, everything else was great"</span></span>
-<span class="code-line">    - Then list 3-5 other aspects</span></code></pre>
-          </div>
-          <div class="translation-english">
-            <span class="translation-label">PLAIN ENGLISH</span>
-            <div class="translation-lines">
-              <p class="tl">The prompt is literally a script. It spells out: "Here's the exact template for this case."</p>
-              <p class="tl">For a specific complaint (like "mold in bathroom"), the rules require two sentence structures: apology, then a broadening question.</p>
-              <p class="tl">Even the <em>options list</em> is prescribed — the first option has to be an emotional release ("Apart from that, everything else was great") so the guest isn't forced to keep complaining.</p>
-              <p class="tl">The LLM only has freedom in <em>how</em> to word each piece. The shape and intent are fixed by the rules.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 5: JSON schema enforcement -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Step 3 — the output is locked into a shape</h2>
-
-        <p>Rather than trusting the LLM to return valid JSON, the agent uses OpenAI's <span class="term" data-definition="A JSON schema is a blueprint that says exactly what fields a JSON object must have, their types, and which values are allowed. When you pass one to OpenAI, the API guarantees the response conforms to it.">JSON schema</span> feature: "Return exactly this structure, with these allowed values, or the call fails."</p>
-
-        <div class="translation-block animate-in">
-          <div class="translation-code">
-            <span class="translation-label">CODE (excerpt)</span>
-            <pre><code><span class="code-line">{</span>
-<span class="code-line">    <span class="code-property">"type"</span>: <span class="code-string">"object"</span>,</span>
-<span class="code-line">    <span class="code-property">"properties"</span>: {</span>
-<span class="code-line">        <span class="code-property">"qid"</span>: {<span class="code-property">"type"</span>: <span class="code-string">"string"</span>},</span>
-<span class="code-line">        <span class="code-property">"role"</span>: {<span class="code-property">"type"</span>: <span class="code-string">"string"</span>, <span class="code-property">"enum"</span>: ALLOWED_ROLES},</span>
-<span class="code-line">        <span class="code-property">"aspect"</span>: {<span class="code-property">"type"</span>: <span class="code-string">"string"</span>, <span class="code-property">"enum"</span>: ALLOWED_ASPECTS},</span>
-<span class="code-line">        <span class="code-property">"text_en"</span>: {<span class="code-property">"type"</span>: <span class="code-string">"string"</span>},</span>
-<span class="code-line">        <span class="code-property">"response_type"</span>: {</span>
-<span class="code-line">            <span class="code-property">"type"</span>: <span class="code-string">"string"</span>,</span>
-<span class="code-line">            <span class="code-property">"enum"</span>: ALLOWED_RESPONSE_TYPES,</span>
-<span class="code-line">        },</span>
-<span class="code-line">        <span class="code-property">"options"</span>: {<span class="code-property">"type"</span>: <span class="code-string">"array"</span>, <span class="code-property">"items"</span>: {<span class="code-property">"type"</span>: <span class="code-string">"string"</span>}},</span>
-<span class="code-line">        <span class="code-property">"private"</span>: {<span class="code-property">"type"</span>: <span class="code-string">"boolean"</span>},</span>
-<span class="code-line">        <span class="code-property">"reason"</span>: {<span class="code-property">"type"</span>: <span class="code-string">"string"</span>},</span>
-<span class="code-line">    },</span>
-<span class="code-line">}</span></code></pre>
-          </div>
-          <div class="translation-english">
-            <span class="translation-label">PLAIN ENGLISH</span>
-            <div class="translation-lines">
-              <p class="tl">Each question must be a JSON object with these fields — no more, no less.</p>
-              <p class="tl">Role has to be one of a fixed list (comment_deepdive, conflict_resolution, information_gap). The LLM literally cannot invent a new role.</p>
-              <p class="tl">Aspect is locked to the 18 known topics. If the LLM tries to output "banana_bread_quality" the API rejects the response.</p>
-              <p class="tl">response_type is one of four shapes the frontend knows how to render (quick_tap, multi_select, free_text, private_text). No surprises.</p>
-              <p class="tl">Every field is required — no missing keys, no hallucinated keys. The downstream code can trust what it gets.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 6: The full pipeline -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">The full pipeline, one diagram</h2>
-
-        <div class="flow-animation" data-steps='[
-          {"highlight":"flow-actor-1","label":"Regex scans the review. Finds: cleanliness, smell. Marks them as already covered."},
-          {"highlight":"flow-actor-2","label":"Rules check conflicts file for this hotel. Find one: missing fridges.","packet":true,"from":"actor-1","to":"actor-2"},
-          {"highlight":"flow-actor-3","label":"Rules build a structured prompt: Slot 1 = empathy for smell, Slot 2 = resolve fridge conflict.","packet":true,"from":"actor-2","to":"actor-3"},
-          {"highlight":"flow-actor-4","label":"OpenAI receives the prompt + JSON schema. Generates two polished questions.","packet":true,"from":"actor-3","to":"actor-4"},
-          {"highlight":"flow-actor-5","label":"JSON schema check passes. Agent returns two validated questions to the API.","packet":true,"from":"actor-4","to":"actor-5"}
-        ]'>
-          <div class="flow-actors">
-            <div class="flow-actor" id="flow-actor-1">
-              <div class="flow-actor-icon">🔎</div>
-              <span>Regex</span>
-            </div>
-            <div class="flow-actor" id="flow-actor-2">
-              <div class="flow-actor-icon">📚</div>
-              <span>Data</span>
-            </div>
-            <div class="flow-actor" id="flow-actor-3">
-              <div class="flow-actor-icon">📇</div>
-              <span>Cue Card</span>
-            </div>
-            <div class="flow-actor" id="flow-actor-4">
-              <div class="flow-actor-icon">✨</div>
-              <span>LLM</span>
-            </div>
-            <div class="flow-actor" id="flow-actor-5">
-              <div class="flow-actor-icon">✅</div>
-              <span>Validated</span>
-            </div>
-          </div>
-
-          <div class="flow-packet" id="flow-packet"></div>
-          <div class="flow-step-label" id="flow-label">Click "Next Step" to begin</div>
-
-          <div class="flow-controls">
-            <button class="btn flow-next-btn">Next Step</button>
-            <button class="btn flow-reset-btn">Restart</button>
-            <span class="flow-progress"></span>
-          </div>
-        </div>
-      </section>
-
-    </div>
-  </div>
-</section>
-<section class="module" id="module-5" style="background: var(--color-bg-warm)">
-  <div class="module-content">
-
-    <header class="module-header animate-in">
-      <span class="module-number">05</span>
-      <h1 class="module-title">The Data Flywheel</h1>
-      <p class="module-subtitle">Every guest's answer makes the next guest's questions smarter. Here's the compounding loop.</p>
-    </header>
-
-    <div class="module-body">
-
-      <!-- Screen 1: Waze metaphor -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Think of Waze on your commute</h2>
-
-        <p>When you drive with Waze open, your phone reports your speed. Thousands of other drivers do the same. That's how Waze knows traffic is slow on a bridge you haven't reached yet.</p>
-
-        <p>Each driver is both a <em>consumer</em> (they get a route) and a <em>contributor</em> (they leak data about their own trip). The system gets smarter for the next person because of the last one.</p>
-
-        <div class="callout callout-accent">
-          <div class="callout-icon">💡</div>
-          <div class="callout-content">
-            <strong class="callout-title">This app does the same thing with reviews</strong>
-            <p>Every time a guest answers a follow-up, the hotel's <strong>evidence profile</strong> updates — what topics are now covered, which ones are still dark. The <em>next</em> guest walks into a smarter agent because of the last one's taps.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 2: Three data artifacts -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Three files carry the memory</h2>
-
-        <div class="icon-rows">
-          <div class="icon-row">
-            <div class="icon-circle" style="background: var(--color-actor-1)">📊</div>
-            <div>
-              <strong>hotel_evidence_profiles.json — coverage map</strong>
-              <p>Per hotel: what topics have been mentioned, how often, and which have <em>never</em> been mentioned. Updates after every follow-up submission.</p>
-            </div>
-          </div>
-          <div class="icon-row">
-            <div class="icon-circle" style="background: var(--color-actor-2)">⚡</div>
-            <div>
-              <strong>hotel_conflicts.json — disagreement log</strong>
-              <p>Pre-computed list of topics where past reviews contradict. "Staff was rude" in March vs "staff was wonderful" in June. Built offline, read on every request.</p>
-            </div>
-          </div>
-          <div class="icon-row">
-            <div class="icon-circle" style="background: var(--color-actor-3)">🏨</div>
-            <div>
-              <strong>property_intel.json — what the hotel claims</strong>
-              <p>Parsed from hotel descriptions: "has pool, spa, breakfast, parking, wifi." If a hotel claims a pool but no guest has validated it yet, that's a high-priority gap.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 3: How an answer updates the profile -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Priya's taps become tomorrow's data</h2>
-
-        <p>When Priya submits her two answers, the frontend posts them to [api/submit-followups.py](api/submit-followups.py). That endpoint calls one function, and the hotel's profile changes forever.</p>
-
-        <div class="step-cards">
-          <div class="step-card">
-            <div class="step-num">1</div>
-            <div class="step-body">
-              <strong>Frontend sends answers</strong>
-              <p>A JSON body with the property ID, the two questions that were asked, and Priya's tapped options.</p>
-            </div>
-          </div>
-          <div class="step-card">
-            <div class="step-num">2</div>
-            <div class="step-body">
-              <strong>Backend matches answers to evidence labels</strong>
-              <p>"There was no fridge" → matches the <em>room_amenities</em> label. "Staff & service" → matches <em>staff</em> label.</p>
-            </div>
-          </div>
-          <div class="step-card">
-            <div class="step-num">3</div>
-            <div class="step-body">
-              <strong>The coverage percentages update</strong>
-              <p>Those labels' counts go up. Their percentages re-compute. The <em>never_mentioned</em> list gets shorter.</p>
-            </div>
-          </div>
-          <div class="step-card">
-            <div class="step-num">4</div>
-            <div class="step-body">
-              <strong>The cache is invalidated</strong>
-              <p>The agent's in-memory copy of profiles gets cleared so the <em>next</em> API call reads fresh data. This is how the flywheel turns.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 4: Conflict detection - the clever sentiment window -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">The clever trick: local sentiment</h2>
-
-        <p>Detecting conflicts is harder than it sounds. A review might say <em>"Room was perfect, but the bathroom had mold."</em> Is that positive or negative? <strong>Depends on which topic you're asking about.</strong></p>
-
-        <p>The conflict detector looks at a <strong>small window around each mention</strong> and scores sentiment just within that window. Not the whole review.</p>
-
-        <div class="translation-block animate-in">
-          <div class="translation-code">
-            <span class="translation-label">CODE</span>
-            <pre><code><span class="code-line"><span class="code-keyword">def</span> <span class="code-function">_snippet_sentiment</span>(text: str, match_start: int, match_end: int, window: int = <span class="code-number">80</span>) -&gt; str:</span>
-<span class="code-line">    <span class="code-string">"""Local window sentiment around a topic mention."""</span></span>
-<span class="code-line">    lo = max(<span class="code-number">0</span>, match_start - window)</span>
-<span class="code-line">    hi = min(len(text), match_end + window)</span>
-<span class="code-line">    snippet = text[lo:hi].lower()</span>
-<span class="code-line"></span>
-<span class="code-line">    pos = sum(<span class="code-number">1</span> <span class="code-keyword">for</span> w <span class="code-keyword">in</span> POSITIVE_CUES <span class="code-keyword">if</span> w <span class="code-keyword">in</span> snippet)</span>
-<span class="code-line">    neg = sum(<span class="code-number">1</span> <span class="code-keyword">for</span> w <span class="code-keyword">in</span> NEGATIVE_CUES <span class="code-keyword">if</span> w <span class="code-keyword">in</span> snippet)</span>
-<span class="code-line"></span>
-<span class="code-line">    <span class="code-keyword">return</span> <span class="code-string">"neg"</span> <span class="code-keyword">if</span> neg &gt; pos <span class="code-keyword">else</span> (<span class="code-string">"pos"</span> <span class="code-keyword">if</span> pos &gt; neg <span class="code-keyword">else</span> <span class="code-string">"neutral"</span>)</span></code></pre>
-          </div>
-          <div class="translation-english">
-            <span class="translation-label">PLAIN ENGLISH</span>
-            <div class="translation-lines">
-              <p class="tl">When the text mentions a topic (say, "bathroom"), grab the 80 characters before and after that word. That's our evidence window.</p>
-              <p class="tl">Count how many positive words ("clean", "perfect", "loved") and negative words ("dirty", "mold", "broken") appear in just that window.</p>
-              <p class="tl">Whichever side has more wins — the topic is marked positive, negative, or neutral <em>for that specific mention</em>.</p>
-              <p class="tl">A review that's 90% glowing but mentions "mold in the bathroom" will correctly mark the bathroom as negative, even though the overall review is positive.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="callout callout-info">
-          <div class="callout-icon">🔍</div>
-          <div class="callout-content">
-            <strong class="callout-title">Why this matters for conflicts</strong>
-            <p>Conflicts are detected by comparing these local sentiments across different reviews. Positive bathroom in one review + negative bathroom in another = a conflict the agent can surface to the next guest.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 5: The flywheel visualized -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">The compounding loop</h2>
-
-        <p>Here's the flywheel in one picture. Each guest both receives knowledge (what the hotel already knows) and contributes to it (what they answer).</p>
-
-        <div class="flow-animation" data-steps='[
-          {"highlight":"flow-actor-1","label":"Guest A submits a review mentioning the pool."},
-          {"highlight":"flow-actor-2","label":"Agent reads the profile — breakfast has 0% coverage, let&apos;s ask about it.","packet":true,"from":"actor-1","to":"actor-2"},
-          {"highlight":"flow-actor-3","label":"Guest A taps an answer: breakfast was cold.","packet":true,"from":"actor-2","to":"actor-3"},
-          {"highlight":"flow-actor-4","label":"Profile updates: breakfast coverage jumps from 0% to 3%.","packet":true,"from":"actor-3","to":"actor-4"},
-          {"highlight":"flow-actor-1","label":"Guest B arrives with a different review. Agent reads the fresh profile."},
-          {"highlight":"flow-actor-2","label":"Now breakfast is covered. Agent picks a different gap — accessibility.","packet":true,"from":"actor-1","to":"actor-2"}
-        ]'>
-          <div class="flow-actors">
-            <div class="flow-actor" id="flow-actor-1">
-              <div class="flow-actor-icon">👤</div>
-              <span>Guest</span>
-            </div>
-            <div class="flow-actor" id="flow-actor-2">
-              <div class="flow-actor-icon">🧠</div>
-              <span>Agent</span>
-            </div>
-            <div class="flow-actor" id="flow-actor-3">
-              <div class="flow-actor-icon">✍️</div>
-              <span>Answer</span>
-            </div>
-            <div class="flow-actor" id="flow-actor-4">
-              <div class="flow-actor-icon">📊</div>
-              <span>Profile</span>
-            </div>
-          </div>
-
-          <div class="flow-packet" id="flow-packet"></div>
-          <div class="flow-step-label" id="flow-label">Click "Next Step" to begin</div>
-
-          <div class="flow-controls">
-            <button class="btn flow-next-btn">Next Step</button>
-            <button class="btn flow-reset-btn">Restart</button>
-            <span class="flow-progress"></span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 6: Aha -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Why this pattern is powerful</h2>
-
-        <p>A static question bank asks the same things forever. A pure-LLM system forgets everything between requests. This design remembers — and uses its memory to ask better questions each cycle.</p>
-
-        <div class="callout callout-accent">
-          <div class="callout-icon">💡</div>
-          <div class="callout-content">
-            <strong class="callout-title">Three small patterns, one big lesson</strong>
-            <p>Read-through cache + cache invalidation + file-based persistence gives you a system that's simple enough to debug and smart enough to improve. No database, no ML training, no complicated infrastructure. Just plain JSON files and careful code.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Screen 8: Closing -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">That's the whole system</h2>
-
-        <p>Six actors. Two question slots. One priority rule (conflicts beat gaps). One design philosophy (rules pick, LLM polishes). One data flywheel that compounds knowledge per submission.</p>
-
-        <p>You now have the mental model to read any file in the repo and know roughly why it's there. The rest is just detail.</p>
-
-        <div class="callout callout-accent">
-          <div class="callout-icon">🏁</div>
-          <div class="callout-content">
-            <strong class="callout-title">Thanks for reading</strong>
-            <p>This project is <strong>Ask What Matters — HB Presents</strong>, submitted to the Wharton Hack-AI-thon 2026. The design doc, catalog, and demo scenarios ship with the repo. Jump into [backend/agent.py](backend/agent.py) to see it all in 550 lines.</p>
           </div>
         </div>
       </section>
