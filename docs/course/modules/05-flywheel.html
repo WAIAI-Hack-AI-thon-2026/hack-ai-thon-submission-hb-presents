@@ -1,0 +1,292 @@
+<section class="module" id="module-5" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">05</span>
+      <h1 class="module-title">The Data Flywheel</h1>
+      <p class="module-subtitle">Every guest's answer makes the next guest's questions smarter. Here's the compounding loop.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: Waze metaphor -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Think of Waze on your commute</h2>
+
+        <p>When you drive with Waze open, your phone reports your speed. Thousands of other drivers do the same. That's how Waze knows traffic is slow on a bridge you haven't reached yet.</p>
+
+        <p>Each driver is both a <em>consumer</em> (they get a route) and a <em>contributor</em> (they leak data about their own trip). The system gets smarter for the next person because of the last one.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">This app does the same thing with reviews</strong>
+            <p>Every time a guest answers a follow-up, the hotel's <strong>evidence profile</strong> updates — what topics are now covered, which ones are still dark. The <em>next</em> guest walks into a smarter agent because of the last one's taps.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: Three data artifacts -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Three files carry the memory</h2>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">📊</div>
+            <div>
+              <strong>hotel_evidence_profiles.json — coverage map</strong>
+              <p>Per hotel: what topics have been mentioned, how often, and which have <em>never</em> been mentioned. Updates after every follow-up submission.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">⚡</div>
+            <div>
+              <strong>hotel_conflicts.json — disagreement log</strong>
+              <p>Pre-computed list of topics where past reviews contradict. "Staff was rude" in March vs "staff was wonderful" in June. Built offline, read on every request.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🏨</div>
+            <div>
+              <strong>property_intel.json — what the hotel claims</strong>
+              <p>Parsed from hotel descriptions: "has pool, spa, breakfast, parking, wifi." If a hotel claims a pool but no guest has validated it yet, that's a high-priority gap.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: How an answer updates the profile -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Priya's taps become tomorrow's data</h2>
+
+        <p>When Priya submits her two answers, the frontend posts them to [api/submit-followups.py](api/submit-followups.py). That endpoint calls one function, and the hotel's profile changes forever.</p>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Frontend sends answers</strong>
+              <p>A JSON body with the property ID, the two questions that were asked, and Priya's tapped options.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Backend matches answers to evidence labels</strong>
+              <p>"There was no fridge" → matches the <em>room_amenities</em> label. "Staff & service" → matches <em>staff</em> label.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>The coverage percentages update</strong>
+              <p>Those labels' counts go up. Their percentages re-compute. The <em>never_mentioned</em> list gets shorter.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>The cache is invalidated</strong>
+              <p>The agent's in-memory copy of profiles gets cleared so the <em>next</em> API call reads fresh data. This is how the flywheel turns.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Conflict detection - the clever sentiment window -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The clever trick: local sentiment</h2>
+
+        <p>Detecting conflicts is harder than it sounds. A review might say <em>"Room was perfect, but the bathroom had mold."</em> Is that positive or negative? <strong>Depends on which topic you're asking about.</strong></p>
+
+        <p>The conflict detector looks at a <strong>small window around each mention</strong> and scores sentiment just within that window. Not the whole review.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-keyword">def</span> <span class="code-function">_snippet_sentiment</span>(text: str, match_start: int, match_end: int, window: int = <span class="code-number">80</span>) -&gt; str:</span>
+<span class="code-line">    <span class="code-string">"""Local window sentiment around a topic mention."""</span></span>
+<span class="code-line">    lo = max(<span class="code-number">0</span>, match_start - window)</span>
+<span class="code-line">    hi = min(len(text), match_end + window)</span>
+<span class="code-line">    snippet = text[lo:hi].lower()</span>
+<span class="code-line"></span>
+<span class="code-line">    pos = sum(<span class="code-number">1</span> <span class="code-keyword">for</span> w <span class="code-keyword">in</span> POSITIVE_CUES <span class="code-keyword">if</span> w <span class="code-keyword">in</span> snippet)</span>
+<span class="code-line">    neg = sum(<span class="code-number">1</span> <span class="code-keyword">for</span> w <span class="code-keyword">in</span> NEGATIVE_CUES <span class="code-keyword">if</span> w <span class="code-keyword">in</span> snippet)</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-keyword">return</span> <span class="code-string">"neg"</span> <span class="code-keyword">if</span> neg &gt; pos <span class="code-keyword">else</span> (<span class="code-string">"pos"</span> <span class="code-keyword">if</span> pos &gt; neg <span class="code-keyword">else</span> <span class="code-string">"neutral"</span>)</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">When the text mentions a topic (say, "bathroom"), grab the 80 characters before and after that word. That's our evidence window.</p>
+              <p class="tl">Count how many positive words ("clean", "perfect", "loved") and negative words ("dirty", "mold", "broken") appear in just that window.</p>
+              <p class="tl">Whichever side has more wins — the topic is marked positive, negative, or neutral <em>for that specific mention</em>.</p>
+              <p class="tl">A review that's 90% glowing but mentions "mold in the bathroom" will correctly mark the bathroom as negative, even though the overall review is positive.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">Why this matters for conflicts</strong>
+            <p>Conflicts are detected by comparing these local sentiments across different reviews. Positive bathroom in one review + negative bathroom in another = a conflict the agent can surface to the next guest.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: The flywheel visualized -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The compounding loop</h2>
+
+        <p>Here's the flywheel in one picture. Each guest both receives knowledge (what the hotel already knows) and contributes to it (what they answer).</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"Guest A submits a review mentioning the pool."},
+          {"highlight":"flow-actor-2","label":"Agent reads the profile — breakfast has 0% coverage, let&apos;s ask about it.","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-3","label":"Guest A taps an answer: breakfast was cold.","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-4","label":"Profile updates: breakfast coverage jumps from 0% to 3%.","packet":true,"from":"actor-3","to":"actor-4"},
+          {"highlight":"flow-actor-1","label":"Guest B arrives with a different review. Agent reads the fresh profile."},
+          {"highlight":"flow-actor-2","label":"Now breakfast is covered. Agent picks a different gap — accessibility.","packet":true,"from":"actor-1","to":"actor-2"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon">👤</div>
+              <span>Guest</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon">🧠</div>
+              <span>Agent</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon">✍️</div>
+              <span>Answer</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon">📊</div>
+              <span>Profile</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+          <div class="flow-step-label" id="flow-label">Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 6: Aha -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Why this pattern is powerful</h2>
+
+        <p>A static question bank asks the same things forever. A pure-LLM system forgets everything between requests. This design remembers — and uses its memory to ask better questions each cycle.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Three small patterns, one big lesson</strong>
+            <p>Read-through cache + cache invalidation + file-based persistence gives you a system that's simple enough to debug and smart enough to improve. No database, no ML training, no complicated infrastructure. Just plain JSON files and careful code.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 7: Final quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">One last check</h2>
+
+        <div class="quiz-container" id="quiz-module5">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Exactly. Without cache invalidation, the agent would serve stale profile data forever. The invalidation call is what turns each answer into real knowledge for the next request."
+               data-explanation-wrong="The profile file on disk updates — but the agent has an in-memory cached copy. Without invalidating the cache, the next request reads the old copy. Cache invalidation is what closes the loop.">
+            <h3 class="quiz-question">After a guest submits their answers, why does [backend/evidence_profiles.py](backend/evidence_profiles.py) call <code>invalidate_evidence_profile_cache()</code>?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>To free up memory on the server.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>So the next request re-reads the updated JSON file instead of serving a stale in-memory copy.</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>To force-log the guest's answers to an audit trail.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Right. A full-review sentiment would average out to positive and miss the bathroom issue entirely. Local windows let the system detect per-topic sentiment, which is what conflict detection depends on."
+               data-explanation-wrong="Averaging sentiment across a whole review discards the information we actually care about — how the guest felt about each specific topic. The 80-character window is the fix.">
+            <h3 class="quiz-question">Imagine the project used full-review sentiment (one score per review) instead of per-topic local windows. What subtle bug would emerge?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Nothing — full-review sentiment is just as accurate.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The LLM would start hallucinating more often.</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A review like "loved everything, but the bathroom was moldy" would be marked positive overall, so the bathroom issue would never generate a conflict.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Exactly. The data flywheel is the core value. Most review systems are a one-shot dropbox. This one gets smarter with each submission — the questions tomorrow will be more targeted than today."
+               data-explanation-wrong="Tap-to-answer UI is nice, but plenty of apps have that. The thing that's genuinely hard to replicate is the compounding loop that updates hotel profiles in real time.">
+            <h3 class="quiz-question">You're explaining this project to someone in 30 seconds. Which single idea would you lead with?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Every guest's answer directly shapes what the next guest gets asked — it's a self-improving feedback loop, not a static form.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>It uses GPT to write the questions.</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The UI has tap-to-answer cards.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module5')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module5')">Try Again</button>
+        </div>
+      </section>
+
+      <!-- Screen 8: Closing -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">That's the whole system</h2>
+
+        <p>Six actors. Two question slots. One priority rule (conflicts beat gaps). One design philosophy (rules pick, LLM polishes). One data flywheel that compounds knowledge per submission.</p>
+
+        <p>You now have the mental model to read any file in the repo and know roughly why it's there. The rest is just detail.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">🏁</div>
+          <div class="callout-content">
+            <strong class="callout-title">Thanks for reading</strong>
+            <p>This project is <strong>Ask What Matters — HB Presents</strong>, submitted to the Wharton Hack-AI-thon 2026. The design doc, catalog, and demo scenarios ship with the repo. Jump into [backend/agent.py](backend/agent.py) to see it all in 550 lines.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

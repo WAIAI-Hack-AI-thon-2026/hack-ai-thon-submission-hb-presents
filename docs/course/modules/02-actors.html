@@ -1,0 +1,311 @@
+<section class="module" id="module-2" style="background: var(--color-bg)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">02</span>
+      <h1 class="module-title">Meet the Cast</h1>
+      <p class="module-subtitle">Six characters do all the work. Once you know who they are, the whole system makes sense.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The cast metaphor -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Think of it as a small theatre company</h2>
+
+        <p>A play isn't one actor on stage — it's a cast, each with one job. Costume, lighting, script, director. You don't need to understand every rope backstage if you know who plays what role.</p>
+
+        <p>Our app has <strong>six roles</strong>. Everything the system does is one of these six characters doing their one thing.</p>
+      </section>
+
+      <!-- Screen 2: Meet the actors -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The six actors</h2>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">🖥️</div>
+            <div>
+              <strong>The Frontend — what the guest sees</strong>
+              <p>Built with <span class="term" data-definition="React is a JavaScript library for building user interfaces out of reusable pieces called components — like buttons, forms, and cards.">React</span> and <span class="term" data-definition="Vite is a modern build tool that bundles JavaScript, CSS, and assets into something a browser can run. Think of it as the packer that ships your code to the browser.">Vite</span>. Renders the property picker, the review form, the follow-up cards, and the thank-you screen.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">🌐</div>
+            <div>
+              <strong>The API — the doorway to the backend</strong>
+              <p>A handful of <span class="term" data-definition="An HTTP endpoint is a specific URL that a server listens on — like /api/analyze — where the frontend can send data and get a response. It's the mailbox on the front door.">HTTP endpoints</span> under [api/](api/). The frontend posts data here; JSON comes back.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-3)">🧠</div>
+            <div>
+              <strong>The Agent — the decision-maker</strong>
+              <p>Lives in [backend/agent.py](backend/agent.py). Reads the review, looks at the hotel profile, and decides what two questions should be asked.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-4)">📏</div>
+            <div>
+              <strong>The Rule Engine — pattern matchers</strong>
+              <p>[backend/rules.py](backend/rules.py) and friends. Use <span class="term" data-definition="A regex (regular expression) is a tiny search pattern — like 'find any word containing mold, smell, or musty'. Fast, deterministic, and doesn't need AI to recognize common phrases.">regex</span> to spot topics like <em>bathroom</em>, <em>smell</em>, <em>staff</em>, and <em>billing</em> in the review text.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-5)">✨</div>
+            <div>
+              <strong>OpenAI — the ghost writer</strong>
+              <p>A large language model (<span class="term" data-definition="gpt-4.1-mini is a smaller, faster, cheaper version of OpenAI's GPT-4 family. Good enough for short rewording tasks like polishing a question into friendly language.">gpt-4.1-mini</span>) that turns the agent's picks into natural, polite questions with tap-ready options.</p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-accent)">📚</div>
+            <div>
+              <strong>The Data Files — the hotel's memory</strong>
+              <p><span class="term" data-definition="JSON (JavaScript Object Notation) is a plain-text format for storing structured data — lists, key-value pairs, numbers, strings. It's what machines use to pass data to each other, and it's readable by humans.">JSON</span> files in [data/](data/) that remember every hotel's coverage, conflicts, and claimed amenities.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: Visual file tree -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Where each actor lives in the codebase</h2>
+
+        <p>The folder layout maps one-to-one onto the cast. If you ever need to debug, you already know where to look.</p>
+
+        <div class="file-tree">
+          <div class="ft-folder open">
+            <span class="ft-name">frontend/</span>
+            <span class="ft-desc">React app the guest opens in their browser</span>
+            <div class="ft-children">
+              <div class="ft-folder">
+                <span class="ft-name">src/</span>
+                <span class="ft-desc">PropertySelect, ReviewForm, FollowUpCards, ThankYou</span>
+              </div>
+            </div>
+          </div>
+          <div class="ft-folder open">
+            <span class="ft-name">api/</span>
+            <span class="ft-desc">HTTP endpoints the frontend calls</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">analyze.py</span>
+                <span class="ft-desc">Main entry — generates the two follow-up questions</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">submit-followups.py</span>
+                <span class="ft-desc">Saves the guest's answers back into the hotel profile</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">properties.py</span>
+                <span class="ft-desc">Lists hotels for the dropdown</span>
+              </div>
+            </div>
+          </div>
+          <div class="ft-folder open">
+            <span class="ft-name">backend/</span>
+            <span class="ft-desc">The brain — where decisions get made</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">agent.py</span>
+                <span class="ft-desc">The decision-maker. Orchestrates everything.</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">rules.py</span>
+                <span class="ft-desc">Regex-based aspect detection (bathroom, smell, noise...)</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">conflict_detection.py</span>
+                <span class="ft-desc">Spots contradictions between past guests</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">evidence_profiles.py</span>
+                <span class="ft-desc">Reads and updates each hotel's coverage profile</span>
+              </div>
+            </div>
+          </div>
+          <div class="ft-folder open">
+            <span class="ft-name">data/</span>
+            <span class="ft-desc">Pre-computed profiles, dictionaries, raw reviews</span>
+            <div class="ft-children">
+              <div class="ft-file">
+                <span class="ft-name">aspect_dictionary.json</span>
+                <span class="ft-desc">18 topics the agent knows how to ask about</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">hotel_evidence_profiles.json</span>
+                <span class="ft-desc">Per-hotel coverage stats (what's known, what's not)</span>
+              </div>
+              <div class="ft-file">
+                <span class="ft-name">hotel_conflicts.json</span>
+                <span class="ft-desc">Pre-detected disagreements in past reviews</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Group chat -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A day in the life — overheard in the group chat</h2>
+
+        <p>If the actors had iMessage, here's roughly what happens when Priya submits her review.</p>
+
+        <div class="chat-window" id="chat-module2">
+          <div class="chat-messages">
+            <div class="chat-message" data-msg="0" data-sender="frontend" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🖥️</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">Frontend</span>
+                <p>Hey API — Priya just hit submit. 3 stars, says the room smelled musty. Hotel is Pompei. Whatcha got for follow-ups?</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="1" data-sender="api" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-2)">🌐</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-2)">API</span>
+                <p>Passing it to the Agent. Hang on.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="2" data-sender="agent" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-3)">🧠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-3)">Agent</span>
+                <p>Rules Engine — what topics does this review mention?</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="3" data-sender="rules" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-4)">📏</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-4)">Rules</span>
+                <p>"musty" → cleanliness and smell. Nothing else.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="4" data-sender="agent" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-3)">🧠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-3)">Agent</span>
+                <p>Data Files — any conflicts on Pompei I should ask about?</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="5" data-sender="data" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-accent)">📚</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-accent)">Data</span>
+                <p>Yes — old review complained about no fridges in rooms. Nobody's confirmed or denied it since.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="6" data-sender="agent" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-3)">🧠</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-3)">Agent</span>
+                <p>OpenAI — please word two questions: one acknowledging the musty smell and asking about other issues, and one specifically asking if her room had a working fridge.</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="7" data-sender="openai" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-5)">✨</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-5)">OpenAI</span>
+                <p>Here you go, JSON formatted, both with tap-ready options. 🎤</p>
+              </div>
+            </div>
+            <div class="chat-message" data-msg="8" data-sender="frontend" style="display:none">
+              <div class="chat-avatar" style="background: var(--color-actor-1)">🖥️</div>
+              <div class="chat-bubble">
+                <span class="chat-sender" style="color: var(--color-actor-1)">Frontend</span>
+                <p>Got 'em. Rendering the cards for Priya now. ✨</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-typing" id="chat-typing" style="display:none">
+            <div class="chat-avatar" id="typing-avatar">?</div>
+            <div class="chat-typing-dots">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+
+          <div class="chat-controls">
+            <button class="btn chat-next-btn">Next Message</button>
+            <button class="btn chat-all-btn">Play All</button>
+            <button class="btn chat-reset-btn">Replay</button>
+            <span class="chat-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Aha moment -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The big idea: separation of concerns</h2>
+
+        <p>Notice that no single actor "does everything." The Agent doesn't read regex. The Rules don't write sentences. The LLM doesn't touch the data files. Each character does one thing and hands off.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Separation of concerns, in plain English</strong>
+            <p>When each piece has a narrow job, a bug is easier to trace ("which actor is lying?"), a change is easier to make ("just swap the LLM"), and a test is easier to write ("does the Rule Engine detect 'musty'? ignore everything else"). This is one of the oldest and most important patterns in software.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 6: Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check your understanding</h2>
+
+        <div class="quiz-container" id="quiz-module2">
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Right — [backend/rules.py](backend/rules.py) owns regex-based aspect detection. You'd add a new pattern for 'bedbugs'/'bites'/etc. The LLM wouldn't help because adding keywords is deterministic text-matching work."
+               data-explanation-wrong="The LLM writes the final wording, but it doesn't decide which topics exist in the first place. Adding a new detectable topic is a rules-engine change.">
+            <h3 class="quiz-question">You want the agent to notice when guests mention "bedbugs" so it can ask a follow-up about pests. Where would you make that change?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Just update the OpenAI prompt — the LLM will figure it out.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Add a new React component on the frontend.</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Add a new regex pattern in [backend/rules.py](backend/rules.py) and a matching entry in the aspect dictionary.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Exactly. The frontend only renders what it's handed. The decision about which two questions happens in the Agent, which sits in [backend/agent.py](backend/agent.py)."
+               data-explanation-wrong="The frontend is the face of the app, not the brain. When something looks wrong and the bug is about *what* is being shown (not *how* it looks), suspect the backend.">
+            <h3 class="quiz-question">A bug report says: "The app keeps asking the same question about pools even when I wrote about the bathroom." Where would you look first?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The React components — the card rendering must be broken.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The Agent — it's the actor deciding which questions to pick.</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Vite — the build tool is probably caching the wrong file.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

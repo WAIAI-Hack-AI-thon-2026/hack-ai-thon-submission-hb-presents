@@ -1,0 +1,251 @@
+<section class="module" id="module-3" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">03</span>
+      <h1 class="module-title">The Two-Slot Decision</h1>
+      <p class="module-subtitle">One fixed question, one situational question. That single rule pins down everything the agent does.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The journalist metaphor -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A journalist's two questions</h2>
+
+        <p>Imagine a reporter interviewing someone about a city council meeting. They have time for exactly two questions. What do they ask?</p>
+
+        <p>Question one is obvious: <em>"You mentioned you were frustrated about the zoning vote — can you say more?"</em> You follow up on what the source <strong>just said</strong>.</p>
+
+        <p>Question two depends on context. If a previous source contradicted them, the reporter asks them to settle it. If nobody's mentioned a specific angle yet, the reporter probes that blank spot.</p>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">This agent does exactly that</strong>
+            <p>Slot 1 is always the "you just told me X" follow-up. Slot 2 is either <strong>conflict resolution</strong> (when the hotel has unsettled disagreements) or <strong>information gap</strong> (when a topic is suspiciously uncovered).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: The two slots visual -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The two slots, visualized</h2>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">1</div>
+            <h4 class="pattern-title">Slot 1 — Comment Deep-Dive</h4>
+            <p class="pattern-desc">Always about <em>this</em> guest's review and ratings. Acknowledge what they said, then dig deeper or broaden. Never robotic.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">2a</div>
+            <h4 class="pattern-title">Slot 2a — Conflict Resolution</h4>
+            <p class="pattern-desc">If past reviews disagree ("pool was great" vs "pool was closed"), ask the current guest to be the tiebreaker.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">2b</div>
+            <h4 class="pattern-title">Slot 2b — Information Gap</h4>
+            <p class="pattern-desc">If no conflicts exist, pick a topic the hotel has zero data on (breakfast? accessibility?) and ask about that.</p>
+          </div>
+        </div>
+
+        <p style="margin-top: var(--space-6)"><strong>Critical constraint:</strong> Slot 2 is <em>either</em> conflict <em>or</em> gap. Never both. Never neither. Conflicts always win when they exist.</p>
+      </section>
+
+      <!-- Screen 3: The decision logic in code -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The decision in code</h2>
+
+        <p>The whole "conflict beats gap" logic lives in one six-line block inside [backend/agent.py](backend/agent.py). Plain code, no AI needed.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line"><span class="code-comment"># Check for unresolved conflicts on this property</span></span>
+<span class="code-line">conflicts: list[dict] = []</span>
+<span class="code-line"><span class="code-keyword">if</span> resolved_pid:</span>
+<span class="code-line">    conflicts = get_active_conflicts(resolved_pid, top_n=<span class="code-number">1</span>)</span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-comment"># Slot 2: conflict takes priority; only load gaps when no conflicts</span></span>
+<span class="code-line">gap_aspects: list[dict] = []</span>
+<span class="code-line"><span class="code-keyword">if</span> <span class="code-keyword">not</span> conflicts:</span>
+<span class="code-line">    gap_aspects = _get_gap_aspects(resolved_pid <span class="code-keyword">or</span> <span class="code-string">""</span>, review_mentioned)</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Start with an empty list of conflicts.</p>
+              <p class="tl">If we know which hotel this is, look up its conflicts file and grab the top one (if any).</p>
+              <p class="tl">Now Slot 2's decision: if there's <em>any</em> conflict, we'll ask about that. Only if there are zero conflicts do we bother computing information gaps.</p>
+              <p class="tl">This <em>if not conflicts</em> is the entire priority rule — four words doing all the work.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: Decision tree flow -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">The decision tree, end-to-end</h2>
+
+        <div class="step-cards">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-body">
+              <strong>Read the review text</strong>
+              <p>Run regex over it to detect which topics the guest already mentioned. Those get marked as "already covered."</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-body">
+              <strong>Look up the hotel's conflict list</strong>
+              <p>Does this property have any unresolved "guests disagree" topics? If yes, pick the top one for Slot 2.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-body">
+              <strong>No conflicts? Compute information gaps</strong>
+              <p>Score every topic by how little this hotel has been reviewed on it. Skip topics the guest already covered.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-body">
+              <strong>Build one big prompt</strong>
+              <p>Hand Slot 1 context (the review, ratings) and Slot 2 context (either the conflict snippets or the gap list) to the LLM.</p>
+            </div>
+          </div>
+          <div class="step-card">
+            <div class="step-num">5</div>
+            <div class="step-body">
+              <strong>Get JSON back, render</strong>
+              <p>The LLM returns two questions in a strict JSON schema. The frontend turns them into tap-able cards.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Tier-based gap sampling -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">How the "information gap" gets picked</h2>
+
+        <p>The gap logic has a clever trick: it splits candidate topics into <strong>tiers</strong> by coverage, then randomly picks within tiers. So never-mentioned topics come first, but different guests aren't always asked the same thing.</p>
+
+        <div class="translation-block animate-in">
+          <div class="translation-code">
+            <span class="translation-label">CODE</span>
+            <pre><code><span class="code-line">tier_a: list[dict] = []  <span class="code-comment"># &lt;= 5% coverage</span></span>
+<span class="code-line">tier_b: list[dict] = []  <span class="code-comment"># 5-25% coverage</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">for</span> aspect_key, info <span class="code-keyword">in</span> aspect_dict.items():</span>
+<span class="code-line">    <span class="code-keyword">if</span> aspect_key <span class="code-keyword">in</span> mentioned_set: <span class="code-keyword">continue</span></span>
+<span class="code-line">    <span class="code-comment"># ... compute pct ...</span></span>
+<span class="code-line">    <span class="code-keyword">if</span> pct &lt;= <span class="code-number">5.0</span>: tier_a.append(entry)</span>
+<span class="code-line">    <span class="code-keyword">elif</span> pct &lt;= <span class="code-number">25.0</span>: tier_b.append(entry)</span>
+<span class="code-line"></span>
+<span class="code-line">random.shuffle(tier_a); random.shuffle(tier_b)</span>
+<span class="code-line">pool = tier_a + tier_b</span>
+<span class="code-line"><span class="code-keyword">return</span> pool[:pick_n]</span></code></pre>
+          </div>
+          <div class="translation-english">
+            <span class="translation-label">PLAIN ENGLISH</span>
+            <div class="translation-lines">
+              <p class="tl">Two buckets: "barely any reviews mention this" and "some reviews mention this."</p>
+              <p class="tl">For each possible topic, skip any the guest already wrote about.</p>
+              <p class="tl">If this hotel has less than 5% coverage on the topic, it goes into the urgent bucket. Between 5% and 25% goes into the less-urgent bucket.</p>
+              <p class="tl">Shuffle <em>within</em> each bucket so different guests see different questions — but the urgent bucket always gets picked from first.</p>
+              <p class="tl">Return the top three. The LLM picks one of these for Slot 2b.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-icon">🔍</div>
+          <div class="callout-content">
+            <strong class="callout-title">Why tiers, not pure scoring?</strong>
+            <p>A pure score would give the same top-3 to every guest forever, creating a feedback loop. Tiers + randomness spread the data-gathering effort across many topics while still prioritizing the biggest blanks. Crowdsourcing in disguise.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 6: Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check your understanding</h2>
+
+        <div class="quiz-container" id="quiz-module3">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Right. Conflicts always win over gaps. If the hotel has an unresolved disagreement, Slot 2 goes to conflict resolution and the gap pool is never even computed."
+               data-explanation-wrong="Re-read the decision code. The line <em>if not conflicts</em> means gaps are only used when there's nothing to reconcile. Conflicts have priority by design.">
+            <h3 class="quiz-question">A hotel has both active conflicts AND under-covered topics. Which question shows up in Slot 2?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The information gap question — fill in what's unknown first.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The conflict resolution question — settling known disagreements is higher priority.</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The LLM decides on a per-guest basis.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Exactly. The tier system specifically avoids pure ranking so that different guests are asked different questions. Random-within-tier gives you both priority and diversity."
+               data-explanation-wrong="A pure sort would give the same three topics to every guest, meaning you'd get a lot of redundant answers and never learn about anything else. The tier + shuffle trick is the whole point.">
+            <h3 class="quiz-question">A coworker suggests: "Let's just sort all topics by coverage and always pick the lowest three. Simpler." What's the problem with that?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Nothing — it's actually better.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Sorting is too slow in Python.</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Every guest would see the same three questions forever; the hotel would only grow coverage in those three areas.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-a"
+               data-explanation-right="Exactly. Slot 1 is always about this guest's review. The agent sees the guest wrote about the bathroom and builds Q1 around empathy + broadening — not another bathroom probe."
+               data-explanation-wrong="Slot 1's whole job is to reflect back what the guest just said. Skipping their actual review and jumping to ratings would feel cold.">
+            <h3 class="quiz-question">A guest writes: "The bathroom was gross, mold everywhere." Their ratings are otherwise 5 stars. What would Slot 1 look like?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"Sorry to hear about the bathroom — were there other areas we could improve?" with non-bathroom options.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>"Your overall rating is high despite the bathroom issue — can you explain?"</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Skip Slot 1 and use both slots for information gaps.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,189 @@
+<section class="module" id="module-1" style="background: var(--color-bg-warm)">
+  <div class="module-content">
+
+    <header class="module-header animate-in">
+      <span class="module-number">01</span>
+      <h1 class="module-title">"How was your stay?"</h1>
+      <p class="module-subtitle">Why the most common survey question is also the most useless — and what to ask instead.</p>
+    </header>
+
+    <div class="module-body">
+
+      <!-- Screen 1: The problem -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">A guest checks out of a hotel</h2>
+
+        <p>They open the survey on their phone. It asks: <em>"How was your stay? Any comments?"</em> They type <strong>"fine, thanks"</strong> and tap submit.</p>
+
+        <p>The hotel learns nothing. The guest moves on. Multiply this by five million stays and you've got a lake of lukewarm data that can't tell you what's actually broken.</p>
+
+        <div class="callout callout-warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-content">
+            <strong class="callout-title">The open-ended box problem</strong>
+            <p>Generic prompts produce generic answers. Guests don't know what the hotel <em>wants</em> to hear, so they default to polite nothings. The hotel gets stars and silence.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 2: What this project does -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">This project's answer: ask better follow-ups</h2>
+
+        <p>This is <strong>Ask What Matters</strong>, submitted to the Wharton <span class="term" data-definition="Hackathons are time-boxed building competitions where teams ship a working product in 24-72 hours. This one is focused on AI-powered travel review systems.">Hack-AI-thon 2026</span>. After a guest submits their review and ratings, a small <span class="term" data-definition="An agent, in AI speak, is a program that decides what to do next on its own — here, it decides which two questions to ask a specific guest about a specific hotel, rather than asking everyone the same questions.">agent</span> reads what they wrote and picks <strong>exactly two targeted follow-up questions</strong>.</p>
+
+        <p>Not random questions. Not the same two for every guest. Two questions chosen because <em>this guest</em>, at <em>this hotel</em>, is the right person to answer them right now.</p>
+
+        <div class="pattern-cards">
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+            <div class="pattern-icon" style="background: var(--color-actor-1)">🎯</div>
+            <h4 class="pattern-title">Context-aware</h4>
+            <p class="pattern-desc">The agent reads the guest's actual review, their star ratings, and the hotel's history before picking anything.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+            <div class="pattern-icon" style="background: var(--color-actor-2)">📐</div>
+            <h4 class="pattern-title">Rule-driven</h4>
+            <p class="pattern-desc">Hard rules decide <em>what</em> to ask. An AI only polishes the wording. Fewer hallucinations, more predictability.</p>
+          </div>
+          <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+            <div class="pattern-icon" style="background: var(--color-actor-3)">🔄</div>
+            <h4 class="pattern-title">Self-improving</h4>
+            <p class="pattern-desc">Every answer updates the hotel's profile, so the next guest gets questions about genuinely unknown things.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 3: Trace the user journey -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Walk through one submission</h2>
+
+        <p>Imagine a guest named Priya just finished a stay at a hotel in Pompei. She opens the app, picks her hotel, and gives it 3 stars with a short review: <em>"The room smelled musty."</em> Here's what happens under the hood.</p>
+
+        <div class="flow-animation" data-steps='[
+          {"highlight":"flow-actor-1","label":"Priya submits her 3-star review and the comment about mustiness."},
+          {"highlight":"flow-actor-2","label":"The frontend packages it up and calls the backend API.","packet":true,"from":"actor-1","to":"actor-2"},
+          {"highlight":"flow-actor-3","label":"The backend agent reads the text and spots the aspect: cleanliness/smell.","packet":true,"from":"actor-2","to":"actor-3"},
+          {"highlight":"flow-actor-3","label":"It checks the hotel profile — does Pompei have unresolved conflicts? What topics are under-covered?"},
+          {"highlight":"flow-actor-4","label":"It asks the language model to polish two questions into friendly wording.","packet":true,"from":"actor-3","to":"actor-4"},
+          {"highlight":"flow-actor-2","label":"Two follow-up questions flow back to the frontend.","packet":true,"from":"actor-4","to":"actor-2"},
+          {"highlight":"flow-actor-1","label":"Priya sees two cards on her screen and taps her answers.","packet":true,"from":"actor-2","to":"actor-1"}
+        ]'>
+          <div class="flow-actors">
+            <div class="flow-actor" id="flow-actor-1">
+              <div class="flow-actor-icon">📱</div>
+              <span>Guest UI</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-2">
+              <div class="flow-actor-icon">🌐</div>
+              <span>API</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-3">
+              <div class="flow-actor-icon">🧠</div>
+              <span>Agent</span>
+            </div>
+            <div class="flow-actor" id="flow-actor-4">
+              <div class="flow-actor-icon">✨</div>
+              <span>LLM</span>
+            </div>
+          </div>
+
+          <div class="flow-packet" id="flow-packet"></div>
+          <div class="flow-step-label" id="flow-label">Click "Next Step" to begin</div>
+
+          <div class="flow-controls">
+            <button class="btn flow-next-btn">Next Step</button>
+            <button class="btn flow-reset-btn">Restart</button>
+            <span class="flow-progress"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 4: The output -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">What Priya actually sees</h2>
+
+        <p>Two question cards slide in. She taps options instead of writing essays — low effort, high information.</p>
+
+        <div class="icon-rows">
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-1)">1</div>
+            <div>
+              <strong>"We're sorry the room smelled musty. Were there any other areas that could be improved?"</strong>
+              <p>Options: <em>Apart from that, everything else was fine · Staff &amp; service · Noise · Food · Other</em></p>
+            </div>
+          </div>
+          <div class="icon-row">
+            <div class="icon-circle" style="background: var(--color-actor-2)">2</div>
+            <div>
+              <strong>"A past guest reported no fridges in the rooms. Was there a fridge in your room?"</strong>
+              <p>Options: <em>Yes, worked fine · No, there wasn't one · Yes but broken · Didn't check</em></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-accent">
+          <div class="callout-icon">💡</div>
+          <div class="callout-content">
+            <strong class="callout-title">Why two, not twenty?</strong>
+            <p>Every extra question bleeds response rates. The whole design is ruthlessly triaged down to two because that's the sweet spot between "learn something new" and "guest taps close."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Screen 5: Quiz -->
+      <section class="screen animate-in">
+        <h2 class="screen-heading">Check your understanding</h2>
+
+        <div class="quiz-container" id="quiz-module1">
+          <div class="quiz-question-block"
+               data-correct="option-b"
+               data-explanation-right="Right — the whole design hinges on context. Same review, different hotel = different second question. Same hotel, different review = different first question."
+               data-explanation-wrong="Not quite. A static list would work for any app — this one's superpower is that the questions change based on who's answering and where they stayed.">
+            <h3 class="quiz-question">Another hotel company wants to copy this idea but skip the complexity. They hardcode a list of 10 follow-up questions and randomly show two. What's the main thing they'd lose?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Nothing important — random questions give you diverse data too.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>The questions would ignore the guest's actual review and the hotel's specific gaps.</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Response rates — random is always worse than fixed.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <div class="quiz-question-block"
+               data-correct="option-c"
+               data-explanation-right="Exactly. Star ratings are a scoreboard — they tell you the score but not the story. Follow-ups trade a small amount of friction for a lot of detail."
+               data-explanation-wrong="Think about it from the hotel's side: what do they actually need to act on? A number, or a specific thing to fix?">
+            <h3 class="quiz-question">A hotel chain already collects 1-5 star ratings on cleanliness, service, value, and location. Why bother with follow-up questions on top of that?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>Stars are inaccurate — follow-ups replace them.</span>
+              </button>
+              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>So AI can write longer marketing copy.</span>
+              </button>
+              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+                <div class="quiz-option-radio"></div>
+                <span>A star tells you <em>how</em> bad, not <em>what</em> was bad. Follow-ups surface the specific, fixable thing.</span>
+              </button>
+            </div>
+            <div class="quiz-feedback"></div>
+          </div>
+
+          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">Check Answers</button>
+          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">Try Again</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
