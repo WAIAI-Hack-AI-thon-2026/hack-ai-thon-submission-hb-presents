@@ -3,6 +3,11 @@
 # 에러 발생 시 스크립트 중단 설정
 set -e
 
+COMPOSE_CMD="docker compose"
+if ! docker compose version > /dev/null 2>&1; then
+    COMPOSE_CMD="docker-compose"
+fi
+
 echo "🚀 Starting 'Ask What Matters — HB Presents'..."
 
 # 1. Environment Variable Check
@@ -20,18 +25,18 @@ fi
 # 2. Docker Daemon Check
 if ! docker info > /dev/null 2>&1; then
     echo "❌ Error: Docker daemon is not running."
-    echo "Please start Docker Desktop and try again."
+    echo "Please start Docker and try again."
     exit 1
 fi
 
 # 3. Run Docker Compose
 echo "📦 Building and starting Docker containers..."
-if docker-compose up --build -d; then
+if $COMPOSE_CMD up --build -d; then
     echo ""
     echo "✅ Deployment Successful!"
-    echo "🌐 Frontend: http://localhost:5173"
-    echo "⚙️  Backend API: http://localhost:8000"
-    echo "📝 To view logs, run: 'docker-compose logs -f'"
+    echo "🌐 App: http://localhost"
+    echo "⚙️  API Health: http://localhost/health"
+    echo "📝 To view logs, run: '$COMPOSE_CMD logs -f'"
 else
     echo ""
     echo "❌ Error: Docker Compose failed to start."
