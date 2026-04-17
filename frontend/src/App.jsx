@@ -3,6 +3,7 @@ import PropertySelect from './components/PropertySelect'
 import ReviewForm     from './components/ReviewForm'
 import FollowUpCards  from './components/FollowUpCards'
 import ThankYou       from './components/ThankYou'
+import { PROPERTIES as PROPERTY_MEDIA } from './propertyIntel'
 
 // ── Fallback questions (demo-safe) ──────────────────────────────────────────
 const FALLBACK_QUESTIONS = [
@@ -50,7 +51,52 @@ async function loadProperties() {
   const res = await fetch('/api/properties')
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   const data = await res.json()
-  return Array.isArray(data.properties) ? data.properties : []
+  const properties = Array.isArray(data.properties) ? data.properties : []
+  return attachPropertyMedia(properties)
+}
+
+const PROPERTY_MEDIA_BY_ID = new Map(
+  PROPERTY_MEDIA.map((property) => [
+    property.id,
+    {
+      image: property.image,
+      landmark: property.landmark,
+      country: property.country,
+      starRating: property.starRating,
+      totalReviews: property.totalReviews,
+    },
+  ])
+)
+
+const PROPERTY_MEDIA_BY_CITY = new Map(
+  PROPERTY_MEDIA.map((property) => [
+    String(property.city || '').toLowerCase(),
+    {
+      image: property.image,
+      landmark: property.landmark,
+      country: property.country,
+      starRating: property.starRating,
+      totalReviews: property.totalReviews,
+    },
+  ])
+)
+
+function attachPropertyMedia(properties) {
+  return properties.map((property) => {
+    const cityKey = String(property.city || '').toLowerCase()
+    const media = PROPERTY_MEDIA_BY_ID.get(property.id) || PROPERTY_MEDIA_BY_CITY.get(cityKey)
+    if (!media) return property
+    const hasStarRating = property.starRating != null && property.starRating !== ''
+    const hasTotalReviews = typeof property.totalReviews === 'number'
+    return {
+      ...property,
+      image: property.image || media.image,
+      landmark: property.landmark || media.landmark,
+      country: property.country || media.country,
+      starRating: hasStarRating ? property.starRating : media.starRating,
+      totalReviews: hasTotalReviews ? property.totalReviews : media.totalReviews,
+    }
+  })
 }
 
 function applyProfileToProperties(properties, propertyId, profile) {
