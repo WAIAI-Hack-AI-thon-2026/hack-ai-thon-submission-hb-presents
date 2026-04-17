@@ -196,56 +196,6 @@
         <p>Our app has <strong>six roles</strong>. Everything the system does is one of these six characters doing their one thing.</p>
       </section>
 
-      <!-- Screen 2: Meet the actors -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">The six actors</h2>
-
-        <div class="icon-rows">
-          <div class="icon-row">
-            <div class="icon-circle" style="background: var(--color-actor-1)">🖥️</div>
-            <div>
-              <strong>The Frontend — what the guest sees</strong>
-              <p>Built with <span class="term" data-definition="React is a JavaScript library for building user interfaces out of reusable pieces called components — like buttons, forms, and cards.">React</span> and <span class="term" data-definition="Vite is a modern build tool that bundles JavaScript, CSS, and assets into something a browser can run. Think of it as the packer that ships your code to the browser.">Vite</span>. Renders the property picker, the review form, the follow-up cards, and the thank-you screen.</p>
-            </div>
-          </div>
-          <div class="icon-row">
-            <div class="icon-circle" style="background: var(--color-actor-2)">🌐</div>
-            <div>
-              <strong>The API — the doorway to the backend</strong>
-              <p>A handful of <span class="term" data-definition="An HTTP endpoint is a specific URL that a server listens on — like /api/analyze — where the frontend can send data and get a response. It's the mailbox on the front door.">HTTP endpoints</span> under [api/](api/). The frontend posts data here; JSON comes back.</p>
-            </div>
-          </div>
-          <div class="icon-row">
-            <div class="icon-circle" style="background: var(--color-actor-3)">🧠</div>
-            <div>
-              <strong>The Agent — the decision-maker</strong>
-              <p>Lives in [backend/agent.py](backend/agent.py). Reads the review, looks at the hotel profile, and decides what two questions should be asked.</p>
-            </div>
-          </div>
-          <div class="icon-row">
-            <div class="icon-circle" style="background: var(--color-actor-4)">📏</div>
-            <div>
-              <strong>The Rule Engine — pattern matchers</strong>
-              <p>[backend/rules.py](backend/rules.py) and friends. Use <span class="term" data-definition="A regex (regular expression) is a tiny search pattern — like 'find any word containing mold, smell, or musty'. Fast, deterministic, and doesn't need AI to recognize common phrases.">regex</span> to spot topics like <em>bathroom</em>, <em>smell</em>, <em>staff</em>, and <em>billing</em> in the review text.</p>
-            </div>
-          </div>
-          <div class="icon-row">
-            <div class="icon-circle" style="background: var(--color-actor-5)">✨</div>
-            <div>
-              <strong>OpenAI — the ghost writer</strong>
-              <p>A large language model (<span class="term" data-definition="gpt-4.1-mini is a smaller, faster, cheaper version of OpenAI's GPT-4 family. Good enough for short rewording tasks like polishing a question into friendly language.">gpt-4.1-mini</span>) that turns the agent's picks into natural, polite questions with tap-ready options.</p>
-            </div>
-          </div>
-          <div class="icon-row">
-            <div class="icon-circle" style="background: var(--color-accent)">📚</div>
-            <div>
-              <strong>The Data Files — the hotel's memory</strong>
-              <p><span class="term" data-definition="JSON (JavaScript Object Notation) is a plain-text format for storing structured data — lists, key-value pairs, numbers, strings. It's what machines use to pass data to each other, and it's readable by humans.">JSON</span> files in [data/](data/) that remember every hotel's coverage, conflicts, and claimed amenities.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- Screen 4: Group chat -->
       <section class="screen animate-in">
         <h2 class="screen-heading">A day in the life — overheard in the group chat</h2>
