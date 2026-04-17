@@ -130,60 +130,6 @@
         </div>
       </section>
 
-      <!-- Screen 5: Quiz -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Check your understanding</h2>
-
-        <div class="quiz-container" id="quiz-module1">
-          <div class="quiz-question-block"
-               data-correct="option-b"
-               data-explanation-right="Right — the whole design hinges on context. Same review, different hotel = different second question. Same hotel, different review = different first question."
-               data-explanation-wrong="Not quite. A static list would work for any app — this one's superpower is that the questions change based on who's answering and where they stayed.">
-            <h3 class="quiz-question">Another hotel company wants to copy this idea but skip the complexity. They hardcode a list of 10 follow-up questions and randomly show two. What's the main thing they'd lose?</h3>
-            <div class="quiz-options">
-              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>Nothing important — random questions give you diverse data too.</span>
-              </button>
-              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>The questions would ignore the guest's actual review and the hotel's specific gaps.</span>
-              </button>
-              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>Response rates — random is always worse than fixed.</span>
-              </button>
-            </div>
-            <div class="quiz-feedback"></div>
-          </div>
-
-          <div class="quiz-question-block"
-               data-correct="option-c"
-               data-explanation-right="Exactly. Star ratings are a scoreboard — they tell you the score but not the story. Follow-ups trade a small amount of friction for a lot of detail."
-               data-explanation-wrong="Think about it from the hotel's side: what do they actually need to act on? A number, or a specific thing to fix?">
-            <h3 class="quiz-question">A hotel chain already collects 1-5 star ratings on cleanliness, service, value, and location. Why bother with follow-up questions on top of that?</h3>
-            <div class="quiz-options">
-              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>Stars are inaccurate — follow-ups replace them.</span>
-              </button>
-              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>So AI can write longer marketing copy.</span>
-              </button>
-              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>A star tells you <em>how</em> bad, not <em>what</em> was bad. Follow-ups surface the specific, fixable thing.</span>
-              </button>
-            </div>
-            <div class="quiz-feedback"></div>
-          </div>
-
-          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module1')">Check Answers</button>
-          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module1')">Try Again</button>
-        </div>
-      </section>
-
     </div>
   </div>
 </section>

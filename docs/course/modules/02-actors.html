@@ -252,60 +252,6 @@
         </div>
       </section>
 
-      <!-- Screen 6: Quiz -->
-      <section class="screen animate-in">
-        <h2 class="screen-heading">Check your understanding</h2>
-
-        <div class="quiz-container" id="quiz-module2">
-          <div class="quiz-question-block"
-               data-correct="option-c"
-               data-explanation-right="Right — [backend/rules.py](backend/rules.py) owns regex-based aspect detection. You'd add a new pattern for 'bedbugs'/'bites'/etc. The LLM wouldn't help because adding keywords is deterministic text-matching work."
-               data-explanation-wrong="The LLM writes the final wording, but it doesn't decide which topics exist in the first place. Adding a new detectable topic is a rules-engine change.">
-            <h3 class="quiz-question">You want the agent to notice when guests mention "bedbugs" so it can ask a follow-up about pests. Where would you make that change?</h3>
-            <div class="quiz-options">
-              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>Just update the OpenAI prompt — the LLM will figure it out.</span>
-              </button>
-              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>Add a new React component on the frontend.</span>
-              </button>
-              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>Add a new regex pattern in [backend/rules.py](backend/rules.py) and a matching entry in the aspect dictionary.</span>
-              </button>
-            </div>
-            <div class="quiz-feedback"></div>
-          </div>
-
-          <div class="quiz-question-block"
-               data-correct="option-b"
-               data-explanation-right="Exactly. The frontend only renders what it's handed. The decision about which two questions happens in the Agent, which sits in [backend/agent.py](backend/agent.py)."
-               data-explanation-wrong="The frontend is the face of the app, not the brain. When something looks wrong and the bug is about *what* is being shown (not *how* it looks), suspect the backend.">
-            <h3 class="quiz-question">A bug report says: "The app keeps asking the same question about pools even when I wrote about the bathroom." Where would you look first?</h3>
-            <div class="quiz-options">
-              <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>The React components — the card rendering must be broken.</span>
-              </button>
-              <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>The Agent — it's the actor deciding which questions to pick.</span>
-              </button>
-              <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
-                <div class="quiz-option-radio"></div>
-                <span>Vite — the build tool is probably caching the wrong file.</span>
-              </button>
-            </div>
-            <div class="quiz-feedback"></div>
-          </div>
-
-          <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">Check Answers</button>
-          <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">Try Again</button>
-        </div>
-      </section>
-
     </div>
   </div>
 </section>
